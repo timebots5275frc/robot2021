@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.analog.adis16470.frc.ADIS16470_IMU;
+
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
@@ -30,14 +32,12 @@ public class Drivetrain {
   private final SwerveModule m_backLeft = new SwerveModule(5, 6);
   private final SwerveModule m_backRight = new SwerveModule(7, 8);
 
-  private final AnalogGyro m_gyro = new AnalogGyro(0);
+  private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
 
-  private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
-      m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
-  );
+  private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeftLocation,
+      m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
-  private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics,
-      m_gyro.getRotation2d());
+  private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, m_gyro.getRotation2d());
 
   public Drivetrain() {
     m_gyro.reset();
@@ -49,15 +49,14 @@ public class Drivetrain {
    * @param xSpeed        Speed of the robot in the x direction (forward).
    * @param ySpeed        Speed of the robot in the y direction (sideways).
    * @param rot           Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the
+   *                      field.
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     var swerveModuleStates = m_kinematics.toSwerveModuleStates(
-        fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-            xSpeed, ySpeed, rot, m_gyro.getRotation2d())
-            : new ChassisSpeeds(xSpeed, ySpeed, rot)
-    );
+        fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
+            : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, kMaxSpeed);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
@@ -69,12 +68,7 @@ public class Drivetrain {
    * Updates the field relative position of the robot.
    */
   public void updateOdometry() {
-    m_odometry.update(
-        m_gyro.getRotation2d(),
-        m_frontLeft.getState(),
-        m_frontRight.getState(),
-        m_backLeft.getState(),
-        m_backRight.getState()
-    );
+    m_odometry.update(m_gyro.getRotation2d(), m_frontLeft.getState(), m_frontRight.getState(), m_backLeft.getState(),
+        m_backRight.getState());
   }
 }

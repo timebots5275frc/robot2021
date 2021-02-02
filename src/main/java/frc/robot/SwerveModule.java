@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Encoder;
+
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
+
+import com.ctre.phoenix.sensors.CANCoder;
+
 
 public class SwerveModule {
   private static final double kWheelRadius = 0.0508;
@@ -28,8 +31,10 @@ public class SwerveModule {
   private final SpeedController m_driveMotor;
   private final SpeedController m_turningMotor;
 
-  private final Encoder m_driveEncoder = new Encoder(0, 1);
-  private final Encoder m_turningEncoder = new Encoder(2, 3);
+  private final CANSparkMax m_driveMotor1 = new CANSparkMax
+
+  private final CANCoder m_driveEncoder = new CANCoder(0, 1);
+  private final CANCoder m_turningEncoder = new CANCoder(2, 3);
 
   private final PIDController m_drivePIDController = new PIDController(1, 0, 0);
 
