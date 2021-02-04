@@ -13,6 +13,13 @@ package frc.robot.Constants;
  * constants are needed, to reduce verbosity.
  */
 public class Constants {
+    /**
+     * @Title ControllerConstants
+     */
+    public static final class ControllerConstants {
+        public static final int DRIVER_STICK_CHANNEL = 0;
+        public static final int AUX_STICK_CHANNEL = 1;
+    }
 
     public static final class DriveConstants {
 
