@@ -1,34 +1,32 @@
 package frc.robot.subsystems.DriveTrain;
 
-
-import com.revrobotics.* ;
+import com.revrobotics.*;
 import com.ctre.phoenix.sensors.*;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 public class SwerveModule {
 
-    private CANSparkMax m_driveMotor ;
-    private CANSparkMax m_steerMotor ;
-    private CANEncoder m_driveMotorEncoder ;
-    private CANEncoder m_steerMotorEncoder ;
+    private CANSparkMax m_driveMotor;
+    private CANSparkMax m_steerMotor;
+    private CANEncoder m_driveMotorEncoder;
+    private CANEncoder m_steerMotorEncoder;
 
-    private CANCoder m_steerEncoder ;
+    private CANCoder m_steerEncoder;
 
-    private PIDController m_pidController ;
+    private PIDController m_pidController;
 
-    public SwerveModule(int driveMotorID, int steerMotorID, int steerEncoderId ){
-        
-        m_driveMotor = new CANSparkMax(driveMotorID, CANSparkMaxLowLevel.MotorType.kBrushless) ;
-        m_steerMotor = new CANSparkMax(steerMotorID, CANSparkMaxLowLevel.MotorType.kBrushless) ;
+    public SwerveModule(int driveMotorID, int steerMotorID, int steerEncoderId) {
 
-        m_steerEncoder = new CANCoder(steerEncoderId) ;
+        m_driveMotor = new CANSparkMax(driveMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        m_steerMotor = new CANSparkMax(steerMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        m_driveMotorEncoder = m_driveMotor.getEncoder() ;
-        m_steerMotorEncoder = m_steerMotor.getEncoder() ;
+        m_steerEncoder = new CANCoder(steerEncoderId);
+
+        m_driveMotorEncoder = m_driveMotor.getEncoder();
+        m_steerMotorEncoder = m_steerMotor.getEncoder();
 
         m_pidController = new PIDController(20, 10, 0);
 
-        
         CANPIDController m_SparkMaxpidController = m_steerMotor.getPIDController();
 
         double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
@@ -53,14 +51,10 @@ public class SwerveModule {
 
     }
 
+    // double setVel = m_pidController.calculate(m_steerEncoder.getPosition(),
+    // angle_IN);
 
+    // double setPoint = m_stick.getY() * maxRPM;
+    // m_pidController.setReference(setVel, ControlType.kVelocity);
 
-        double setVel = m_pidController.calculate(m_steerEncoder.getPosition(), angle_IN);
-
-        // double setPoint = m_stick.getY() * maxRPM;
-        m_pidController.setReference(setVel, ControlType.kVelocity);
-        
-
-
-    
 }
