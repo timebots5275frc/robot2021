@@ -17,7 +17,7 @@ https://docs.google.com/document/d/1stpTw-b4LB1qDbJboForRVwt5q-sB9sNN-biaHKbk_Q/
 | Intake      | ...         |
 | Hopper      | ...         |
 | Climber     | ...         |
-| Intake      | ...         |
+| Shooter     | ...         |
 
 
 contact us: [our website](https://www.timebots5275.com) | [email](mailto:team@timebots5275.com)
