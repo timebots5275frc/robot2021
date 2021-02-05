@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.geometry.Translation2d ;
 import com.revrobotics.*;
 import com.ctre.phoenix.sensors.CANCoder;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.Constants.DriveConstants;
 
 /**
  * Description:
@@ -32,10 +32,7 @@ public class DriveTrain extends SubsystemBase {
 
 
 
-
     public DriveTrain(){
-
-
 
     }
 

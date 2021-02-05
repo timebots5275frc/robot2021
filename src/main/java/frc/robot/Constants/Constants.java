@@ -4,6 +4,8 @@
 
 package frc.robot.Constants;
 
+import jdk.javadoc.internal.doclets.formats.html.resources.standard;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -59,9 +61,12 @@ public class Constants {
         // One rotation of the motor gives 0.1225 rotations of the wheel. 
         public static final double kDriveGearRatio = (14.0 / 50.0) * (28.0 / 16.0 ) * (15.0 / 60.0 ) ; 
 
+        public static final PIDConstants PID_SparkMax_Steer = new PIDConstants(6e-5,  6e-7, 0);
+        public static final PIDConstants PID_Encoder_Steer = new PIDConstants(20, 10, 0);
+
+ 
+        
     }
 
-
-
-
 }
+
