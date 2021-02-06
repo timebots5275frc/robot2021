@@ -1,10 +1,9 @@
-package frc.robot.subsystems.DriveTrain;
+package frc.robot.subsystems.driveTrain;
 
 import com.revrobotics.*;
 import com.ctre.phoenix.sensors.*;
 import edu.wpi.first.wpilibj.controller.PIDController;
-
-import frc.robot.Constants.Constants.DriveConstants;
+import frc.robot.constants.Constants.DriveConstants;
 
 
 public class SwerveModule {
