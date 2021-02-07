@@ -19,36 +19,36 @@ public class Constants {
 
         // Drivetrain Motor IDs
         // There are the CANBus IDs of the SparkMax controllers
-        public static final int kLeftFrontDriveMotorID = 1 ;
-        public static final int kLeftFrontSteerMotorID = 2 ;
-        public static final int kRightFrontDriveMotorID = 3 ;
-        public static final int kRightFrontSteerMotorID = 4 ;
-        public static final int kRightRearDriveMotorID = 5 ;
-        public static final int kRightRearSteerMotorID = 6 ;
-        public static final int kLeftRearDriveMotorID = 7 ;
-        public static final int kLeftRearSteerMotorID = 8 ;
+        public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 1 ;
+        public static final int LEFT_FRONT_STEER_MOTOR_ID = 2 ;
+        public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 3 ;
+        public static final int RIGHT_FRONT_STEER_MOTOR_ID = 4 ;
+        public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 5 ;
+        public static final int RIGHT_READ_STEER_MOTOR_ID = 6 ;
+        public static final int LEFT_REAR_DRIVE_MOTOR_ID = 7 ;
+        public static final int LEFT_REAR_STEER_MOTOR_ID = 8 ;
 
         // Drivetrain Encoder IDs
         // These are the CANBus IDs of the CTRE CANCoders
-        public static final int kLeftFrontSteerEncoderID = 10 ;
-        public static final int kRightFrontSteerEncoderID = 11 ;
-        public static final int kRightRearSteerEncoderID = 12 ;
-        public static final int kLeftRearSteerEncoderID = 13 ;
+        public static final int LEFT_FRONT_STEER_ENCODER_ID = 10 ;
+        public static final int RIGHT_FRONT_STEER_ENCODER_ID = 11 ;
+        public static final int RIGHT_REAR_STEER_ENCODER_ID = 12 ;
+        public static final int LEFT_REAR_STEER_ENCODER_ID = 13 ;
 
         // These constants define the location of the wheels from the center of the robot.
         // These coordinates are determined by the right hand rule.
         // Index finger points in the forward X direction, Thumb points up in the positive Z direction,
         // Middle finger points left in the positive Y direction.
-        public static final double kLeftFrontWheel_X = 11.75 * 0.0254; // meters
-        public static final double kLeftFrontWheel_Y = 11.75 * 0.0254; // meters
-        public static final double kRightFrontWheel_X = 11.75 * 0.0254; // meters
-        public static final double kRightFrontWheel_Y = -11.75 * 0.0254; // meters
-        public static final double kRightRearWheel_X = -11.75 * 0.0254; // meters
-        public static final double kRightRearWheel_Y = - 11.75 * 0.0254; // meters
-        public static final double kLeftRearWheel_X = -11.75 * 0.0254; // meters
-        public static final double kLeftRearWheel_Y = 11.75 * 0.0254; // meters
+        public static final double LEFT_FRONT_WHEEL_X = 11.75 * 0.0254; // meters
+        public static final double LEFT_FRONT_WHEEL_Y = 11.75 * 0.0254; // meters
+        public static final double RIGHT_FRONT_WHEEL_X = 11.75 * 0.0254; // meters
+        public static final double RIGHT_FRONT_WHEEL_Y = -11.75 * 0.0254; // meters
+        public static final double RIGHT_REAR_WHEEL_X = -11.75 * 0.0254; // meters
+        public static final double RIGHT_REAR_WHEEL_Y = - 11.75 * 0.0254; // meters
+        public static final double LEFT_REAR_WHEEL_X = -11.75 * 0.0254; // meters
+        public static final double LEFT_REAR_WHEEL_Y = 11.75 * 0.0254; // meters
 
-        public static final double kWheelRadius = 2.0 * 0.0254; // meters
+        public static final double WHEEL_RADIUS = 2.0 * 0.0254; // meters
 
         // Drive motor gear ratio.
         //              | Driving Gear | Driven Gear |
@@ -57,8 +57,20 @@ public class Constants {
         // Third Stage  |     15       |     60      |
         //
         // Overall Gear Ratio = 0.1225 
-        // One rotation of the motor gives 0.1225 rotations of the wheel. 
-        public static final double kDriveGearRatio = (14.0 / 50.0) * (28.0 / 16.0 ) * (15.0 / 60.0 ) ; 
+        // One rotation of the motor gives 0.1225 rotations of the wheel.
+        // 8.163 rotations of the motor gives one rotation of the wheel.
+        public static final double DRIVE_GEAR_RATIO = (14.0 / 50.0) * (28.0 / 16.0 ) * (15.0 / 60.0 ) ; 
+
+        // Steer motor gear ratio
+        //              | Driving Gear | Driven Gear |
+        // First Stage  |      15      |     32      |
+        // Second Stage |      10      |     40      |
+        //
+        // Overall Gear Ration = 0.1171875
+        // One rotation of the motor gives 0.1171875 rotations of the wheel.
+        // 8.533 rotations of the motor gives one rotation of the wheel.
+        public static final double STEER_GEAR_RATIO = (15.0 / 32 ) * ( 10 / 40 ) ;
+
 
         public static final PIDConstants PID_SparkMax_Steer = new PIDConstants(6e-5,  6e-7, 0);
         public static final PIDConstants PID_Encoder_Steer = new PIDConstants(20, 10, 0);
