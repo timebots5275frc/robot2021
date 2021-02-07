@@ -14,7 +14,17 @@ package frc.robot.constants;
  * constants are needed, to reduce verbosity.
  */
 public class Constants {
+    /**
+     * @Title ControllerConstants
+     */
+    public static final class ControllerConstants {
+        public static final int DRIVER_STICK_CHANNEL = 0;
+        public static final int AUX_STICK_CHANNEL = 1;
+    }
 
+    /**
+     * @Title DrveConstants
+     */
     public static final class DriveConstants {
 
         // Drivetrain Motor IDs
@@ -35,10 +45,12 @@ public class Constants {
         public static final int RIGHT_REAR_STEER_ENCODER_ID = 12 ;
         public static final int LEFT_REAR_STEER_ENCODER_ID = 13 ;
 
+
         // These constants define the location of the wheels from the center of the robot.
         // These coordinates are determined by the right hand rule.
         // Index finger points in the forward X direction, Thumb points up in the positive Z direction,
         // Middle finger points left in the positive Y direction.
+
         public static final double LEFT_FRONT_WHEEL_X = 11.75 * 0.0254; // meters
         public static final double LEFT_FRONT_WHEEL_Y = 11.75 * 0.0254; // meters
         public static final double RIGHT_FRONT_WHEEL_X = 11.75 * 0.0254; // meters
@@ -47,6 +59,7 @@ public class Constants {
         public static final double RIGHT_REAR_WHEEL_Y = - 11.75 * 0.0254; // meters
         public static final double LEFT_REAR_WHEEL_X = -11.75 * 0.0254; // meters
         public static final double LEFT_REAR_WHEEL_Y = 11.75 * 0.0254; // meters
+
 
         public static final double WHEEL_RADIUS = 2.0 * 0.0254; // meters
 
@@ -61,6 +74,7 @@ public class Constants {
         // 8.163 rotations of the motor gives one rotation of the wheel.
         public static final double DRIVE_GEAR_RATIO = (14.0 / 50.0) * (28.0 / 16.0 ) * (15.0 / 60.0 ) ; 
 
+      
         // Steer motor gear ratio
         //              | Driving Gear | Driven Gear |
         // First Stage  |      15      |     32      |
@@ -71,13 +85,32 @@ public class Constants {
         // 8.533 rotations of the motor gives one rotation of the wheel.
         public static final double STEER_GEAR_RATIO = (15.0 / 32 ) * ( 10 / 40 ) ;
 
-
         public static final PIDConstants PID_SparkMax_Steer = new PIDConstants(6e-5,  6e-7, 0);
         public static final PIDConstants PID_Encoder_Steer = new PIDConstants(20, 10, 0);
 
- 
-        
     }
 
+    
+    /**
+     * @Title HopperConstants
+     */
+    public static final class HopperConstants {
+      
+    }
+
+    /**
+     * @Title IntakeConstants
+     */
+    public static final class IntakeConstants {
+
+    }
+
+    /**
+     * @Title Shooter
+     */
+    public static final class ShooterConstants {
+
+    }
+        
 }
 
