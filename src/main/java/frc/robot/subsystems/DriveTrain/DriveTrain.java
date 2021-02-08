@@ -17,24 +17,23 @@ public class DriveTrain extends SubsystemBase {
 	public static final double kMaxSpeed = 3.0; // 3 meters per second
 	public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-    private final Translation2d m_leftFrontLocation = 
-        new Translation2d( DriveConstants.LEFT_FRONT_WHEEL_X, DriveConstants.LEFT_FRONT_WHEEL_Y);
-    private final Translation2d m_rightFrontLocation = 
-        new Translation2d( DriveConstants.RIGHT_FRONT_WHEEL_X, DriveConstants.RIGHT_FRONT_WHEEL_Y);
-    private final Translation2d m_rightRearLocation = 
-        new Translation2d( DriveConstants.RIGHT_REAR_WHEEL_X, DriveConstants.RIGHT_REAR_WHEEL_Y);
-    private final Translation2d m_leftRearLocation = 
-        new Translation2d( DriveConstants.LEFT_REAR_WHEEL_X, DriveConstants.LEFT_REAR_WHEEL_Y);
+	private final Translation2d m_leftFrontLocation = new Translation2d(DriveConstants.LEFT_FRONT_WHEEL_X,
+			DriveConstants.LEFT_FRONT_WHEEL_Y);
+	private final Translation2d m_rightFrontLocation = new Translation2d(DriveConstants.RIGHT_FRONT_WHEEL_X,
+			DriveConstants.RIGHT_FRONT_WHEEL_Y);
+	private final Translation2d m_rightRearLocation = new Translation2d(DriveConstants.RIGHT_REAR_WHEEL_X,
+			DriveConstants.RIGHT_REAR_WHEEL_Y);
+	private final Translation2d m_leftRearLocation = new Translation2d(DriveConstants.LEFT_REAR_WHEEL_X,
+			DriveConstants.LEFT_REAR_WHEEL_Y);
 
-    private final SwerveModule leftFrontSwerveModule = 
-        new SwerveModule( DriveConstants.LEFT_FRONT_DRIVE_MOTOR_ID, DriveConstants.LEFT_FRONT_STEER_MOTOR_ID, DriveConstants.LEFT_FRONT_STEER_ENCODER_ID);
-    private final SwerveModule rightFrontSwerveModule = 
-        new SwerveModule(DriveConstants.RIGHT_FRONT_DRIVE_MOTOR_ID, DriveConstants.RIGHT_FRONT_STEER_MOTOR_ID, DriveConstants.RIGHT_FRONT_STEER_ENCODER_ID);
-    private final SwerveModule rightRearSwerveModule = 
-        new SwerveModule(DriveConstants.RIGHT_REAR_DRIVE_MOTOR_ID, DriveConstants.RIGHT_READ_STEER_MOTOR_ID, DriveConstants.RIGHT_REAR_STEER_ENCODER_ID);
-    private final SwerveModule leftRearSwerveModule = 
-        new SwerveModule(DriveConstants.LEFT_REAR_DRIVE_MOTOR_ID, DriveConstants.LEFT_REAR_STEER_MOTOR_ID, DriveConstants.LEFT_REAR_STEER_ENCODER_ID);
-
+	private final SwerveModule leftFrontSwerveModule = new SwerveModule(DriveConstants.LEFT_FRONT_DRIVE_MOTOR_ID,
+			DriveConstants.LEFT_FRONT_STEER_MOTOR_ID, DriveConstants.LEFT_FRONT_STEER_ENCODER_ID);
+	private final SwerveModule rightFrontSwerveModule = new SwerveModule(DriveConstants.RIGHT_FRONT_DRIVE_MOTOR_ID,
+			DriveConstants.RIGHT_FRONT_STEER_MOTOR_ID, DriveConstants.RIGHT_FRONT_STEER_ENCODER_ID);
+	private final SwerveModule rightRearSwerveModule = new SwerveModule(DriveConstants.RIGHT_REAR_DRIVE_MOTOR_ID,
+			DriveConstants.RIGHT_READ_STEER_MOTOR_ID, DriveConstants.RIGHT_REAR_STEER_ENCODER_ID);
+	private final SwerveModule leftRearSwerveModule = new SwerveModule(DriveConstants.LEFT_REAR_DRIVE_MOTOR_ID,
+			DriveConstants.LEFT_REAR_STEER_MOTOR_ID, DriveConstants.LEFT_REAR_STEER_ENCODER_ID);
 
 	// private final AnalogGyro m_gyro = new AnalogGyro(0);
 
@@ -43,12 +42,11 @@ public class DriveTrain extends SubsystemBase {
 	private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_leftFrontLocation,
 			m_rightFrontLocation, m_rightRearLocation, m_leftRearLocation);
 
-	private final SwerveDriveOdometry m_odometry = new
-	SwerveDriveOdometry(m_kinematics, imu.getRotation2d());
+	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, imu.getRotation2d());
 
 	public DriveTrain() {
 		System.out.println("DriveTrain (:");
-	} 
+	}
 
 	/**
 	 * Method to drive the robot using joystick info.
@@ -76,7 +74,7 @@ public class DriveTrain extends SubsystemBase {
 	/** Updates the field relative position of the robot. */
 	public void updateOdometry() {
 		m_odometry.update(imu.getRotation2d(), leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
-		leftRearSwerveModule.getState(), rightRearSwerveModule.getState());
+				leftRearSwerveModule.getState(), rightRearSwerveModule.getState());
 	}
 }
 
@@ -84,7 +82,6 @@ public class DriveTrain extends SubsystemBase {
  * Description:
  */
 // public class DriveTrain extends SubsystemBase {
-
 
 // private final Translation2d m_leftFrontLocation = new
 // Translation2d(DriveConstants.kLeftFrontWheel_X,
