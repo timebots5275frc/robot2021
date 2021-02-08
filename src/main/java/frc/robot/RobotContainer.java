@@ -4,9 +4,11 @@
 
 package frc.robot;
 
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.driveTrain.DriveTrain;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -19,7 +21,10 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveTrain m_driveTrain = new DriveTrain() ;
+  // private final DriveTrain m_driveTrain = new DriveTrain() ;
+
+  // public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
+  // public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -28,9 +33,9 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  public DriveTrain getDriveTrain(){
-    return m_driveTrain ;
-  }
+  // public DriveTrain getDriveTrain(){
+  //   return m_driveTrain ;
+  // }
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
