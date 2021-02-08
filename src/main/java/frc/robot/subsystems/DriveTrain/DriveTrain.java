@@ -26,13 +26,13 @@ public class DriveTrain extends SubsystemBase {
     private final Translation2d m_leftRearLocation = 
         new Translation2d( DriveConstants.LEFT_REAR_WHEEL_X, DriveConstants.LEFT_REAR_WHEEL_Y);
 
-    private final SwerveModule m_leftFrontSwerve = 
+    private final SwerveModule leftFrontSwerveModule = 
         new SwerveModule( DriveConstants.LEFT_FRONT_DRIVE_MOTOR_ID, DriveConstants.LEFT_FRONT_STEER_MOTOR_ID, DriveConstants.LEFT_FRONT_STEER_ENCODER_ID);
-    private final SwerveModule m_rightFrontSwerve = 
+    private final SwerveModule rightFrontSwerveModule = 
         new SwerveModule(DriveConstants.RIGHT_FRONT_DRIVE_MOTOR_ID, DriveConstants.RIGHT_FRONT_STEER_MOTOR_ID, DriveConstants.RIGHT_FRONT_STEER_ENCODER_ID);
-    private final SwerveModule m_rightRearSwerve = 
+    private final SwerveModule rightRearSwerveModule = 
         new SwerveModule(DriveConstants.RIGHT_REAR_DRIVE_MOTOR_ID, DriveConstants.RIGHT_READ_STEER_MOTOR_ID, DriveConstants.RIGHT_REAR_STEER_ENCODER_ID);
-    private final SwerveModule m_leftRearSwerve = 
+    private final SwerveModule leftRearSwerveModule = 
         new SwerveModule(DriveConstants.LEFT_REAR_DRIVE_MOTOR_ID, DriveConstants.LEFT_REAR_STEER_MOTOR_ID, DriveConstants.LEFT_REAR_STEER_ENCODER_ID);
 
 
@@ -67,16 +67,16 @@ public class DriveTrain extends SubsystemBase {
 		// : new ChassisSpeeds(xSpeed, ySpeed, rot));
 		var swerveModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, rot));
 		SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, kMaxSpeed);
-		LeftFrontSwerveModule.setDesiredState(swerveModuleStates[0]);
-		RightFrontSwerveModule.setDesiredState(swerveModuleStates[1]);
-		LeftRearSwerveModule.setDesiredState(swerveModuleStates[2]);
-		RightRearSwerveModule.setDesiredState(swerveModuleStates[3]);
+		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0]);
+		rightFrontSwerveModule.setDesiredState(swerveModuleStates[1]);
+		leftRearSwerveModule.setDesiredState(swerveModuleStates[2]);
+		rightRearSwerveModule.setDesiredState(swerveModuleStates[3]);
 	}
 
 	/** Updates the field relative position of the robot. */
 	public void updateOdometry() {
-		m_odometry.update(imu.getRotation2d(), LeftFrontSwerveModule.getState(), RightFrontSwerveModule.getState(),
-		LeftRearSwerveModule.getState(), RightRearSwerveModule.getState());
+		m_odometry.update(imu.getRotation2d(), leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
+		leftRearSwerveModule.getState(), rightRearSwerveModule.getState());
 	}
 }
 
@@ -120,7 +120,6 @@ public class DriveTrain extends SubsystemBase {
 // SwerveModule(DriveConstants.kRightRearDriveMotorID,
 // DriveConstants.kRightRearSteerMotorID,
 // DriveConstants.kRightRearSteerEncoderID);
->>>>>>> Stashed changes
 
 // private final SwerveModule m_leftRearSwerve = new
 // SwerveModule(DriveConstants.kLeftRearDriveMotorID,

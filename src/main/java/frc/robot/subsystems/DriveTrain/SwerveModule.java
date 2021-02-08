@@ -39,7 +39,7 @@ private CANPIDController PID_SparkMax_Steer;
 private CANPIDController PID_SparkMax_Drive;
 
 // Gains are for example purposes only - must be determined for your own
-robot!
+
 private final SimpleMotorFeedforward m_driveFeedforward = new
 SimpleMotorFeedforward(1, 3);
 private final SimpleMotorFeedforward m_turnFeedforward = new
@@ -136,7 +136,7 @@ m_turnFeedforward.calculate(PID_Encoder_Steer.getSetpoint());
 
 PID_SparkMax_Steer.setReference(turnFeedforward, ControlType.kVelocity);
 // PID_SparkMax_Drive.setReference(driveOutput + turnFeedforward,
-ControlType.kVelocity);
+
 }
 
 // double setVel = m_pidController.calculate(m_steerEncoder.getPosition(),
