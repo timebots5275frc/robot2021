@@ -85,11 +85,12 @@ public class Constants {
         // 8.533 rotations of the motor gives one rotation of the wheel.
         public static final double STEER_GEAR_RATIO = (15.0 / 32 ) * ( 10 / 40 ) ;
 
-        public static final PIDConstants PID_SparkMax_Steer = new PIDConstants(0.00001,  0, 0);
+        public static final PIDConstants PID_SparkMax_Steer = new PIDConstants(0.0001, 0, 0);
         public static final PIDConstants PID_Encoder_Steer = new PIDConstants(20, 10, 0);
 
         public static final PIDConstants PID_SparkMax_Drive = new PIDConstants(0.00001, 0, 0) ;
         
+
     }
 
     
