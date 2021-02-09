@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(1);
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -110,19 +110,20 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    final double xSpeed = driveStick.getY()  ;
+    // final double xSpeed = m_xspeedLimiter.calculate( driveStick.getY() ) ;
+    final double xSpeed = driveStick.getY() * 12 ;
 
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    final double ySpeed = driveStick.getX() ; // * 3 
+    // final double ySpeed = m_yspeedLimiter.calculate( driveStick.getX() ); // * 3 
+    final double ySpeed = driveStick.getX() * 12; // * 3 
 
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    // final var rot = -m_rotLimiter.calculate(m_controller.getX(GenericHID.Hand.kRight))
-    //     * edu.wpi.first.wpilibj.examples.mecanumbot.Drivetrain.kMaxAngularSpeed;4
+    // final var rot = -m_rotLimiter.calculate(m_controller.getX(GenericHID.Hand.kRight));
 
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("ySpeed", ySpeed);
