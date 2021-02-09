@@ -39,8 +39,8 @@ public class SwerveModule {
 
     // Gains are for example purposes only - must be determined for your own
 
-    private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(1, 3);
-    private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(1, 0.5);
+    //private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(1, 3);
+    //private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(1, 0.5);
 
     public SwerveModule(int driveMotorID, int steerMotorID, int steerEncoderId) {
 
@@ -94,8 +94,10 @@ public class SwerveModule {
      * @return The current state of the module.
      */
     public SwerveModuleState getState() {
-        double speedMetersPerSecond = m_steerEncoder.getVelocity();
-        return new SwerveModuleState(speedMetersPerSecond, new Rotation2d(m_steerEncoder.getAbsolutePosition()));
+        double speedDegreesPerSecond = m_steerEncoder.getVelocity();
+        double steerAngleRadians = m_steerEncoder.getAbsolutePosition() * Math.PI / 180.0 ;
+
+        return new SwerveModuleState(speedDegreesPerSecond, new Rotation2d(steerAngleRadians) );
     }
 
     /**
@@ -105,25 +107,26 @@ public class SwerveModule {
      */
     public void setDesiredState(SwerveModuleState desiredState) {
         // Optimize the reference state to avoid spinning further than 90 degrees
-        SwerveModuleState state = SwerveModuleState.optimize(desiredState,
-                new Rotation2d(m_steerEncoder.getAbsolutePosition()));
+        double curSteerAngleRadians = m_steerEncoder.getAbsolutePosition() * Math.PI / 180.0 ;
+        SwerveModuleState state = SwerveModuleState.optimize( desiredState, new Rotation2d(curSteerAngleRadians) );
 
         // Calculate the drive output from the drive PID controller.
-        final double driveOutput = m_drivePIDController.calculate(m_driveMotorEncoder.getVelocity(),
-                state.speedMetersPerSecond);
 
-        final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
+        //final double driveOutput = m_drivePIDController.calculate(m_driveMotorEncoder.getVelocity(),
+        //        state.speedMetersPerSecond);
+
+        //final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
         // Calculate the turning motor output from the turning PID controller.
         double turnOutput = PID_Encoder_Steer.calculate(m_steerEncoder.getAbsolutePosition(), state.angle.getDegrees());
 
-        final double turnFeedforward = m_turnFeedforward.calculate(PID_Encoder_Steer.getSetpoint());
+        //final double turnFeedforward = m_turnFeedforward.calculate(PID_Encoder_Steer.getSetpoint());
 
         // m_driveMotor.setVoltage(driveOutput + driveFeedforward);
         // m_turningMotor.setVoltage(turnOutput + turnFeedforward);
         // m_steerMotor.set
 
-        PID_SparkMax_Steer.setReference(turnFeedforward, ControlType.kVelocity);
+        PID_SparkMax_Steer.setReference(turnOutput, ControlType.kVelocity);
         // PID_SparkMax_Drive.setReference(driveOutput + turnFeedforward,
 
     }
