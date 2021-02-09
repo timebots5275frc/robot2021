@@ -94,10 +94,10 @@ public class SwerveModule {
      * @return The current state of the module.
      */
     public SwerveModuleState getState() {
-        double speedDegreesPerSecond = m_steerEncoder.getVelocity();
-        double steerAngleRadians = m_steerEncoder.getAbsolutePosition() * Math.PI / 180.0 ;
+        double driveSpeedMetersPerSecond = m_driveMotorEncoder.getVelocity() * DriveConstants.DRIVE_GEAR_RATIO * 2.0 * Math.PI * DriveConstants.WHEEL_RADIUS / 60.0 ;
+        double steerAngleRadians = Math.toRadians(m_steerEncoder.getAbsolutePosition()) ;
 
-        return new SwerveModuleState(speedDegreesPerSecond, new Rotation2d(steerAngleRadians) );
+        return new SwerveModuleState(driveSpeedMetersPerSecond, new Rotation2d(steerAngleRadians) );
     }
 
     /**
@@ -107,7 +107,8 @@ public class SwerveModule {
      */
     public void setDesiredState(SwerveModuleState desiredState) {
         // Optimize the reference state to avoid spinning further than 90 degrees
-        double curSteerAngleRadians = m_steerEncoder.getAbsolutePosition() * Math.PI / 180.0 ;
+        double curSteerAngleRadians = Math.toRadians(m_steerEncoder.getAbsolutePosition()) ;
+
         SwerveModuleState state = SwerveModuleState.optimize( desiredState, new Rotation2d(curSteerAngleRadians) );
 
         // Calculate the drive output from the drive PID controller.
@@ -119,14 +120,15 @@ public class SwerveModule {
 
         // Calculate the turning motor output from the turning PID controller.
         double turnOutput = PID_Encoder_Steer.calculate(m_steerEncoder.getAbsolutePosition(), state.angle.getDegrees());
-
+        PID_SparkMax_Steer.setReference(turnOutput, ControlType.kVelocity);
+        
         //final double turnFeedforward = m_turnFeedforward.calculate(PID_Encoder_Steer.getSetpoint());
 
         // m_driveMotor.setVoltage(driveOutput + driveFeedforward);
         // m_turningMotor.setVoltage(turnOutput + turnFeedforward);
         // m_steerMotor.set
 
-        PID_SparkMax_Steer.setReference(turnOutput, ControlType.kVelocity);
+
         // PID_SparkMax_Drive.setReference(driveOutput + turnFeedforward,
 
     }

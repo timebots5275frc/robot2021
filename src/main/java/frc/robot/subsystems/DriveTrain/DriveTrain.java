@@ -66,15 +66,16 @@ public class DriveTrain extends SubsystemBase {
 		var swerveModuleStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds(xSpeed, ySpeed, rot));
 		SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, kMaxSpeed);
 		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0]);
-		rightFrontSwerveModule.setDesiredState(swerveModuleStates[1]);
-		leftRearSwerveModule.setDesiredState(swerveModuleStates[2]);
-		rightRearSwerveModule.setDesiredState(swerveModuleStates[3]);
+        rightFrontSwerveModule.setDesiredState(swerveModuleStates[1]);
+        rightRearSwerveModule.setDesiredState(swerveModuleStates[2]);
+		leftRearSwerveModule.setDesiredState(swerveModuleStates[3]);
+
 	}
 
 	/** Updates the field relative position of the robot. */
 	public void updateOdometry() {
 		m_odometry.update(imu.getRotation2d(), leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
-				leftRearSwerveModule.getState(), rightRearSwerveModule.getState());
+            rightRearSwerveModule.getState(), leftRearSwerveModule.getState());
 	}
 }
 
