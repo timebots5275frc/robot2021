@@ -80,7 +80,8 @@ public class Constants {
      * @Title IntakeConstants
      */
     public static final class IntakeConstants {
-
+    public static final int motorCanId = 10;
+    
     }
 
     /**
