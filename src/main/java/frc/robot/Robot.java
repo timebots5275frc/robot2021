@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.Constants;
@@ -109,19 +110,22 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    final double xSpeed = -driveStick.getX() * 3;
+    final double xSpeed = driveStick.getY()  ;
 
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    final double ySpeed = driveStick.getY() * 3;
+    final double ySpeed = driveStick.getX() ; // * 3 
 
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
     // final var rot = -m_rotLimiter.calculate(m_controller.getX(GenericHID.Hand.kRight))
-    //     * edu.wpi.first.wpilibj.examples.mecanumbot.Drivetrain.kMaxAngularSpeed;
+    //     * edu.wpi.first.wpilibj.examples.mecanumbot.Drivetrain.kMaxAngularSpeed;4
+
+    SmartDashboard.putNumber("xSpeed", xSpeed);
+    SmartDashboard.putNumber("ySpeed", ySpeed);
 
     m_swerve.drive(xSpeed, ySpeed, 0, false);
 
