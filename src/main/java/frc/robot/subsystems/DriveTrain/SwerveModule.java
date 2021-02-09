@@ -84,6 +84,15 @@ public class SwerveModule {
         PID_SparkMax_Steer.setD(DriveConstants.PID_SparkMax_Steer.D);
         PID_SparkMax_Steer.setIZone(kIz);
         PID_SparkMax_Steer.setFF(kFF);
+
+        // set PID coefficients
+        PID_SparkMax_Drive.setP(DriveConstants.PID_SparkMax_Drive.P);
+        PID_SparkMax_Drive.setI(DriveConstants.PID_SparkMax_Drive.I);
+        PID_SparkMax_Drive.setD(DriveConstants.PID_SparkMax_Drive.D);
+        PID_SparkMax_Drive.setIZone(kIz);
+        PID_SparkMax_Drive.setFF(kFF);
+
+
         // PID_SparkMax_Steer.setOutputRange(kMinOutput, kMaxOutput);
 
     }
@@ -122,6 +131,9 @@ public class SwerveModule {
         double turnOutput = PID_Encoder_Steer.calculate(m_steerEncoder.getAbsolutePosition(), state.angle.getDegrees());
         PID_SparkMax_Steer.setReference(turnOutput, ControlType.kVelocity);
         
+        double desiredDriveRPM = state.speedMetersPerSecond * 60.0 / DriveConstants.WHEEL_RADIUS / 2.0 /Math.PI / DriveConstants.DRIVE_GEAR_RATIO ;
+
+        PID_SparkMax_Drive.setReference(desiredDriveRPM, ControlType.kVelocity) ;
         //final double turnFeedforward = m_turnFeedforward.calculate(PID_Encoder_Steer.getSetpoint());
 
         // m_driveMotor.setVoltage(driveOutput + driveFeedforward);
