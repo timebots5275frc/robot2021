@@ -33,17 +33,17 @@ public class Constants {
         public static final int LEFT_FRONT_STEER_MOTOR_ID = 2 ;
         public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 3 ;
         public static final int RIGHT_FRONT_STEER_MOTOR_ID = 4 ;
-        public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 5 ;
-        public static final int RIGHT_READ_STEER_MOTOR_ID = 6 ;
-        public static final int LEFT_REAR_DRIVE_MOTOR_ID = 7 ;
-        public static final int LEFT_REAR_STEER_MOTOR_ID = 8 ;
+        public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 7 ;
+        public static final int RIGHT_READ_STEER_MOTOR_ID = 8 ;
+        public static final int LEFT_REAR_DRIVE_MOTOR_ID = 5 ;
+        public static final int LEFT_REAR_STEER_MOTOR_ID = 6 ;
 
         // Drivetrain Encoder IDs
         // These are the CANBus IDs of the CTRE CANCoders
         public static final int LEFT_FRONT_STEER_ENCODER_ID = 10 ;
         public static final int RIGHT_FRONT_STEER_ENCODER_ID = 11 ;
-        public static final int RIGHT_REAR_STEER_ENCODER_ID = 12 ;
-        public static final int LEFT_REAR_STEER_ENCODER_ID = 13 ;
+        public static final int RIGHT_REAR_STEER_ENCODER_ID = 13 ;
+        public static final int LEFT_REAR_STEER_ENCODER_ID = 12 ;
 
 
         // These constants define the location of the wheels from the center of the robot.

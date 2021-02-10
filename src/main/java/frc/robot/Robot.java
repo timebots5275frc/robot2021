@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(1);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -129,6 +129,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("ySpeed", ySpeed);
+    SmartDashboard.putNumber("Rotation", rotRate);
 
     m_swerve.drive(xSpeed, ySpeed, rotRate, false);
 

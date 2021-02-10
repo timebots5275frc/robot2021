@@ -7,6 +7,7 @@ import frc.robot.constants.Constants.*;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
 
@@ -57,13 +58,20 @@ public class DriveTrain extends SubsystemBase {
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 		var swerveModuleStates = m_kinematics.toSwerveModuleStates(
 			fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imu.getRotation2d())
-							: new ChassisSpeeds(xSpeed, ySpeed, rot));
+                            : new ChassisSpeeds(xSpeed, ySpeed, rot));
+                            
+        SmartDashboard.putNumber("IMU Angle", imu.getRotation2d().getDegrees() );
+        SmartDashboard.putNumber("LeftFrontSpeed", swerveModuleStates[0].speedMetersPerSecond );
+        SmartDashboard.putNumber("LeftFrontAngle", swerveModuleStates[0].angle.getDegrees() );  
 
-		SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, DriveConstants.MAX_DRIVE_SPEED );
-		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0]);
-        rightFrontSwerveModule.setDesiredState(swerveModuleStates[1]);
-        rightRearSwerveModule.setDesiredState(swerveModuleStates[2]);
-		leftRearSwerveModule.setDesiredState(swerveModuleStates[3]);
+        SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, DriveConstants.MAX_DRIVE_SPEED );   
+
+        SmartDashboard.putNumber("LeftFrontSpeedNorm", swerveModuleStates[0].speedMetersPerSecond );
+  
+		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], true);
+        rightFrontSwerveModule.setDesiredState(swerveModuleStates[1], false);
+        rightRearSwerveModule.setDesiredState(swerveModuleStates[2], false);
+		leftRearSwerveModule.setDesiredState(swerveModuleStates[3], false);
 
 	}
 

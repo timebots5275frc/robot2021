@@ -8,6 +8,7 @@ package frc.robot.subsystems.driveTrain;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.*;
 import com.ctre.phoenix.sensors.*;
@@ -80,7 +81,7 @@ public class SwerveModule {
      *
      * @param desiredState Desired state with speed and angle.
      */
-    public void setDesiredState(SwerveModuleState desiredState) {
+    public void setDesiredState(SwerveModuleState desiredState, boolean logit) {
 
         double curSteerAngleRadians = Math.toRadians(steerAngleEncoder.getAbsolutePosition());
 
@@ -90,9 +91,19 @@ public class SwerveModule {
         // The output of the steerAnglePID becomes the steer motor rpm reference.
         double steerMotorRpm = steerAnglePID.calculate(steerAngleEncoder.getAbsolutePosition(),
                 state.angle.getDegrees());
+
+        if (logit){
+            SmartDashboard.putNumber("SteerMotorRpmCommand", steerMotorRpm );
+        }
+
         steerMotorVelocityPID.setReference(steerMotorRpm, ControlType.kVelocity);
 
         double driveMotorRpm = driveRpmFromSpeed(state.speedMetersPerSecond) ;
+
+        if (logit){
+            SmartDashboard.putNumber("DriveSpeedMetersPerSecond",state.speedMetersPerSecond) ;
+            SmartDashboard.putNumber("DriveMotorRpmCommand", driveMotorRpm );
+        }
 
         driveMotorVelocityPID.setReference(driveMotorRpm, ControlType.kVelocity);
     }
@@ -104,7 +115,7 @@ public class SwerveModule {
      */
     public double driveRpmFromSpeed( double speedMetersPerSecond )
     {
-        var rpm = speedMetersPerSecond * 60.0 / DriveConstants.WHEEL_CIRCUMFERENCE;
+        var rpm = speedMetersPerSecond * 60.0 / DriveConstants.WHEEL_CIRCUMFERENCE /DriveConstants.DRIVE_GEAR_RATIO ;
         return rpm;
     }
 
@@ -115,7 +126,7 @@ public class SwerveModule {
      */
     public double speedFromDriveRpm ( double rpm )
     {
-        var speedMetersPerSecond = rpm * DriveConstants.WHEEL_CIRCUMFERENCE / 60.0;
+        var speedMetersPerSecond = rpm * DriveConstants.DRIVE_GEAR_RATIO * DriveConstants.WHEEL_CIRCUMFERENCE / 60.0;
         return speedMetersPerSecond;
     }
 
