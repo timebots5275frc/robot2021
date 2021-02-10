@@ -1,66 +1,122 @@
-package frc.robot.subsystems.DriveTrain;
+package frc.robot.subsystems.driveTrain;
+
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
 
-import com.revrobotics.* ;
-import com.ctre.phoenix.sensors.*;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+
+import com.revrobotics.*;
+import com.ctre.phoenix.sensors.*;
+import frc.robot.constants.Constants.DriveConstants;
 
 public class SwerveModule {
 
-    private CANSparkMax m_driveMotor ;
-    private CANSparkMax m_steerMotor ;
-    private CANEncoder m_driveMotorEncoder ;
-    private CANEncoder m_steerMotorEncoder ;
+    private CANSparkMax driveMotor;
+    private CANSparkMax steerMotor;
+    private CANEncoder driveMotorEncoder;
 
-    private CANCoder m_steerEncoder ;
+    private CANCoder steerAngleEncoder;
 
-    private PIDController m_pidController ;
+    private PIDController steerAnglePID;
+    private CANPIDController steerMotorVelocityPID;
+    private CANPIDController driveMotorVelocityPID;
 
-    public SwerveModule(int driveMotorID, int steerMotorID, int steerEncoderId ){
-        
-        m_driveMotor = new CANSparkMax(driveMotorID, CANSparkMaxLowLevel.MotorType.kBrushless) ;
-        m_steerMotor = new CANSparkMax(steerMotorID, CANSparkMaxLowLevel.MotorType.kBrushless) ;
 
-        m_steerEncoder = new CANCoder(steerEncoderId) ;
+    public SwerveModule(int driveMotorID, int steerMotorID, int steerEncoderId) {
 
-        m_driveMotorEncoder = m_driveMotor.getEncoder() ;
-        m_steerMotorEncoder = m_steerMotor.getEncoder() ;
+        driveMotor = new CANSparkMax(driveMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        steerMotor = new CANSparkMax(steerMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        m_pidController = new PIDController(20, 10, 0);
+        steerAngleEncoder = new CANCoder(steerEncoderId);
 
-        
-        CANPIDController m_SparkMaxpidController = m_steerMotor.getPIDController();
+        driveMotorEncoder = driveMotor.getEncoder();
 
-        double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+        /// PID Controllers ///
 
-        // PID coefficients
-        kP = 6e-5;
-        kI = 6e-7;
-        kD = 0;
-        kIz = 0;
-        kFF = 0.000015;
-        kMaxOutput = 1;
-        kMinOutput = -1;
-        maxRPM = 5700 / 2;
+        steerAnglePID = new PIDController(DriveConstants.PID_Encoder_Steer.P, DriveConstants.PID_Encoder_Steer.I, 
+                DriveConstants.PID_Encoder_Steer.D);
+        steerAnglePID.enableContinuousInput(-180, 180);
+
+        // Get the motor controller PIDs
+        steerMotorVelocityPID = steerMotor.getPIDController();
+        driveMotorVelocityPID = driveMotor.getPIDController();
+
 
         // set PID coefficients
-        m_SparkMaxpidController.setP(kP);
-        m_SparkMaxpidController.setI(kI);
-        m_SparkMaxpidController.setD(kD);
-        m_SparkMaxpidController.setIZone(kIz);
-        m_SparkMaxpidController.setFF(kFF);
-        m_SparkMaxpidController.setOutputRange(kMinOutput, kMaxOutput);
+        steerMotorVelocityPID.setP(DriveConstants.PID_SparkMax_Steer.P);
+        steerMotorVelocityPID.setI(DriveConstants.PID_SparkMax_Steer.I);
+        steerMotorVelocityPID.setD(DriveConstants.PID_SparkMax_Steer.D);
+        steerMotorVelocityPID.setIZone(DriveConstants.PID_SparkMax_Steer.Iz);
+        steerMotorVelocityPID.setFF(DriveConstants.PID_SparkMax_Steer.kFF);
+        steerMotorVelocityPID.setOutputRange(-1, 1);
+        // set PID coefficients
+        driveMotorVelocityPID.setP(DriveConstants.PID_SparkMax_Drive.P);
+        driveMotorVelocityPID.setI(DriveConstants.PID_SparkMax_Drive.I);
+        driveMotorVelocityPID.setD(DriveConstants.PID_SparkMax_Drive.D);
+        driveMotorVelocityPID.setIZone(DriveConstants.PID_SparkMax_Drive.Iz);
+        driveMotorVelocityPID.setFF(DriveConstants.PID_SparkMax_Drive.kFF);
+        driveMotorVelocityPID.setOutputRange(-1, 1);
 
     }
 
+    /**
+     * Returns the current state of the module.
+     *
+     * @return The current state of the module.
+     */
+    public SwerveModuleState getState() {
+        double driveSpeed = speedFromDriveRpm(driveMotorEncoder.getVelocity());
+        double steerAngleRadians = Math.toRadians(steerAngleEncoder.getAbsolutePosition()) ;
 
+        return new SwerveModuleState(driveSpeed, new Rotation2d(steerAngleRadians) );
+    }
 
-        double setVel = m_pidController.calculate(m_steerEncoder.getPosition(), angle_IN);
+    /**
+     * Sets the desired state for the module.
+     *
+     * @param desiredState Desired state with speed and angle.
+     */
+    public void setDesiredState(SwerveModuleState desiredState) {
 
-        // double setPoint = m_stick.getY() * maxRPM;
-        m_pidController.setReference(setVel, ControlType.kVelocity);
-        
+        double curSteerAngleRadians = Math.toRadians(steerAngleEncoder.getAbsolutePosition());
 
+        // Optimize the reference state to avoid spinning further than 90 degrees
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(curSteerAngleRadians));
 
+        // The output of the steerAnglePID becomes the steer motor rpm reference.
+        double steerMotorRpm = steerAnglePID.calculate(steerAngleEncoder.getAbsolutePosition(),
+                state.angle.getDegrees());
+        steerMotorVelocityPID.setReference(steerMotorRpm, ControlType.kVelocity);
+
+        double driveMotorRpm = driveRpmFromSpeed(state.speedMetersPerSecond) ;
+
+        driveMotorVelocityPID.setReference(driveMotorRpm, ControlType.kVelocity);
+    }
     
+    /**
+     * Returns the required motor rpm from the desired wheel speed in meters/second
+     * @param speedMetersPerSecond
+     * @return rpm of the motor
+     */
+    public double driveRpmFromSpeed( double speedMetersPerSecond )
+    {
+        var rpm = speedMetersPerSecond * 60.0 / DriveConstants.WHEEL_CIRCUMFERENCE;
+        return rpm;
+    }
+
+    /**
+     * Returns the wheel speed in meters/second calculated from the drive motor rpm.
+     * @param rpm
+     * @return wheelSpeed
+     */
+    public double speedFromDriveRpm ( double rpm )
+    {
+        var speedMetersPerSecond = rpm * DriveConstants.WHEEL_CIRCUMFERENCE / 60.0;
+        return speedMetersPerSecond;
+    }
+
 }
