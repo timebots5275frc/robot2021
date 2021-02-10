@@ -2,7 +2,9 @@ package frc.robot.subsystems.Intake;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Constants;
 import edu.wpi.first.wpilibj.Solenoid;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
  * Description:
@@ -10,7 +12,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Intake extends SubsystemBase {
     Solenoid solenoid1 = new Solenoid(1);
     // IMPORTANT
-    int Bob = 1;
+    TalonSRX intakeMotor1 = new TalonSRX(Constants.IntakeConstants.motorCanId);
 
     // Setting solenoid to true
     public void setSolenoidTrue() {
@@ -27,4 +29,5 @@ public class Intake extends SubsystemBase {
         solenoid1.toggle();
 
     }
+    
 }
