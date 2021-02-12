@@ -1,12 +1,11 @@
-package frc.robot.subsystems.Drivetrain;
+package frc.robot.subsystems.driveTrain;
 import frc.robot.commands.*;
-
+import frc.robot.constants.DriveConstants;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.geometry.Translation2d ;
 import com.revrobotics.*;
 import com.ctre.phoenix.sensors.CANCoder;
-import frc.robot.Constants.DriveConstants;
 
 
 public class DriveTrain extends SubsystemBase {
