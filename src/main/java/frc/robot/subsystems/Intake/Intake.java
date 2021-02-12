@@ -1,10 +1,11 @@
 package frc.robot.subsystems.Intake;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Constants;
 import edu.wpi.first.wpilibj.Solenoid;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 
 /**
  * Description:
@@ -13,7 +14,11 @@ public class Intake extends SubsystemBase {
     Solenoid solenoid1 = new Solenoid(1);
     // IMPORTANT
     TalonSRX intakeMotor1 = new TalonSRX(Constants.IntakeConstants.motorCanId);
-
+    
+    //Setting Talon Speed
+    public void setMotorSpeed(double input) {
+        intakeMotor1.set(ControlMode.PercentOutput, input);
+    }
     // Setting solenoid to true
     public void setSolenoidTrue() {
         solenoid1.set(true);
