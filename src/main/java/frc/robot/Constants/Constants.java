@@ -73,7 +73,7 @@ public class Constants {
      * @Title HopperConstants
      */
     public static final class HopperConstants {
-
+        public static final int HOPPER_MOTOR_ID = -1;
     }
 
     /**
