@@ -1,10 +1,10 @@
-package frc.robot.subsystems.Hopper;
+package frc.robot.subsystems.hopper;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Constants;
+import frc.robot.constants.Constants;
 
 /**
  * Description:
