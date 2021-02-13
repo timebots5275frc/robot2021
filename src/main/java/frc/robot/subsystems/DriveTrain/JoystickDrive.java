@@ -31,7 +31,7 @@ public class JoystickDrive extends CommandBase {
    * @param subsystem The drive subsystem this command wil run on.
    * @param joystick  The control input for driving
    */
-  public JoystickDrive(boolean fieldRelative, DriveTrain subsystem, Joystick _driveStick, Joystick _auxstick) {
+  public JoystickDrive( DriveTrain subsystem, Joystick _driveStick, Joystick _auxstick, boolean fieldRelative) {
     this.m_drive = subsystem;
     this.driveStick = driveStick;
     this.auxStick = auxStick;
@@ -71,9 +71,9 @@ public class JoystickDrive extends CommandBase {
     double rotRate = this.smartJoystick(driveStick.getTwist(), Constants.ControllerConstants.DEADZONE_STEER)
         * Constants.DriveConstants.MAX_TWIST_RATE;
 
-    SmartDashboard.putNumber("xSpeed", xSpeed);
-    SmartDashboard.putNumber("ySpeed", ySpeed);
-    SmartDashboard.putNumber("rotRate", rotRate);
+    SmartDashboard.putNumber("smart xSpeed", xSpeed);
+    SmartDashboard.putNumber("smart ySpeed", ySpeed);
+    SmartDashboard.putNumber("smart rotRate", rotRate);
 
     m_drive.drive(xSpeed, ySpeed, rotRate, fieldRelative);
   }
