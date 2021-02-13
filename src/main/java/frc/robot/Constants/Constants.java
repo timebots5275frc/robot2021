@@ -60,8 +60,12 @@ public class Constants {
         public static final double kDriveGearRatio = (14.0 / 50.0) * (28.0 / 16.0 ) * (15.0 / 60.0 ) ; 
 
     }
+    public static final class ShooterConstants {
 
+        public static final int Shooter_MOTOR_ID = -1;
+        public static final double Shooter_FIRE_SPEED = 0.1;
+        public static final double Shooter_DEFAULT_SPEED = 0.0; 
 
-
+    }
 
 }
