@@ -74,6 +74,8 @@ public class Constants {
      */
     public static final class HopperConstants {
         public static final int HOPPER_MOTOR_ID = -1;
+        public static final double HOPPER_FIRE_SPEED = 0.2;
+        public static final double HOPPER_DEFAULT_SPEED = 0.1; 
     }
 
     /**
