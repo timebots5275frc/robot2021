@@ -5,16 +5,13 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.constants.Constants;
 import frc.robot.subsystems.intake.Intake;
 
-public class IntakeOn extends CommandBase {
-  /** Creates a new IntakeOn. */
+public class IntakeOff extends CommandBase {
   private Intake subsystem;
 
-  public IntakeOn(Intake subsystem) {
+  public IntakeOff(Intake subsystem) {
     this.subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +22,7 @@ public class IntakeOn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.subsystem.setMotorSpeed(Constants.IntakeConstants.MOTOR_SPEED);
+    this.subsystem.setMotorSpeed(0);
   }
 
   // Called once the command ends or is interrupted.

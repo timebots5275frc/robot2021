@@ -81,7 +81,7 @@ public class Constants {
      */
     public static final class IntakeConstants {
     public static final int motorCanId = 10;
-    
+    public static final double MOTOR_SPEED = 0.4;
     }
 
     /**
