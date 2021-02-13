@@ -64,7 +64,7 @@ public class Constants {
         public static final double WHEEL_RADIUS = 2.0 * 0.0254; // meters
         public static final double WHEEL_CIRCUMFERENCE = 2.0 * Math.PI * WHEEL_RADIUS; // meters/revolution
         
-        public static final double MAX_DRIVE_SPEED = 3.0; // meters/second
+        public static final double MAX_DRIVE_SPEED = 3.5; // meters/second
         public static final double MAX_STEER_RATE = 0.5; // rotations/second of a wheel for steer.
         public static final double MAX_TWIST_RATE = 0.5 * 2.0 * Math.PI ; // radians/second of the robot rotation.
 
@@ -91,10 +91,10 @@ public class Constants {
         // 8.533 rotations of the motor gives one rotation of the wheel.
         public static final double STEER_GEAR_RATIO = (15.0 / 32 ) * ( 10 / 40 ) ;
 
-        public static final PIDConstants PID_SparkMax_Steer = new PIDConstants(0.00006, 0, 0, 0, 0.000015 );
+        public static final PIDConstants PID_SparkMax_Steer = new PIDConstants(0.0001, 0, 0, 0, 0.00005 );
         public static final PIDConstants PID_Encoder_Steer = new PIDConstants(20, 10, 0);
 
-        public static final PIDConstants PID_SparkMax_Drive = new PIDConstants(0.00006, 0, 0, 0, 0.000015) ;
+        public static final PIDConstants PID_SparkMax_Drive = new PIDConstants(0.0003, 0, 0, 0, 0.00016) ;
         
     }
 

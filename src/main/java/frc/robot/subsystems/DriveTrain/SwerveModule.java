@@ -101,8 +101,11 @@ public class SwerveModule {
         double driveMotorRpm = driveRpmFromSpeed(state.speedMetersPerSecond) ;
 
         if (logit){
+            double driveSpeed = driveMotorEncoder.getVelocity();
             SmartDashboard.putNumber("DriveSpeedMetersPerSecond",state.speedMetersPerSecond) ;
             SmartDashboard.putNumber("DriveMotorRpmCommand", driveMotorRpm );
+            SmartDashboard.putNumber("DriveMotorSpeed", driveSpeed );
+
         }
 
         driveMotorVelocityPID.setReference(driveMotorRpm, ControlType.kVelocity);
