@@ -16,9 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class JoystickDrive extends CommandBase {
   private final DriveTrain m_drive;
   // private final Joystick joystick;
-  public Joystick driveStick;
-  public Joystick auxStick;
-  public boolean fieldRelative;
+  private Joystick driveStick;
+  private Joystick auxStick;
+  private boolean fieldRelative;
 
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
@@ -31,10 +31,10 @@ public class JoystickDrive extends CommandBase {
    * @param subsystem The drive subsystem this command wil run on.
    * @param joystick  The control input for driving
    */
-  public JoystickDrive( DriveTrain subsystem, Joystick _driveStick, Joystick _auxstick, boolean fieldRelative) {
+  public JoystickDrive(DriveTrain subsystem, Joystick _driveStick, Joystick _auxstick, boolean fieldRelative) {
     this.m_drive = subsystem;
-    this.driveStick = driveStick;
-    this.auxStick = auxStick;
+    this.driveStick = _driveStick;
+    this.auxStick = _auxstick;
     this.fieldRelative = fieldRelative;
     addRequirements(subsystem);
   }
@@ -64,12 +64,21 @@ public class JoystickDrive extends CommandBase {
     double ySpeed = this.smartJoystick(driveStick.getX(), Constants.ControllerConstants.DEADZONE_DRIVE)
         * Constants.DriveConstants.MAX_DRIVE_SPEED;
 
+    ySpeed = ySpeed / (1 - Constants.ControllerConstants.DEADZONE_DRIVE);
+    xSpeed = xSpeed / (1 - Constants.ControllerConstants.DEADZONE_DRIVE);
+
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
     double rotRate = this.smartJoystick(driveStick.getTwist(), Constants.ControllerConstants.DEADZONE_STEER)
         * Constants.DriveConstants.MAX_TWIST_RATE;
+
+    rotRate = rotRate / (1 - Constants.ControllerConstants.DEADZONE_STEER);
+
+    SmartDashboard.putNumber(" xSpeed", driveStick.getY());
+    SmartDashboard.putNumber(" ySpeed", driveStick.getX());
+    SmartDashboard.putNumber(" rotRate", driveStick.getTwist());
 
     SmartDashboard.putNumber("smart xSpeed", xSpeed);
     SmartDashboard.putNumber("smart ySpeed", ySpeed);

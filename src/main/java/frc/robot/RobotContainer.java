@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.driveTrain.DriveTrain;
-
+import frc.robot.subsystems.driveTrain.JoystickDrive;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -21,16 +21,18 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // private final DriveTrain m_driveTrain = new DriveTrain() ;
+  private final DriveTrain driveTrain = new DriveTrain() ;
 
-  // public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
-  // public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
+  public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
+  public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, driveStick, auxStick, false )); //fieldRelative = false
   }
 
   // public DriveTrain getDriveTrain(){
