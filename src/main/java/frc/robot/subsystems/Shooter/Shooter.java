@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Shooter;
+package frc.robot.subsystems.shooter;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -10,7 +10,7 @@ import frc.robot.constants.Constants;
  * Description:
  */
 public class Shooter extends SubsystemBase {
-    TalonSRX motor1 = new TalonSRX(Constants.);
+    TalonSRX motor1 = new TalonSRX(Constants.ShooterConstants.Shooter_MOTOR_ID);
 
     public Shooter() {
     }
