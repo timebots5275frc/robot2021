@@ -64,9 +64,6 @@ public class JoystickDrive extends CommandBase {
     double ySpeed = this.smartJoystick(driveStick.getX(), Constants.ControllerConstants.DEADZONE_DRIVE)
         * Constants.DriveConstants.MAX_DRIVE_SPEED;
 
-    ySpeed = ySpeed / (1 - Constants.ControllerConstants.DEADZONE_DRIVE);
-    xSpeed = xSpeed / (1 - Constants.ControllerConstants.DEADZONE_DRIVE);
-
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
@@ -74,11 +71,17 @@ public class JoystickDrive extends CommandBase {
     double rotRate = this.smartJoystick(driveStick.getTwist(), Constants.ControllerConstants.DEADZONE_STEER)
         * Constants.DriveConstants.MAX_TWIST_RATE;
 
-    rotRate = rotRate / (1 - Constants.ControllerConstants.DEADZONE_STEER);
+    double throttle = (-driveStick.getThrottle() + 1) / 2;
 
-    SmartDashboard.putNumber(" xSpeed", driveStick.getY());
-    SmartDashboard.putNumber(" ySpeed", driveStick.getX());
-    SmartDashboard.putNumber(" rotRate", driveStick.getTwist());
+    xSpeed *= throttle;
+    ySpeed *= throttle;
+    rotRate *= throttle;
+
+    SmartDashboard.putNumber("throttle", throttle);
+
+    SmartDashboard.putNumber("xSpeed", driveStick.getY());
+    SmartDashboard.putNumber("ySpeed", driveStick.getX());
+    SmartDashboard.putNumber("rotRate", driveStick.getTwist());
 
     SmartDashboard.putNumber("smart xSpeed", xSpeed);
     SmartDashboard.putNumber("smart ySpeed", ySpeed);
@@ -100,9 +103,9 @@ public class JoystickDrive extends CommandBase {
     }
 
     if (_in > 0) {
-      return _in - deadZoneSize;
+      return (_in - deadZoneSize) / (1 - deadZoneSize);
     } else if (_in < 0) {
-      return _in + deadZoneSize;
+      return (_in + deadZoneSize) / (1 - deadZoneSize);
     }
     return 0;
   }
