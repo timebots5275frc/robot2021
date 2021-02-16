@@ -48,30 +48,16 @@ public class JoystickDrive extends CommandBase {
   @Override
   public void execute() {
 
-    // double throt = (joystick.getRawAxis(3) * -1 + 1) / 2;
-
-    // double m_forward = joystick.getRawAxis(1) * throt;
-    // double m_rotation = joystick.getRawAxis(2) * throt * -1;
-
-    // Get the x speed. We are inverting this because Xbox controllers return
-    // negative values when we push forward.
     double xSpeed = this.smartJoystick(driveStick.getY(), Constants.ControllerConstants.DEADZONE_DRIVE)
         * Constants.DriveConstants.MAX_DRIVE_SPEED;
 
-    // Get the y speed or sideways/strafe speed. We are inverting this because
-    // we want a positive value when we pull to the left. Xbox controllers
-    // return positive values when you pull to the right by default.
     double ySpeed = this.smartJoystick(driveStick.getX(), Constants.ControllerConstants.DEADZONE_DRIVE)
         * Constants.DriveConstants.MAX_DRIVE_SPEED;
 
-    // Get the rate of angular rotation. We are inverting this because we want a
-    // positive value when we pull to the left (remember, CCW is positive in
-    // mathematics). Xbox controllers return positive values when you pull to
-    // the right by default.
     double rotRate = this.smartJoystick(driveStick.getTwist(), Constants.ControllerConstants.DEADZONE_STEER)
         * Constants.DriveConstants.MAX_TWIST_RATE;
 
-    double throttle = (-driveStick.getThrottle() + 1) / 2;
+    double throttle = (-driveStick.getThrottle() + 1) / 2; // between 0 and 1 = 0% and 100%
 
     xSpeed *= throttle;
     ySpeed *= throttle;

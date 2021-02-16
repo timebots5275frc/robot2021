@@ -36,8 +36,8 @@ public class DriveTrain extends SubsystemBase {
 
 	public static final ADIS16470_IMU imu = new ADIS16470_IMU();
 
-	private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(leftFrontWheelLoc,
-			rightFrontWheelLoc, rightRearWheelLoc, leftRearWheelLoc);
+	private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(leftFrontWheelLoc, rightFrontWheelLoc,
+			rightRearWheelLoc, leftRearWheelLoc);
 
 	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, imu.getRotation2d());
 
@@ -56,21 +56,25 @@ public class DriveTrain extends SubsystemBase {
 	 */
 	@SuppressWarnings("ParameterName")
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-		var swerveModuleStates = m_kinematics.toSwerveModuleStates(
-			fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imu.getRotation2d())
-                            : new ChassisSpeeds(xSpeed, ySpeed, rot));
-                            
-        SmartDashboard.putNumber("IMU Angle", imu.getRotation2d().getDegrees() );
-        SmartDashboard.putNumber("LeftFrontSpeed", swerveModuleStates[0].speedMetersPerSecond );
-        SmartDashboard.putNumber("LeftFrontAngle", swerveModuleStates[0].angle.getDegrees() );  
 
-        SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, DriveConstants.MAX_DRIVE_SPEED );   
+		var swerveModuleStates = m_kinematics.toSwerveModuleStates(fieldRelative
+				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imu.getRotation2d().times(-1))
+				: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
-        SmartDashboard.putNumber("LeftFrontSpeedNorm", swerveModuleStates[0].speedMetersPerSecond );
-  
-		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], true);
-        rightFrontSwerveModule.setDesiredState(swerveModuleStates[1], false);
-        rightRearSwerveModule.setDesiredState(swerveModuleStates[2], false);
+		SmartDashboard.putNumber("IMU Angle", imu.getRotation2d().getDegrees());
+		// SmartDashboard.putNumber("LeftFrontSpeed",
+		// swerveModuleStates[0].speedMetersPerSecond );
+		// SmartDashboard.putNumber("LeftFrontAngle",
+		// swerveModuleStates[0].angle.getDegrees() );
+
+		SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, DriveConstants.MAX_DRIVE_SPEED);
+
+		// SmartDashboard.putNumber("LeftFrontSpeedNorm",
+		// swerveModuleStates[0].speedMetersPerSecond );
+
+		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], false);
+		rightFrontSwerveModule.setDesiredState(swerveModuleStates[1], false);
+		rightRearSwerveModule.setDesiredState(swerveModuleStates[2], false);
 		leftRearSwerveModule.setDesiredState(swerveModuleStates[3], false);
 
 	}
@@ -78,6 +82,6 @@ public class DriveTrain extends SubsystemBase {
 	/** Updates the field relative position of the robot. */
 	public void updateOdometry() {
 		m_odometry.update(imu.getRotation2d(), leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
-            rightRearSwerveModule.getState(), leftRearSwerveModule.getState());
+				rightRearSwerveModule.getState(), leftRearSwerveModule.getState());
 	}
 }
