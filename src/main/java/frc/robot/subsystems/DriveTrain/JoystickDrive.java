@@ -48,6 +48,10 @@ public class JoystickDrive extends CommandBase {
   @Override
   public void execute() {
 
+    if (driveStick.getRawButtonPressed(12)) {
+      m_drive.imu.reset();
+    }
+
     double xSpeed = this.smartJoystick(driveStick.getY(), Constants.ControllerConstants.DEADZONE_DRIVE)
         * Constants.DriveConstants.MAX_DRIVE_SPEED;
 

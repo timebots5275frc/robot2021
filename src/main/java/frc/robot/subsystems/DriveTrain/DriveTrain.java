@@ -62,6 +62,7 @@ public class DriveTrain extends SubsystemBase {
 				: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
 		SmartDashboard.putNumber("IMU Angle", imu.getRotation2d().getDegrees());
+		
 		// SmartDashboard.putNumber("LeftFrontSpeed",
 		// swerveModuleStates[0].speedMetersPerSecond );
 		// SmartDashboard.putNumber("LeftFrontAngle",
