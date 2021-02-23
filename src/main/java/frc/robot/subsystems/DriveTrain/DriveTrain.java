@@ -1,5 +1,7 @@
 package frc.robot.subsystems.driveTrain;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants.*;
@@ -8,6 +10,8 @@ import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.sql.Time;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
 
@@ -39,10 +43,19 @@ public class DriveTrain extends SubsystemBase {
 	private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(leftFrontWheelLoc, rightFrontWheelLoc,
 			rightRearWheelLoc, leftRearWheelLoc);
 
-	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, imu.getRotation2d());
+	public final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, imu.getRotation2d());
+	public Pose2d m_pose;
+
+	public long oldTime = System.currentTimeMillis();
+	public double velX = 0;
+	public double velY = 0;
+
+	public double posX = 0;
+	public double posY = 0;
 
 	public DriveTrain() {
 		System.out.println("DriveTrain (:");
+		this.m_odometry.resetPosition(new Pose2d(), new Rotation2d(0));
 	}
 
 	/**
@@ -61,8 +74,31 @@ public class DriveTrain extends SubsystemBase {
 				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imu.getRotation2d().times(-1))
 				: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
+
+
+		long newTime = System.currentTimeMillis();
+
+		long deltaTime = newTime - this.oldTime;
+
+		this.oldTime = newTime;
+
+		this.velX = velX + imu.getAccelInstantX() * deltaTime;
+		this.velY = velY + imu.getAccelInstantX() * deltaTime;
+
+		this.posX = posX + velX * deltaTime;
+		this.posY = posY + velY * deltaTime;
 		SmartDashboard.putNumber("IMU Angle", imu.getRotation2d().getDegrees());
-		
+		SmartDashboard.putNumber("IMU Acc X", imu.getAccelInstantX());
+		SmartDashboard.putNumber("IMU Acc Y", imu.getAccelInstantY());;
+		SmartDashboard.putNumber("IMU Vel X", velX);
+		SmartDashboard.putNumber("IMU Vel Y", velY);
+		SmartDashboard.putNumber("IMU Pos X", posX);
+		SmartDashboard.putNumber("IMU Pos Y", posY);
+
+		SmartDashboard.putNumber("getX", m_odometry.getPoseMeters().getX());
+		SmartDashboard.putNumber("getY", m_odometry.getPoseMeters().getY());
+		SmartDashboard.putString("getRotation", m_odometry.getPoseMeters().getRotation().toString());
+
 		// SmartDashboard.putNumber("LeftFrontSpeed",
 		// swerveModuleStates[0].speedMetersPerSecond );
 		// SmartDashboard.putNumber("LeftFrontAngle",
@@ -78,11 +114,40 @@ public class DriveTrain extends SubsystemBase {
 		rightRearSwerveModule.setDesiredState(swerveModuleStates[2], false);
 		leftRearSwerveModule.setDesiredState(swerveModuleStates[3], false);
 
+		// this.updateOdometry();
+
 	}
 
 	/** Updates the field relative position of the robot. */
 	public void updateOdometry() {
 		m_odometry.update(imu.getRotation2d(), leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
-				rightRearSwerveModule.getState(), leftRearSwerveModule.getState());
+				rightRearSwerveModule.getState(), rightRearSwerveModule.getState());
+
+	}
+
+	@Override
+	public void periodic() {
+		// Get my gyro angle. We are negating the value because gyros return positive
+		// values as the robot turns clockwise. This is not standard convention that is
+		// used by the WPILib classes.
+		var gyroAngle = Rotation2d.fromDegrees(-imu.getAngle());
+
+		// Update the pose
+		m_pose = m_odometry.update(gyroAngle, leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
+				rightRearSwerveModule.getState(), rightRearSwerveModule.getState());
+	}
+
+	/** Zeroes the heading of the robot. */
+	public void zeroHeading() {
+		imu.reset();
+	}
+
+	/**
+	 * Returns the heading of the robot.
+	 *
+	 * @return the robot's heading in degrees, from -180 to 180
+	 */
+	public double getHeading() {
+		return imu.getRotation2d().getDegrees();
 	}
 }

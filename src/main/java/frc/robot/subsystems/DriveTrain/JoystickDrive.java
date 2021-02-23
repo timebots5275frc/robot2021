@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.Constants;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JoystickDrive extends CommandBase {
@@ -47,9 +49,16 @@ public class JoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(" JoystickDrive Running");
 
     if (driveStick.getRawButtonPressed(12)) {
       m_drive.imu.reset();
+      System.out.println("m_drive.imu.reset();");
+    }
+
+    if (driveStick.getRawButtonPressed(10)) {
+      System.out.println("m_drive.m_odometry.resetPosition");
+      m_drive.m_odometry.resetPosition( new Pose2d(), new Rotation2d(0)  );
     }
 
     double xSpeed = this.smartJoystick(driveStick.getY(), Constants.ControllerConstants.DEADZONE_DRIVE)

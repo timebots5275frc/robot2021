@@ -5,12 +5,15 @@
 package frc.robot;
 
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.driveTrain.DriveHome;
 import frc.robot.subsystems.driveTrain.DriveTrain;
 import frc.robot.subsystems.driveTrain.JoystickDrive;
+import frc.robot.subsystems.driveTrain.DriveHome;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -22,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
+  private final DriveHome driveHomeCommand = new DriveHome(driveTrain);
 
   public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
   public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
@@ -46,6 +50,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // new JoystickButton(driveStick, 1).whenPressed(driveHomeCommand);
   }
 
   /**
