@@ -56,6 +56,7 @@ public class DriveTrain extends SubsystemBase {
 	public DriveTrain() {
 		System.out.println("DriveTrain (:");
 		this.m_odometry.resetPosition(new Pose2d(), new Rotation2d(0));
+
 	}
 
 	/**
@@ -74,22 +75,23 @@ public class DriveTrain extends SubsystemBase {
 				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imu.getRotation2d().times(-1))
 				: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
-
-
 		long newTime = System.currentTimeMillis();
 
-		long deltaTime = newTime - this.oldTime;
-
+		long deltaTime = newTime - this.oldTime; // deltaTime in ms
+		deltaTime = (deltaTime / 1000);
 		this.oldTime = newTime;
 
-		this.velX = velX + imu.getAccelInstantX() * deltaTime;
-		this.velY = velY + imu.getAccelInstantX() * deltaTime;
+		this.velX = velX + imu.getAccelInstantX() * deltaTime; 
+		this.velY = velY + (imu.getAccelInstantY() + 0.05) * deltaTime;
 
 		this.posX = posX + velX * deltaTime;
 		this.posY = posY + velY * deltaTime;
 		SmartDashboard.putNumber("IMU Angle", imu.getRotation2d().getDegrees());
 		SmartDashboard.putNumber("IMU Acc X", imu.getAccelInstantX());
-		SmartDashboard.putNumber("IMU Acc Y", imu.getAccelInstantY());;
+		SmartDashboard.putNumber("IMU Acc Y", imu.getAccelInstantY());
+		SmartDashboard.putNumber("IMU Acc Z", imu.getAccelInstantZ());
+		SmartDashboard.putNumber("deltaTime", deltaTime);
+		;
 		SmartDashboard.putNumber("IMU Vel X", velX);
 		SmartDashboard.putNumber("IMU Vel Y", velY);
 		SmartDashboard.putNumber("IMU Pos X", posX);

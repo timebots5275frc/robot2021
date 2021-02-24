@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JoystickDrive extends CommandBase {
-  private final DriveTrain m_drive;
+  private final DriveTrain driveTrain;
   // private final Joystick joystick;
   private Joystick driveStick;
   private Joystick auxStick;
@@ -34,11 +34,11 @@ public class JoystickDrive extends CommandBase {
    * @param joystick  The control input for driving
    */
   public JoystickDrive(DriveTrain subsystem, Joystick _driveStick, Joystick _auxstick, boolean fieldRelative) {
-    this.m_drive = subsystem;
+    this.driveTrain = subsystem;
     this.driveStick = _driveStick;
     this.auxStick = _auxstick;
     this.fieldRelative = fieldRelative;
-    addRequirements(subsystem);
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -52,13 +52,13 @@ public class JoystickDrive extends CommandBase {
     System.out.println(" JoystickDrive Running");
 
     if (driveStick.getRawButtonPressed(12)) {
-      m_drive.imu.reset();
+      driveTrain.imu.reset();
       System.out.println("m_drive.imu.reset();");
     }
 
     if (driveStick.getRawButtonPressed(10)) {
       System.out.println("m_drive.m_odometry.resetPosition");
-      m_drive.m_odometry.resetPosition( new Pose2d(), new Rotation2d(0)  );
+      driveTrain.m_odometry.resetPosition( new Pose2d(), new Rotation2d(0)  );
     }
 
     double xSpeed = this.smartJoystick(driveStick.getY(), Constants.ControllerConstants.DEADZONE_DRIVE)
@@ -86,7 +86,7 @@ public class JoystickDrive extends CommandBase {
     SmartDashboard.putNumber("smart ySpeed", ySpeed);
     SmartDashboard.putNumber("smart rotRate", rotRate);
 
-    m_drive.drive(xSpeed, ySpeed, rotRate, fieldRelative);
+    driveTrain.drive(xSpeed, ySpeed, rotRate, fieldRelative);
   }
 
   /**
