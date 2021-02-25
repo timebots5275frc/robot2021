@@ -136,4 +136,19 @@ public class DriveTrain extends SubsystemBase {
 	public double getHeading() {
 		return imuADIS16470.getRotation2d().getDegrees();
 	}
+
+	/**
+	 * Sets the swerve ModuleStates.
+	 *
+	 * @param desiredStates The desired SwerveModule states.
+	 */
+	public void setModuleStates(SwerveModuleState[] desiredStates) {
+		SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.MAX_DRIVE_SPEED);
+
+
+		leftFrontSwerveModule.setDesiredState(desiredStates[0], false);
+		rightFrontSwerveModule.setDesiredState(desiredStates[1], false);
+		rightRearSwerveModule.setDesiredState(desiredStates[2], false);
+		leftRearSwerveModule.setDesiredState(desiredStates[3], false);
+	}
 }

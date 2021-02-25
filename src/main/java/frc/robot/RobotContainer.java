@@ -94,13 +94,18 @@ public class RobotContainer {
         AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(exampleTrajectory,
-    driveTrain::getPose, // Functional interface to feed supplier
-    driveTrain.kinematics,
+    SwerveControllerCommand swerveControllerCommand =
+        new SwerveControllerCommand(
+            exampleTrajectory,
+            driveTrain::getPose, // Functional interface to feed supplier
+            driveTrain.kinematics,
 
-        // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
-        thetaController, driveTrain::setModuleStates, driveTrain);
+            // Position controllers
+            new PIDController(AutoConstants.kPXController, 0, 0),
+            new PIDController(AutoConstants.kPYController, 0, 0),
+            thetaController,
+            driveTrain::setModuleStates,
+            driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
     driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
