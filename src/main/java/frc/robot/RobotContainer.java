@@ -5,14 +5,31 @@
 package frc.robot;
 
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants.AutoConstants;
+import frc.robot.constants.Constants.DriveConstants;
 import frc.robot.subsystems.driveTrain.DriveHome;
 import frc.robot.subsystems.driveTrain.DriveTrain;
 import frc.robot.subsystems.driveTrain.JoystickDrive;
+
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+// import edu.wpi.first.wpilibj.examples.swervecontrollercommand.Constants.AutoConstants;
+// import edu.wpi.first.wpilibj.examples.swervecontrollercommand.Constants.DriveConstants;
+// import edu.wpi.first.wpilibj.examples.swervecontrollercommand.Constants.OIConstants;
+// import edu.wpi.first.wpilibj.examples.swervecontrollercommand.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -58,7 +75,39 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+    // Create config for trajectory
+    TrajectoryConfig config = new TrajectoryConfig(AutoConstants.MAX_Speed_MetersPerSecond,
+        AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(driveTrain.kinematics);
+
+    // An example trajectory to follow. All units in meters.
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(3, 0, new Rotation2d(0)), config);
+
+    var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
+        AutoConstants.kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(exampleTrajectory,
+    driveTrain::getPose, // Functional interface to feed supplier
+    driveTrain.kinematics,
+
+        // Position controllers
+        new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
+        thetaController, driveTrain::setModuleStates, driveTrain);
+
+    // Reset odometry to the starting pose of the trajectory.
+    driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
+
+    // Run path following command, then stop at the end.
+    return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
+
+    //https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervecontrollercommand/subsystems/DriveSubsystem.java
   }
 }

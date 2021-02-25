@@ -52,13 +52,13 @@ public class JoystickDrive extends CommandBase {
     System.out.println(" JoystickDrive Running");
 
     if (driveStick.getRawButtonPressed(12)) {
-      driveTrain.imu.reset();
+      // driveTrain..reset();
       System.out.println("m_drive.imu.reset();");
     }
 
     if (driveStick.getRawButtonPressed(10)) {
       System.out.println("m_drive.m_odometry.resetPosition");
-      driveTrain.m_odometry.resetPosition( new Pose2d(), new Rotation2d(0)  );
+      // driveTrain.m_odometry.resetPosition( new Pose2d(), new Rotation2d(0)  );
     }
 
     double xSpeed = this.smartJoystick(driveStick.getY(), Constants.ControllerConstants.DEADZONE_DRIVE)
