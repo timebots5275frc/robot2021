@@ -93,9 +93,9 @@ public class RobotContainer {
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, -0.6)),
+        List.of(new Translation2d(20, 0)),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(5, 0, new Rotation2d(0)), config);
+        new Pose2d(30, 0, new Rotation2d(0)), config);
 
     var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
         AutoConstants.kThetaControllerConstraints);
@@ -109,7 +109,7 @@ public class RobotContainer {
         thetaController, driveTrain::setModuleStates, driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
-    // driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
+    driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
