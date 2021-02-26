@@ -12,6 +12,7 @@ import frc.robot.subsystems.driveTrain.DriveTrain;
 import frc.robot.subsystems.driveTrain.JoystickDrive;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -40,7 +41,7 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveTrain driveTrain = new DriveTrain();
+  public final DriveTrain driveTrain = new DriveTrain();
   private final DriveHome driveHomeCommand = new DriveHome(driveTrain);
 
   public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
@@ -75,6 +76,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    System.out.println("getAutonomousCommand");
     // Create config for trajectory
     TrajectoryConfig config = new TrajectoryConfig(AutoConstants.MAX_Speed_MetersPerSecond,
         AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
@@ -82,37 +84,36 @@ public class RobotContainer {
             .setKinematics(driveTrain.kinematics);
 
     // An example trajectory to follow. All units in meters.
+
+    // Trajectory exampleTrajectory = TrajectoryGenerator
+    // .generateTrajectory(List.of(new Pose2d(0, 0, new Rotation2d( 0 )), new
+    // Pose2d(-2, 0.1, new Rotation2d( 0 ))), config);
+
     Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        List.of(new Translation2d(1, -0.6)),
         // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)), config);
+        new Pose2d(5, 0, new Rotation2d(0)), config);
 
     var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
         AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            exampleTrajectory,
-            driveTrain::getPose, // Functional interface to feed supplier
-            driveTrain.kinematics,
-
-            // Position controllers
-            new PIDController(AutoConstants.kPXController, 0, 0),
-            new PIDController(AutoConstants.kPYController, 0, 0),
-            thetaController,
-            driveTrain::setModuleStates,
-            driveTrain);
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(exampleTrajectory,
+        driveTrain::getPose, // Functional interface to feed supplier
+        driveTrain.kinematics,
+        // Position controllers
+        new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
+        thetaController, driveTrain::setModuleStates, driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
-    driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
+    // driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
 
-    //https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervecontrollercommand/subsystems/DriveSubsystem.java
+    // https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervecontrollercommand/subsystems/DriveSubsystem.java
   }
 }

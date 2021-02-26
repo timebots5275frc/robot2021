@@ -49,15 +49,16 @@ public class JoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(" JoystickDrive Running");
+    // System.out.println(" JoystickDrive Running");
 
     if (driveStick.getRawButtonPressed(12)) {
-      // driveTrain..reset();
+      driveTrain.resetADIS16470();
       System.out.println("m_drive.imu.reset();");
     }
 
     if (driveStick.getRawButtonPressed(10)) {
       System.out.println("m_drive.m_odometry.resetPosition");
+      driveTrain.resetOdometry();
       // driveTrain.m_odometry.resetPosition( new Pose2d(), new Rotation2d(0)  );
     }
 

@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -26,10 +27,12 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  // public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
+  // public Joystick driveStick = new
+  // Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
   // private final DriveTrain m_swerve = new DriveTrain();
 
-  // // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
+  // // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to
+  // 1.
   // private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
   // private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
   // private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
@@ -93,6 +96,12 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+
+    Pose2d loc = m_robotContainer.driveTrain.getPose();
+
+    SmartDashboard.putNumber("odometry getX", loc.getX());
+    SmartDashboard.putNumber("odometry getY", loc.getY());
+    SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
   }
 
   @Override
@@ -109,23 +118,29 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
+    Pose2d loc = m_robotContainer.driveTrain.getPose();
+
+    SmartDashboard.putNumber("odometry getX", loc.getX());
+    SmartDashboard.putNumber("odometry getY", loc.getY());
+    SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    // double xSpeed = m_xspeedLimiter.calculate( driveStick.getY() ) * DriveConstants.MAX_DRIVE_SPEED ;
-
+    // double xSpeed = m_xspeedLimiter.calculate( driveStick.getY() ) *
+    // DriveConstants.MAX_DRIVE_SPEED ;
 
     // // Get the y speed or sideways/strafe speed. We are inverting this because
     // // we want a positive value when we pull to the left. Xbox controllers
     // // return positive values when you pull to the right by default.
-    // double ySpeed = m_yspeedLimiter.calculate( driveStick.getX() ) * DriveConstants.MAX_DRIVE_SPEED; 
-
+    // double ySpeed = m_yspeedLimiter.calculate( driveStick.getX() ) *
+    // DriveConstants.MAX_DRIVE_SPEED;
 
     // // Get the rate of angular rotation. We are inverting this because we want a
     // // positive value when we pull to the left (remember, CCW is positive in
     // // mathematics). Xbox controllers return positive values when you pull to
     // // the right by default.
-    // double rotRate = m_rotLimiter.calculate(driveStick.getTwist()) * DriveConstants.MAX_TWIST_RATE;
-
+    // double rotRate = m_rotLimiter.calculate(driveStick.getTwist()) *
+    // DriveConstants.MAX_TWIST_RATE;
 
     // SmartDashboard.putNumber("xSpeed", xSpeed);
     // SmartDashboard.putNumber("ySpeed", ySpeed);

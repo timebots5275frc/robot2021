@@ -9,6 +9,7 @@ import frc.robot.constants.Constants.*;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.sql.Time;
@@ -66,9 +67,9 @@ public class DriveTrain extends SubsystemBase {
 				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imuADIS16470.getRotation2d().times(-1))
 				: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
-		SmartDashboard.putNumber("odometry getX", m_odometry.getPoseMeters().getX());
-		SmartDashboard.putNumber("odometry getY", m_odometry.getPoseMeters().getY());
-		SmartDashboard.putString("odometry getRotation", m_odometry.getPoseMeters().getRotation().toString());
+		// SmartDashboard.putNumber("odometry getX", m_odometry.getPoseMeters().getX());
+		// SmartDashboard.putNumber("odometry getY", m_odometry.getPoseMeters().getY());
+		// SmartDashboard.putString("odometry getRotation", m_odometry.getPoseMeters().getRotation().toString());
 
 		// SmartDashboard.putNumber("LeftFrontSpeed",
 		// swerveModuleStates[0].speedMetersPerSecond );
@@ -124,7 +125,7 @@ public class DriveTrain extends SubsystemBase {
 	}
 
 	/** Zeroes the heading of the robot. */
-	public void zeroADIS16470() {
+	public void resetADIS16470() {
 		imuADIS16470.reset();
 	}
 
