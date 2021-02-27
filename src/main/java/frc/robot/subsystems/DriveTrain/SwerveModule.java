@@ -91,6 +91,7 @@ public class SwerveModule {
                 state.angle.getDegrees());
 
         if (logit) {
+            SmartDashboard.putNumber("steerAngleEncoder.getAbsolutePosition()", steerAngleEncoder.getAbsolutePosition());
             SmartDashboard.putNumber("SteerMotorRpmCommand", steerMotorRpm);
         }
 
@@ -106,7 +107,7 @@ public class SwerveModule {
 
         }
 
-        driveMotorVelocityPID.setReference(driveMotorRpm, ControlType.kVelocity);
+        driveMotorVelocityPID.setReference(driveMotorRpm * -1, ControlType.kVelocity);
     }
 
     /**

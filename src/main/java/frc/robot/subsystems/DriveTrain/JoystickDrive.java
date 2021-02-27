@@ -62,13 +62,13 @@ public class JoystickDrive extends CommandBase {
       // driveTrain.m_odometry.resetPosition( new Pose2d(), new Rotation2d(0)  );
     }
 
-    double xSpeed = this.smartJoystick(driveStick.getY(), Constants.ControllerConstants.DEADZONE_DRIVE)
+    double xSpeed = this.smartJoystick(driveStick.getY() * -1, Constants.ControllerConstants.DEADZONE_DRIVE)
         * Constants.DriveConstants.MAX_DRIVE_SPEED;
 
-    double ySpeed = this.smartJoystick(driveStick.getX(), Constants.ControllerConstants.DEADZONE_DRIVE)
+    double ySpeed = this.smartJoystick(driveStick.getX() * -1, Constants.ControllerConstants.DEADZONE_DRIVE)
         * Constants.DriveConstants.MAX_DRIVE_SPEED;
 
-    double rotRate = this.smartJoystick(driveStick.getTwist(), Constants.ControllerConstants.DEADZONE_STEER)
+    double rotRate = this.smartJoystick(driveStick.getTwist() * -1, Constants.ControllerConstants.DEADZONE_STEER)
         * Constants.DriveConstants.MAX_TWIST_RATE;
 
     double throttle = (-driveStick.getThrottle() + 1) / 2; // between 0 and 1 = 0% and 100%

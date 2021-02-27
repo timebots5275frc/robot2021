@@ -64,7 +64,7 @@ public class DriveTrain extends SubsystemBase {
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 
 		var swerveModuleStates = kinematics.toSwerveModuleStates(fieldRelative
-				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imuADIS16470.getRotation2d().times(-1))
+				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imuADIS16470.getRotation2d().times(-1) )
 				: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
 		// SmartDashboard.putNumber("odometry getX", m_odometry.getPoseMeters().getX());
@@ -81,7 +81,7 @@ public class DriveTrain extends SubsystemBase {
 		// SmartDashboard.putNumber("LeftFrontSpeedNorm",
 		// swerveModuleStates[0].speedMetersPerSecond );
 
-		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], false);
+		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], true);
 		rightFrontSwerveModule.setDesiredState(swerveModuleStates[1], false);
 		rightRearSwerveModule.setDesiredState(swerveModuleStates[2], false);
 		leftRearSwerveModule.setDesiredState(swerveModuleStates[3], false);
