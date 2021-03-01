@@ -44,7 +44,7 @@ public class DriveTrain extends SubsystemBase {
 	public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(leftFrontWheelLoc, rightFrontWheelLoc,
 			rightRearWheelLoc, leftRearWheelLoc);
 
-	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kinematics, imuADIS16470.getRotation2d());
+	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kinematics, this.getHeading() );
 	private Pose2d m_pose;
 
 	public DriveTrain() {
@@ -64,7 +64,7 @@ public class DriveTrain extends SubsystemBase {
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 
 		var swerveModuleStates = kinematics.toSwerveModuleStates(fieldRelative
-				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imuADIS16470.getRotation2d().times(-1) )
+				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, this.getHeading() )
 				: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
 		// SmartDashboard.putNumber("odometry getX", m_odometry.getPoseMeters().getX());
@@ -103,8 +103,8 @@ public class DriveTrain extends SubsystemBase {
 
 	/** Updates the field relative position of the robot. */
 	public void updateOdometry() {
-		m_odometry.update(imuADIS16470.getRotation2d(), leftFrontSwerveModule.getState(),
-				rightFrontSwerveModule.getState(), rightRearSwerveModule.getState(), rightRearSwerveModule.getState());
+		m_odometry.update(this.getHeading(), leftFrontSwerveModule.getState(),
+				rightFrontSwerveModule.getState(), rightRearSwerveModule.getState(), leftRearSwerveModule.getState());
 
 	}
 
@@ -134,8 +134,8 @@ public class DriveTrain extends SubsystemBase {
 	 *
 	 * @return the robot's heading in degrees, from -180 to 180
 	 */
-	public double getHeading() {
-		return imuADIS16470.getRotation2d().getDegrees();
+	public Rotation2d getHeading() {
+		return imuADIS16470.getRotation2d().times(-1);
 	}
 
 	/**
@@ -145,7 +145,6 @@ public class DriveTrain extends SubsystemBase {
 	 */
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.MAX_DRIVE_SPEED);
-
 
 		leftFrontSwerveModule.setDesiredState(desiredStates[0], false);
 		rightFrontSwerveModule.setDesiredState(desiredStates[1], false);

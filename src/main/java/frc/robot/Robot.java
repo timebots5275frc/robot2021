@@ -102,7 +102,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("odometry getX", loc.getX());
     SmartDashboard.putNumber("odometry getY", loc.getY());
     SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
-    SmartDashboard.putNumber(" getRotation", m_robotContainer.driveTrain.getHeading() );
+    SmartDashboard.putNumber(" getRotation", m_robotContainer.driveTrain.getHeading().getDegrees() );
   }
 
   @Override
@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("odometry getX", loc.getX());
     SmartDashboard.putNumber("odometry getY", loc.getY());
     SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
-    SmartDashboard.putNumber(" getRotation", m_robotContainer.driveTrain.getHeading() );
+    SmartDashboard.putNumber("getRotation", m_robotContainer.driveTrain.getHeading().getDegrees() );
 
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.

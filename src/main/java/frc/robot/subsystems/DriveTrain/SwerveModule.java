@@ -91,7 +91,8 @@ public class SwerveModule {
                 state.angle.getDegrees());
 
         if (logit) {
-            SmartDashboard.putNumber("steerAngleEncoder.getAbsolutePosition()", steerAngleEncoder.getAbsolutePosition());
+            SmartDashboard.putNumber("steerAngleEncoder.getAbsolutePosition()",
+                    steerAngleEncoder.getAbsolutePosition());
             SmartDashboard.putNumber("SteerMotorRpmCommand", steerMotorRpm);
         }
 
@@ -107,7 +108,7 @@ public class SwerveModule {
 
         }
 
-        driveMotorVelocityPID.setReference(driveMotorRpm * -1, ControlType.kVelocity);
+        driveMotorVelocityPID.setReference(driveMotorRpm, ControlType.kVelocity);
     }
 
     /**
@@ -118,7 +119,7 @@ public class SwerveModule {
      */
     public double driveRpmFromSpeed(double speedMetersPerSecond) {
         var rpm = speedMetersPerSecond * 60.0 / DriveConstants.WHEEL_CIRCUMFERENCE / DriveConstants.DRIVE_GEAR_RATIO;
-        return rpm;
+        return -1 * rpm; // Rotation reversed due to gears. 
     }
 
     /**
@@ -129,7 +130,7 @@ public class SwerveModule {
      */
     public double speedFromDriveRpm(double rpm) {
         var speedMetersPerSecond = rpm * DriveConstants.DRIVE_GEAR_RATIO * DriveConstants.WHEEL_CIRCUMFERENCE / 60.0;
-        return speedMetersPerSecond;
+        return -1 * speedMetersPerSecond; // Rotation reversed due to gears. 
     }
 
 }
