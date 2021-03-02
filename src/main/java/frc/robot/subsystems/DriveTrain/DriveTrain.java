@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 
 import java.sql.Time;
+import java.util.List;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
 
@@ -44,7 +48,7 @@ public class DriveTrain extends SubsystemBase {
 	public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(leftFrontWheelLoc, rightFrontWheelLoc,
 			rightRearWheelLoc, leftRearWheelLoc);
 
-	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kinematics, this.getHeading() );
+	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kinematics, this.getHeading());
 	private Pose2d m_pose;
 
 	public DriveTrain() {
@@ -63,13 +67,14 @@ public class DriveTrain extends SubsystemBase {
 	@SuppressWarnings("ParameterName")
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 
-		var swerveModuleStates = kinematics.toSwerveModuleStates(fieldRelative
-				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, this.getHeading() )
-				: new ChassisSpeeds(xSpeed, ySpeed, rot));
+		var swerveModuleStates = kinematics.toSwerveModuleStates(
+				fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, this.getHeading())
+						: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
 		// SmartDashboard.putNumber("odometry getX", m_odometry.getPoseMeters().getX());
 		// SmartDashboard.putNumber("odometry getY", m_odometry.getPoseMeters().getY());
-		// SmartDashboard.putString("odometry getRotation", m_odometry.getPoseMeters().getRotation().toString());
+		// SmartDashboard.putString("odometry getRotation",
+		// m_odometry.getPoseMeters().getRotation().toString());
 
 		// SmartDashboard.putNumber("LeftFrontSpeed",
 		// swerveModuleStates[0].speedMetersPerSecond );
@@ -103,8 +108,8 @@ public class DriveTrain extends SubsystemBase {
 
 	/** Updates the field relative position of the robot. */
 	public void updateOdometry() {
-		m_odometry.update(this.getHeading(), leftFrontSwerveModule.getState(),
-				rightFrontSwerveModule.getState(), rightRearSwerveModule.getState(), leftRearSwerveModule.getState());
+		m_odometry.update(this.getHeading(), leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
+				rightRearSwerveModule.getState(), leftRearSwerveModule.getState());
 
 	}
 
@@ -150,5 +155,30 @@ public class DriveTrain extends SubsystemBase {
 		rightFrontSwerveModule.setDesiredState(desiredStates[1], false);
 		rightRearSwerveModule.setDesiredState(desiredStates[2], false);
 		leftRearSwerveModule.setDesiredState(desiredStates[3], false);
+	}
+
+	public static Trajectory generateTrajectory(TrajectoryConfig config, List<Translation2d> list) {
+		Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+				// Start at the origin facing the +X direction
+				new Pose2d(0, 0, new Rotation2d(0)),
+				// Pass through these two interior waypoints, making an 's' curve path
+				List.of(new Translation2d(1.8 * 30 * .0254, .5 * 30 * .0254),
+						new Translation2d(2.5 * 30 * .0254, 1.5 * 30 * .0254),
+						new Translation2d(3.5 * 30 * .0254, 2.5 * 30 * .0254),
+						new Translation2d(7.5 * 30 * .0254, 2.5 * 30 * .0254),
+						new Translation2d(8.5 * 30 * .0254, 1.5 * 30 * .0254),
+						new Translation2d(9.5 * 30 * .0254, 0.5 * 30 * .0254),
+						new Translation2d(10.5 * 30 * .0254, 1.5 * 30 * .0254), // far point
+						new Translation2d(9.5 * 30 * .0254, 2.5 * 30 * .0254),
+						new Translation2d(8.5 * 30 * .0254, 1.5 * 30 * .0254),
+						new Translation2d(7.7 * 30 * .0254, 0.5 * 30 * .0254),
+						new Translation2d(5.5 * 30 * .0254, 0.5 * 30 * .0254),
+						new Translation2d(3.5 * 30 * .0254, 0.5 * 30 * .0254),
+						new Translation2d(2.5 * 30 * .0254, 1.5 * 30 * .0254),
+						new Translation2d(1.5 * 30 * .0254, 2.5 * 30 * .0254)),
+				// End 3 meters straight ahead of where we started, facing forward
+				new Pose2d(.5 * 30 * .0254, 2.5 * 30 * .0254, new Rotation2d(0)), config);
+
+		return exampleTrajectory;
 	}
 }

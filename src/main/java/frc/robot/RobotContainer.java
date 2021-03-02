@@ -89,15 +89,14 @@ public class RobotContainer {
     // .generateTrajectory(List.of(new Pose2d(0, 0, new Rotation2d( 0 )), new
     // Pose2d(-2, 0.1, new Rotation2d( 0 ))), config);
 
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(60 * .0254, -30 * .0254), new Translation2d(120 * .0254, 30 * .0254),
-        new Translation2d(30 * 10 * .0254, 0),
-        new Translation2d(60 * .0254, -90 * .0254)),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(0 * .0254, 0 * .0254, new Rotation2d(0)), config);
+    List<Translation2d> list = List.of(new Translation2d(1.8, .5), new Translation2d(2.5, 1.5),
+        new Translation2d(3.5, 2.5), new Translation2d(7.5, 2.5), new Translation2d(8.5, 1.5),
+        new Translation2d(9.5, 0.5), new Translation2d(10.5, 1.5), // far point
+        new Translation2d(9.5, 2.5), new Translation2d(8.5, 1.5), new Translation2d(7.7, 0.5),
+        new Translation2d(5.5, 0.5), new Translation2d(3.5, 0.5), new Translation2d(2.5, 1.5),
+        new Translation2d(1.5, 2.5));
+
+    Trajectory exampleTrajectory = DriveTrain.generateTrajectory(config, list);
 
     var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
         AutoConstants.kThetaControllerConstraints);
@@ -111,7 +110,7 @@ public class RobotContainer {
         thetaController, driveTrain::setModuleStates, driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
-    // driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
+    driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
@@ -119,3 +118,10 @@ public class RobotContainer {
     // https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervecontrollercommand/subsystems/DriveSubsystem.java
   }
 }
+
+/**
+ * y x 0 0 .5 .5
+ * 
+ * 
+ * 
+ */
