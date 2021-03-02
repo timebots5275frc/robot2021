@@ -82,21 +82,45 @@ public class RobotContainer {
         AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(driveTrain.kinematics);
+    // cubic splines
+    // cubic splines
+    // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+    //     // Start at the origin facing the +X direction
+    //     new Pose2d(0, 0, new Rotation2d(0)),
+    //     // Pass through these two interior waypoints, making an 's' curve path
+    //     List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+    //     // End 3 meters straight ahead of where we started, facing forward
+    //     new Pose2d(3, 0, new Rotation2d(0)), config);
 
-    // An example trajectory to follow. All units in meters.
-
-    // Trajectory exampleTrajectory = TrajectoryGenerator
-    // .generateTrajectory(List.of(new Pose2d(0, 0, new Rotation2d( 0 )), new
-    // Pose2d(-2, 0.1, new Rotation2d( 0 ))), config);
-
-    List<Translation2d> list = List.of(new Translation2d(1.8, .5), new Translation2d(2.5, 1.5),
+    List<Translation2d> listTranslation2d = List.of(new Translation2d(1.8, .5), new Translation2d(2.5, 1.5),
         new Translation2d(3.5, 2.5), new Translation2d(7.5, 2.5), new Translation2d(8.5, 1.5),
         new Translation2d(9.5, 0.5), new Translation2d(10.5, 1.5), // far point
         new Translation2d(9.5, 2.5), new Translation2d(8.5, 1.5), new Translation2d(7.7, 0.5),
         new Translation2d(5.5, 0.5), new Translation2d(3.5, 0.5), new Translation2d(2.5, 1.5),
         new Translation2d(1.5, 2.5));
 
-    Trajectory exampleTrajectory = DriveTrain.generateTrajectory(config, list);
+    Rotation2d zero = Rotation2d.fromDegrees(0);
+    List<Pose2d> listPose2d = List.of(new Pose2d(1.8, 0.5, zero), new Pose2d(2.5, 1.5, zero),
+        new Pose2d(3.5, 2.5, zero), new Pose2d(7.5, 2.5, zero), new Pose2d(8.5, 1.5, zero), new Pose2d(9.5, 0.5, zero),
+        new Pose2d(10.5, 1.5, zero), new Pose2d(9.5, 2.5, zero), new Pose2d(8.5, 1.5, zero), new Pose2d(7.7, 0.5, zero),
+        new Pose2d(5.5, 0.5, zero), new Pose2d(3.5, 0.5, zero), new Pose2d(2.5, 10.5, zero),
+        new Pose2d(1.5, 2.5, zero));
+
+    Pose2d offset = new Pose2d(.5, .5, new Rotation2d(0));
+    Trajectory exampleTrajectory = DriveTrain.generateTrajectory(config, offset, listPose2d);
+    // Trajectory exampleTrajectory =
+    // TrajectoryGenerator.generateTrajectory(listTranslation2d, config, offset,
+    // listPose2d);
+
+    /**
+     * For clamped cubic splines, this method accepts two Pose2d objects, one for
+     * the starting waypoint and one for the ending waypoint. The method takes in a
+     * vector of Translation2d objects which represent the interior waypoints. The
+     * headings at these interior waypoints are determined automatically to ensure
+     * continuous curvature. For quintic splines, the method simply takes in a list
+     * of Pose2d objects, with each Pose2d representing a point and heading on the
+     * field.
+     */
 
     var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
         AutoConstants.kThetaControllerConstraints);
