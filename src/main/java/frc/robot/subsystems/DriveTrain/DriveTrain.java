@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator.ControlVectorList;
 
 import java.sql.Time;
 import java.util.List;
@@ -157,7 +158,15 @@ public class DriveTrain extends SubsystemBase {
 		leftRearSwerveModule.setDesiredState(desiredStates[3], false);
 	}
 
-	public static Trajectory generateTrajectory(TrajectoryConfig config, List<Translation2d> list) {
+	public static Trajectory generateTrajectory(TrajectoryConfig config, Pose2d offset, List<Pose2d> list) {
+		
+		for (Pose2d pose2d : list) {
+			pose2d.minus(offset);
+		}
+
+		Trajectory exampleTrajeactory = TrajectoryGenerator.generateTrajectory(list, config);
+
+
 		Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
 				// Start at the origin facing the +X direction
 				new Pose2d(0, 0, new Rotation2d(0)),
