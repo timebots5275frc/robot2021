@@ -159,21 +159,45 @@ public class DriveTrain extends SubsystemBase {
 		leftRearSwerveModule.setDesiredState(desiredStates[3], false);
 	}
 
-	public static Trajectory generateTrajectory(TrajectoryConfig config, Pose2d startingPose2d, List<Pose2d> list) {
+	public static Trajectory generateTrajectory(TrajectoryConfig config, Pose2d startingPose2d,
+			List<Translation2d> list) {
+		// Pose2d offset = new Pose2d(startingPose2d.getX(), startingPose2d.getY(),
+		// startingPose2d.getRotation());
 
-		Pose2d offset = new Pose2d(startingPose2d.getX(), startingPose2d.getY(), startingPose2d.getRotation());
-		ArrayList<Pose2d> newList = new ArrayList<Pose2d>();
-		newList.add(list.get(0));
+		ArrayList<Translation2d> newList = new ArrayList<Translation2d>();
 
-		for (int i = 1; i < list.size(); i++) {
-			double x = (list.get(i).getX() - offset.getX()) * 30 * .0254;
-			double y = (list.get(i).getY() - offset.getY()) * 30 * .0254;
-			newList.add(new Pose2d(x, y, list.get(i).getRotation()));
+		for (int i = 0; i < list.size(); i++) {
+			// double x = (list.get(i).getX() - startingPose2d.getX()) * 30 * .0254;
+			// double y = (list.get(i).getY() - startingPose2d.getY()) * 30 * .0254;
+
+			double x = list.get(i).getX() * 30 * .0254;
+			double y = list.get(i).getY() * 30 * .0254;
+			newList.add(new Translation2d(x, y));
 			System.out.println("x = " + x + "  y = " + y);
 		}
 
-		Trajectory exampleTrajeactory = TrajectoryGenerator.generateTrajectory(newList, config);
+		Translation2d end2d = newList.remove(newList.size() - 1);
 
-		return exampleTrajeactory;
+		Pose2d end = new Pose2d(end2d.getX(), end2d.getY(), startingPose2d.getRotation());
+
+		return TrajectoryGenerator.generateTrajectory(new Pose2d(startingPose2d.getX() * 30 * .0254,
+				startingPose2d.getY() * 30 * .0254, startingPose2d.getRotation()), list, end, config);
+
+		// Pose2d offset = new Pose2d(startingPose2d.getX(), startingPose2d.getY(),
+		// startingPose2d.getRotation());
+		// ArrayList<Pose2d> newList = new ArrayList<Pose2d>();
+		// newList.add(list.get(0));
+
+		// for (int i = 1; i < list.size(); i++) {
+		// double x = (list.get(i).getX() - offset.getX()) * 30 * .0254;
+		// double y = (list.get(i).getY() - offset.getY()) * 30 * .0254;
+		// newList.add(new Pose2d(x, y, list.get(i).getRotation()));
+		// System.out.println("x = " + x + " y = " + y);
+		// }
+
+		// Trajectory exampleTrajeactory =
+		// TrajectoryGenerator.generateTrajectory(newList, config);
+
+		// return exampleTrajeactory;
 	}
 }
