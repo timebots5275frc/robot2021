@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator.ControlVectorList;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
@@ -158,36 +159,21 @@ public class DriveTrain extends SubsystemBase {
 		leftRearSwerveModule.setDesiredState(desiredStates[3], false);
 	}
 
-	public static Trajectory generateTrajectory(TrajectoryConfig config, Pose2d offset, List<Pose2d> list) {
-		
-		for (Pose2d pose2d : list) {
-			pose2d.minus(offset);
+	public static Trajectory generateTrajectory(TrajectoryConfig config, Pose2d startingPose2d, List<Pose2d> list) {
+
+		Pose2d offset = new Pose2d(startingPose2d.getX(), startingPose2d.getY(), startingPose2d.getRotation());
+		ArrayList<Pose2d> newList = new ArrayList<Pose2d>();
+		newList.add(list.get(0));
+
+		for (int i = 1; i < list.size(); i++) {
+			double x = (list.get(i).getX() - offset.getX()) * 30 * .0254;
+			double y = (list.get(i).getY() - offset.getY()) * 30 * .0254;
+			newList.add(new Pose2d(x, y, list.get(i).getRotation()));
+			System.out.println("x = " + x + "  y = " + y);
 		}
 
-		Trajectory exampleTrajeactory = TrajectoryGenerator.generateTrajectory(list, config);
+		Trajectory exampleTrajeactory = TrajectoryGenerator.generateTrajectory(newList, config);
 
-
-		Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-				// Start at the origin facing the +X direction
-				new Pose2d(0, 0, new Rotation2d(0)),
-				// Pass through these two interior waypoints, making an 's' curve path
-				List.of(new Translation2d(1.8 * 30 * .0254, .5 * 30 * .0254),
-						new Translation2d(2.5 * 30 * .0254, 1.5 * 30 * .0254),
-						new Translation2d(3.5 * 30 * .0254, 2.5 * 30 * .0254),
-						new Translation2d(7.5 * 30 * .0254, 2.5 * 30 * .0254),
-						new Translation2d(8.5 * 30 * .0254, 1.5 * 30 * .0254),
-						new Translation2d(9.5 * 30 * .0254, 0.5 * 30 * .0254),
-						new Translation2d(10.5 * 30 * .0254, 1.5 * 30 * .0254), // far point
-						new Translation2d(9.5 * 30 * .0254, 2.5 * 30 * .0254),
-						new Translation2d(8.5 * 30 * .0254, 1.5 * 30 * .0254),
-						new Translation2d(7.7 * 30 * .0254, 0.5 * 30 * .0254),
-						new Translation2d(5.5 * 30 * .0254, 0.5 * 30 * .0254),
-						new Translation2d(3.5 * 30 * .0254, 0.5 * 30 * .0254),
-						new Translation2d(2.5 * 30 * .0254, 1.5 * 30 * .0254),
-						new Translation2d(1.5 * 30 * .0254, 2.5 * 30 * .0254)),
-				// End 3 meters straight ahead of where we started, facing forward
-				new Pose2d(.5 * 30 * .0254, 2.5 * 30 * .0254, new Rotation2d(0)), config);
-
-		return exampleTrajectory;
+		return exampleTrajeactory;
 	}
 }
