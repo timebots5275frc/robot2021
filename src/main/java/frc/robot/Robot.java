@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -25,14 +26,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-
-  // public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
-  // private final DriveTrain m_swerve = new DriveTrain();
-
-  // // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
-  // private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
-  // private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
-  // private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -93,6 +86,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    this.loggerPeriodic();
+
   }
 
   @Override
@@ -109,29 +104,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // Get the x speed. We are inverting this because Xbox controllers return
-    // negative values when we push forward.
-    // double xSpeed = m_xspeedLimiter.calculate( driveStick.getY() ) * DriveConstants.MAX_DRIVE_SPEED ;
 
-
-    // // Get the y speed or sideways/strafe speed. We are inverting this because
-    // // we want a positive value when we pull to the left. Xbox controllers
-    // // return positive values when you pull to the right by default.
-    // double ySpeed = m_yspeedLimiter.calculate( driveStick.getX() ) * DriveConstants.MAX_DRIVE_SPEED; 
-
-
-    // // Get the rate of angular rotation. We are inverting this because we want a
-    // // positive value when we pull to the left (remember, CCW is positive in
-    // // mathematics). Xbox controllers return positive values when you pull to
-    // // the right by default.
-    // double rotRate = m_rotLimiter.calculate(driveStick.getTwist()) * DriveConstants.MAX_TWIST_RATE;
-
-
-    // SmartDashboard.putNumber("xSpeed", xSpeed);
-    // SmartDashboard.putNumber("ySpeed", ySpeed);
-    // SmartDashboard.putNumber("Rotation", rotRate);
-
-    // m_swerve.drive(xSpeed, ySpeed, rotRate, false);
+    this.loggerPeriodic();
 
   }
 
@@ -144,5 +118,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+  }
+
+  public void loggerPeriodic() {
+    Pose2d loc = m_robotContainer.driveTrain.getPose();
+
+    SmartDashboard.putNumber("Grid odometry X", loc.getX() * 39.37 / 30);
+    SmartDashboard.putNumber("Grid odometry Y", loc.getY() * 39.37 / 30);
+    SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
+    SmartDashboard.putNumber(" getRotation", m_robotContainer.driveTrain.getHeading().getDegrees());
   }
 }

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.driveTrain;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants.*;
@@ -7,7 +9,16 @@ import frc.robot.constants.Constants.*;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator.ControlVectorList;
+
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.analog.adis16470.frc.ADIS16470_IMU;
 
@@ -28,18 +39,19 @@ public class DriveTrain extends SubsystemBase {
 	private final SwerveModule rightFrontSwerveModule = new SwerveModule(DriveConstants.RIGHT_FRONT_DRIVE_MOTOR_ID,
 			DriveConstants.RIGHT_FRONT_STEER_MOTOR_ID, DriveConstants.RIGHT_FRONT_STEER_ENCODER_ID);
 	private final SwerveModule rightRearSwerveModule = new SwerveModule(DriveConstants.RIGHT_REAR_DRIVE_MOTOR_ID,
-			DriveConstants.RIGHT_READ_STEER_MOTOR_ID, DriveConstants.RIGHT_REAR_STEER_ENCODER_ID);
+			DriveConstants.RIGHT_REAR_STEER_MOTOR_ID, DriveConstants.RIGHT_REAR_STEER_ENCODER_ID);
 	private final SwerveModule leftRearSwerveModule = new SwerveModule(DriveConstants.LEFT_REAR_DRIVE_MOTOR_ID,
 			DriveConstants.LEFT_REAR_STEER_MOTOR_ID, DriveConstants.LEFT_REAR_STEER_ENCODER_ID);
 
 	// private final AnalogGyro m_gyro = new AnalogGyro(0);
 
-	public static final ADIS16470_IMU imu = new ADIS16470_IMU();
+	private final ADIS16470_IMU imuADIS16470 = new ADIS16470_IMU();
 
-	private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(leftFrontWheelLoc, rightFrontWheelLoc,
+	public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(leftFrontWheelLoc, rightFrontWheelLoc,
 			rightRearWheelLoc, leftRearWheelLoc);
 
-	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, imu.getRotation2d());
+	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kinematics, this.getHeading());
+	private Pose2d m_pose;
 
 	public DriveTrain() {
 		System.out.println("DriveTrain (:");
@@ -57,12 +69,15 @@ public class DriveTrain extends SubsystemBase {
 	@SuppressWarnings("ParameterName")
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 
-		var swerveModuleStates = m_kinematics.toSwerveModuleStates(fieldRelative
-				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, imu.getRotation2d().times(-1))
-				: new ChassisSpeeds(xSpeed, ySpeed, rot));
+		var swerveModuleStates = kinematics.toSwerveModuleStates(
+				fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, this.getHeading())
+						: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
-		SmartDashboard.putNumber("IMU Angle", imu.getRotation2d().getDegrees());
-		
+		// SmartDashboard.putNumber("odometry getX", m_odometry.getPoseMeters().getX());
+		// SmartDashboard.putNumber("odometry getY", m_odometry.getPoseMeters().getY());
+		// SmartDashboard.putString("odometry getRotation",
+		// m_odometry.getPoseMeters().getRotation().toString());
+
 		// SmartDashboard.putNumber("LeftFrontSpeed",
 		// swerveModuleStates[0].speedMetersPerSecond );
 		// SmartDashboard.putNumber("LeftFrontAngle",
@@ -73,16 +88,116 @@ public class DriveTrain extends SubsystemBase {
 		// SmartDashboard.putNumber("LeftFrontSpeedNorm",
 		// swerveModuleStates[0].speedMetersPerSecond );
 
-		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], false);
+		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], true);
 		rightFrontSwerveModule.setDesiredState(swerveModuleStates[1], false);
 		rightRearSwerveModule.setDesiredState(swerveModuleStates[2], false);
 		leftRearSwerveModule.setDesiredState(swerveModuleStates[3], false);
+	}
 
+	@Override
+	public void periodic() {
+		this.updateOdometry();
+	}
+
+	/**
+	 * Returns the currently-estimated pose of the robot.
+	 *
+	 * @return The pose.
+	 */
+	public Pose2d getPose() {
+		return m_odometry.getPoseMeters();
 	}
 
 	/** Updates the field relative position of the robot. */
 	public void updateOdometry() {
-		m_odometry.update(imu.getRotation2d(), leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
+		m_odometry.update(this.getHeading(), leftFrontSwerveModule.getState(), rightFrontSwerveModule.getState(),
 				rightRearSwerveModule.getState(), leftRearSwerveModule.getState());
+
+	}
+
+	/**
+	 * Resets the odometry Position and Angle to 0.
+	 */
+	public void resetOdometry() {
+		m_odometry.resetPosition(new Pose2d(), new Rotation2d(0));
+	}
+
+	/**
+	 * Resets the odometry to the specified pose.
+	 *
+	 * @param pose The pose to which to set the odometry.
+	 */
+	public void resetOdometryWithPose2d(Pose2d pose) {
+		m_odometry.resetPosition(pose, imuADIS16470.getRotation2d());
+	}
+
+	/** Zeroes the heading of the robot. */
+	public void resetADIS16470() {
+		imuADIS16470.reset();
+	}
+
+	/**
+	 * Returns the heading of the robot.
+	 *
+	 * @return the robot's heading in degrees, from -180 to 180
+	 */
+	public Rotation2d getHeading() {
+		return imuADIS16470.getRotation2d().times(-1);
+	}
+
+	/**
+	 * Sets the swerve ModuleStates.
+	 *
+	 * @param desiredStates The desired SwerveModule states.
+	 */
+	public void setModuleStates(SwerveModuleState[] desiredStates) {
+		SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.MAX_DRIVE_SPEED);
+
+		leftFrontSwerveModule.setDesiredState(desiredStates[0], false);
+		rightFrontSwerveModule.setDesiredState(desiredStates[1], false);
+		rightRearSwerveModule.setDesiredState(desiredStates[2], false);
+		leftRearSwerveModule.setDesiredState(desiredStates[3], false);
+	}
+
+	public static Trajectory generateTrajectory(TrajectoryConfig config, Pose2d startingPose2d,
+			List<Translation2d> list) {
+		// Pose2d offset = new Pose2d(startingPose2d.getX(), startingPose2d.getY(),
+		// startingPose2d.getRotation());
+
+		ArrayList<Translation2d> newList = new ArrayList<Translation2d>();
+
+		for (int i = 0; i < list.size(); i++) {
+			// double x = (list.get(i).getX() - startingPose2d.getX()) * 30 * .0254;
+			// double y = (list.get(i).getY() - startingPose2d.getY()) * 30 * .0254;
+
+			double x = list.get(i).getX() * 30 * .0254;
+			double y = list.get(i).getY() * 30 * .0254;
+			newList.add(new Translation2d(x, y));
+			System.out.println("x = " + x + "  y = " + y);
+		}
+
+		Translation2d end2d = newList.remove(newList.size() - 1);
+
+		Pose2d end = new Pose2d(end2d.getX(), end2d.getY(), startingPose2d.getRotation());
+
+		return TrajectoryGenerator.generateTrajectory(new Pose2d(startingPose2d.getX() * 30 * .0254,
+				startingPose2d.getY() * 30 * .0254, startingPose2d.getRotation()), list, end, config);
+
+		// Pose2d offset = new Pose2d(startingPose2d.getX(), startingPose2d.getY(),
+		// startingPose2d.getRotation());
+		// ArrayList<Pose2d> newList = new ArrayList<Pose2d>();
+		// newList.add(list.get(0));
+
+		// for (int i = 1; i < list.size(); i++) {
+		// double x = (list.get(i).getX() - offset.getX()) * 30 * .0254;
+		// double y = (list.get(i).getY() - offset.getY()) * 30 * .0254;
+		// newList.add(new Pose2d(x, y, list.get(i).getRotation()));
+		// System.out.println("x = " + x + " y = " + y);
+		// }
+
+		// Trajectory exampleTrajeactory =
+		// TrajectoryGenerator.generateTrajectory(newList, config);
+
+		// return exampleTrajeactory;
 	}
 }
