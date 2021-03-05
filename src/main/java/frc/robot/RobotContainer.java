@@ -10,7 +10,8 @@ import frc.robot.constants.Constants.DriveConstants;
 import frc.robot.subsystems.driveTrain.DriveHome;
 import frc.robot.subsystems.driveTrain.DriveTrain;
 import frc.robot.subsystems.driveTrain.JoystickDrive;
-
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -26,10 +27,15 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -46,6 +52,7 @@ public class RobotContainer {
 
   public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
   public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
+  Trajectory exampleTrajectory = new Trajectory();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -55,6 +62,20 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, driveStick, auxStick, true)); // fieldRelative = false
+
+    String trajectoryJSON = "paths/test.wpilib.json";
+    exampleTrajectory = new Trajectory();
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+
+      System.out.println(" Working ? (: " + trajectoryPath);
+
+      exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      // exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/paths/Unnamed.wpilib.json"));
+
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
   }
 
   // public DriveTrain getDriveTrain(){
@@ -94,11 +115,15 @@ public class RobotContainer {
     // new Pose2d(3 * 30 * .0254, 0, new Rotation2d(0)), config);
 
     List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 2));
-    // List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 3), new Translation2d(3, 5),
-    //     new Translation2d(3, 4), new Translation2d(3, 3), new Translation2d(5, 1), new Translation2d(6, 2),
-    //     new Translation2d(6, 4), new Translation2d(6, 5), new Translation2d(6, 4), new Translation2d(6, 2),
-    //     new Translation2d(7, 1), new Translation2d(8, 1), new Translation2d(9, 3), new Translation2d(9, 5),
-    //     new Translation2d(9, 3), new Translation2d(11, 3));
+    // List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 3), new
+    // Translation2d(3, 5),
+    // new Translation2d(3, 4), new Translation2d(3, 3), new Translation2d(5, 1),
+    // new Translation2d(6, 2),
+    // new Translation2d(6, 4), new Translation2d(6, 5), new Translation2d(6, 4),
+    // new Translation2d(6, 2),
+    // new Translation2d(7, 1), new Translation2d(8, 1), new Translation2d(9, 3),
+    // new Translation2d(9, 5),
+    // new Translation2d(9, 3), new Translation2d(11, 3));
 
     Rotation2d zero = Rotation2d.fromDegrees(0);
     List<Pose2d> listPose2d = List.of(new Pose2d(0, 0, zero), new Pose2d(2.2, 1, zero), new Pose2d(3, 1, zero),
@@ -111,7 +136,8 @@ public class RobotContainer {
         new Pose2d(11, 2, zero), new Pose2d(10, 3, zero), new Pose2d(9, 2, zero), new Pose2d(8.2, 2, zero));
 
     Pose2d offset = new Pose2d(.5, 2.5, new Rotation2d(0));
-    Trajectory exampleTrajectory = DriveTrain.generateTrajectory(config, offset, listTranslation2d);
+    // Trajectory exampleTrajectory = DriveTrain.generateTrajectory(config, offset,
+    // listTranslation2d);
     // Trajectory exampleTrajectory =
     // TrajectoryGenerator.generateTrajectory(listTranslation2d, config, offset,
     // listPose2d);
