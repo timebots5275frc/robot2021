@@ -93,7 +93,8 @@ public class RobotContainer {
     // // End 3 meters straight ahead of where we started, facing forward
     // new Pose2d(3 * 30 * .0254, 0, new Rotation2d(0)), config);
 
-    List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 2));
+    List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 2),
+        new Translation2d(6, 2), new Translation2d(7, 3));
 
     List<Translation2d> testlistTranslation2d = List.of(new Translation2d(2, 3), new Translation2d(3, 5),
         new Translation2d(3, 4), new Translation2d(3, 3), new Translation2d(5, 1), new Translation2d(6, 2),
