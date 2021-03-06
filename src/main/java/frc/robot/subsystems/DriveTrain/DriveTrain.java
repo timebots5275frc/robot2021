@@ -62,7 +62,7 @@ public class DriveTrain extends SubsystemBase {
 	 *
 	 * @param xSpeed        Speed of the robot in the x direction (forward).
 	 * @param ySpeed        Speed of the robot in the y direction (sideways).
-	 * @param rot           Angular rate of the robot.
+	 * @param rot           Angular rate of the robot. omegaRadiansPerSecond
 	 * @param fieldRelative Whether the provided x and y speeds are relative to the
 	 *                      field.
 	 */
@@ -88,7 +88,7 @@ public class DriveTrain extends SubsystemBase {
 		// SmartDashboard.putNumber("LeftFrontSpeedNorm",
 		// swerveModuleStates[0].speedMetersPerSecond );
 
-		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], true);
+		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], false);
 		rightFrontSwerveModule.setDesiredState(swerveModuleStates[1], false);
 		rightRearSwerveModule.setDesiredState(swerveModuleStates[2], false);
 		leftRearSwerveModule.setDesiredState(swerveModuleStates[3], false);
@@ -119,6 +119,7 @@ public class DriveTrain extends SubsystemBase {
 	 * Resets the odometry Position and Angle to 0.
 	 */
 	public void resetOdometry() {
+		System.out.println("resetOdometry");
 		m_odometry.resetPosition(new Pose2d(), new Rotation2d(0));
 	}
 
@@ -128,11 +129,13 @@ public class DriveTrain extends SubsystemBase {
 	 * @param pose The pose to which to set the odometry.
 	 */
 	public void resetOdometryWithPose2d(Pose2d pose) {
+		System.out.println("resetOdometryWithPose2d");
 		m_odometry.resetPosition(pose, imuADIS16470.getRotation2d());
 	}
 
 	/** Zeroes the heading of the robot. */
 	public void resetADIS16470() {
+		System.out.println("resetADIS16470");
 		imuADIS16470.reset();
 	}
 
