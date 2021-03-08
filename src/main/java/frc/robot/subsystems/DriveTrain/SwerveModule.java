@@ -119,7 +119,7 @@ public class SwerveModule {
      */
     public double driveRpmFromSpeed(double speedMetersPerSecond) {
         var rpm = speedMetersPerSecond * 60.0 / DriveConstants.WHEEL_CIRCUMFERENCE / DriveConstants.DRIVE_GEAR_RATIO;
-        return -1 * rpm; // Rotation reversed due to gears. 
+        return -1 * rpm; // Rotation reversed due to gears.
     }
 
     /**
@@ -130,7 +130,7 @@ public class SwerveModule {
      */
     public double speedFromDriveRpm(double rpm) {
         var speedMetersPerSecond = rpm * DriveConstants.DRIVE_GEAR_RATIO * DriveConstants.WHEEL_CIRCUMFERENCE / 60.0;
-        return -1 * speedMetersPerSecond; // Rotation reversed due to gears. 
+        return -1 * speedMetersPerSecond; // Rotation reversed due to gears.
     }
 
 }

@@ -24,7 +24,7 @@ public class JoystickDrive extends CommandBase {
 	private Joystick auxStick;
 	private boolean fieldRelative;
 
-	// Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
+	// Slew rate limiters to make joystick inputs more gentle; 1/4 sec from 0 to 1.
 	private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(4);
 	private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(4);
 	private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(1);
@@ -83,8 +83,8 @@ public class JoystickDrive extends CommandBase {
 		xSpeed *= throttle;
 		ySpeed *= throttle;
 
-		xSpeed = m_xspeedLimiter.calculate(xSpeed);
-		ySpeed = m_yspeedLimiter.calculate(ySpeed);
+		// xSpeed = m_xspeedLimiter.calculate(xSpeed);
+		// ySpeed = m_yspeedLimiter.calculate(ySpeed);
 		double auxX = auxStick.getY() * -1;
 		double auxY = auxStick.getX() * -1;
 
@@ -121,8 +121,8 @@ public class JoystickDrive extends CommandBase {
 		ySpeed *= throttle;
 		rotRate *= throttle;
 
-		xSpeed = m_xspeedLimiter.calculate(xSpeed);
-		ySpeed = m_yspeedLimiter.calculate(ySpeed);
+		// xSpeed = m_xspeedLimiter.calculate(xSpeed);
+		// ySpeed = m_yspeedLimiter.calculate(ySpeed);
 		// m_xspeedLimiter.calculate(rotRate);
 
 		SmartDashboard.putNumber("throttle", throttle);

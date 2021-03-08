@@ -47,7 +47,7 @@ public class RobotContainer {
 
 	public final DriveTrain driveTrain = new DriveTrain();
 	private final DriveHome driveHomeCommand = new DriveHome(driveTrain);
-	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, true, true);
+	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, true, false);
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -79,8 +79,7 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.resetOdometry());
 		
 		new JoystickButton(driveStick, 11).whenPressed(() -> driveJoyCommand.setTwoJoystickDrive(false) );
-		new JoystickButton(driveStick, 12).whenPressed(() -> driveJoyCommand.setTwoJoystickDrive(true));
-		
+		new JoystickButton(driveStick, 12).whenPressed(() -> driveJoyCommand.setTwoJoystickDrive(true));	
 	}
 
 	/**

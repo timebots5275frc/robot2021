@@ -73,20 +73,7 @@ public class DriveTrain extends SubsystemBase {
 				fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, this.getHeading())
 						: new ChassisSpeeds(xSpeed, ySpeed, rot));
 
-		// SmartDashboard.putNumber("odometry getX", m_odometry.getPoseMeters().getX());
-		// SmartDashboard.putNumber("odometry getY", m_odometry.getPoseMeters().getY());
-		// SmartDashboard.putString("odometry getRotation",
-		// m_odometry.getPoseMeters().getRotation().toString());
-
-		// SmartDashboard.putNumber("LeftFrontSpeed",
-		// swerveModuleStates[0].speedMetersPerSecond );
-		// SmartDashboard.putNumber("LeftFrontAngle",
-		// swerveModuleStates[0].angle.getDegrees() );
-
 		SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, DriveConstants.MAX_DRIVE_SPEED);
-
-		// SmartDashboard.putNumber("LeftFrontSpeedNorm",
-		// swerveModuleStates[0].speedMetersPerSecond );
 
 		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], false);
 		rightFrontSwerveModule.setDesiredState(swerveModuleStates[1], false);
