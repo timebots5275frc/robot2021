@@ -1,5 +1,7 @@
 package frc.robot.subsystems.driveTrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -14,8 +16,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator.ControlVectorList;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +126,20 @@ public class DriveTrain extends SubsystemBase {
 	public void resetOdometry() {
 		m_odometry.resetPosition(new Pose2d(), new Rotation2d(0));
 	}
+
+	protected static Trajectory loadTrajectory(String trajectoryName) throws IOException {
+		return TrajectoryUtil.fromPathweaverJson(
+				Filesystem.getDeployDirectory().toPath().resolve(Paths.get("output", trajectoryName + ".wpilib.json")));
+	}
+
+	public Trajectory loadTrajectoryFromFile(String filename) {
+		try {
+		  return loadTrajectory(filename);
+		} catch (IOException e) {
+		  DriverStation.reportError("Failed to load auto trajectory: " + filename, false);
+		  return new Trajectory();
+		}
+	  }
 
 	/**
 	 * Resets the odometry to the specified pose.

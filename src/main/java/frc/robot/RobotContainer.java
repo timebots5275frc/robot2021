@@ -62,20 +62,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, driveStick, auxStick, true)); // fieldRelative = false
+    // String trajectoryJSON = "paths/Bounce.wpilib.json";
+    // exampleTrajectory = new Trajectory();
+    // exampleTrajectory = driveTrain.loadTrajectoryFromFile("Unnamed_0.path");
 
-    String trajectoryJSON = "paths/test.wpilib.json";
-    exampleTrajectory = new Trajectory();
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-
-      System.out.println(" Working ? (: " + trajectoryPath);
-
-      exampleTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      // exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/paths/Unnamed.wpilib.json"));
-
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }
   }
 
   // public DriveTrain getDriveTrain(){
@@ -103,6 +93,7 @@ public class RobotContainer {
         AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(driveTrain.kinematics);
+
     // cubic splines
     // cubic splines
     // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
@@ -113,6 +104,15 @@ public class RobotContainer {
     // Translation2d(2 * 30 * .0254, -1 * 30 * .0254)),
     // // End 3 meters straight ahead of where we started, facing forward
     // new Pose2d(3 * 30 * .0254, 0, new Rotation2d(0)), config);
+    String trajectoryJSON = "paths/slalom-path.wpilib.json";
+    Trajectory trajectory = new Trajectory();
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+      System.out.println("Unable to open trajectory: " + trajectoryJSON);
+    }
 
     List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 2));
     // List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 3), new
@@ -156,7 +156,7 @@ public class RobotContainer {
         AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(exampleTrajectory,
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory,
         driveTrain::getPose, // Functional interface to feed supplier
         driveTrain.kinematics,
         // Position controllers
@@ -164,7 +164,7 @@ public class RobotContainer {
         thetaController, driveTrain::setModuleStates, driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
-    driveTrain.resetOdometryWithPose2d(exampleTrajectory.getInitialPose());
+    driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
