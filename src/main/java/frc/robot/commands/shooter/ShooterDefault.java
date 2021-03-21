@@ -9,11 +9,12 @@ import frc.robot.constants.Constants;
 import frc.robot.subsystems.shooter.Shooter;
 
 public class ShooterDefault extends CommandBase {
-  private Shooter subsystem;
+  private Shooter subsystemShooter;
   
   /** Creates a new HopperDefault. */
   public ShooterDefault(Shooter subsystem) {
-    this.subsystem = subsystem;
+    this.subsystemShooter = subsystem;
+    addRequirements(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,7 +27,7 @@ public class ShooterDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.subsystem.setMototrSpeed(Constants.ShooterConstants.Shooter_DEFAULT_SPEED);
+    this.subsystemShooter.setMototrSpeed(Constants.ShooterConstants.SHOOTER_DEFAULT_RPM);
   }
 
   // Called once the command ends or is interrupted.

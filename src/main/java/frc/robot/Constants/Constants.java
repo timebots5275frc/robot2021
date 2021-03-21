@@ -62,9 +62,11 @@ public class Constants {
     }
     public static final class ShooterConstants {
 
-        public static final int Shooter_MOTOR_ID = -1;
-        public static final double Shooter_FIRE_SPEED = 0.1;
-        public static final double Shooter_DEFAULT_SPEED = 0.0; 
+        public static final int SHOOTER_MOTOR_ID = -1;
+        
+        public static final double SHOOTER_FIRE_RPM = 1000;
+        public static final double SHOOTER_MAX_RPM = 5700;
+        public static final double SHOOTER_DEFAULT_RPM = 0.0; 
 
     }
 
