@@ -96,7 +96,7 @@ public class RobotContainer {
 			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
 		} catch (IOException ex) {
 			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-			System.out.println("Unable to open trajectory: " + trajectoryJSON);
+			// System.out.println("Unable to open trajectory: " + trajectoryJSON);
 		}
 
 		/**
