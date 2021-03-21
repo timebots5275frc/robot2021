@@ -46,136 +46,90 @@ import java.util.List;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  public final DriveTrain driveTrain = new DriveTrain();
-  private final DriveHome driveHomeCommand = new DriveHome(driveTrain);
+	// The robot's subsystems and commands are defined here...
+	public final DriveTrain driveTrain = new DriveTrain();
+	private final DriveHome driveHomeCommand = new DriveHome(driveTrain);
 
-  public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
-  public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
-  Trajectory exampleTrajectory = new Trajectory();
+	public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
+	public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
+	Trajectory exampleTrajectory = new Trajectory();
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
+	/**
+	 * The container for the robot. Contains subsystems, OI devices, and commands.
+	 */
+	public RobotContainer() {
+		// Configure the button bindings
+		configureButtonBindings();
 
-    driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, driveStick, auxStick, true)); // fieldRelative = false
-    // String trajectoryJSON = "paths/Bounce.wpilib.json";
-    // exampleTrajectory = new Trajectory();
-    // exampleTrajectory = driveTrain.loadTrajectoryFromFile("Unnamed_0.path");
+		driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, driveStick, auxStick, true));
+		// fieldRelative = false
 
-  }
+	}
 
-  // public DriveTrain getDriveTrain(){
-  // return m_driveTrain ;
-  // }
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    new JoystickButton(driveStick, 1).whenHeld(driveHomeCommand);
-  }
+	/**
+	 * Use this method to define your button->command mappings. Buttons can be
+	 * created by instantiating a {@link GenericHID} or one of its subclasses
+	 * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+	 * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+	 */
+	private void configureButtonBindings() {
+		new JoystickButton(driveStick, 1).whenHeld(driveHomeCommand);
+	}
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    System.out.println("getAutonomousCommand");
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(AutoConstants.MAX_Speed_MetersPerSecond,
-        AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(driveTrain.kinematics);
+	/**
+	 * Use this to pass the autonomous command to the main {@link Robot} class.
+	 *
+	 * @return the command to run in autonomous
+	 */
+	public Command getAutonomousCommand() {
+		System.out.println("getAutonomousCommand");
+		// Create config for trajectory
+		TrajectoryConfig config = new TrajectoryConfig(AutoConstants.MAX_Speed_MetersPerSecond,
+				AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
+						// Add kinematics to ensure max speed is actually obeyed
+						.setKinematics(driveTrain.kinematics);
 
-    // cubic splines
-    // cubic splines
-    // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-    // // Start at the origin facing the +X direction
-    // new Pose2d(0, 0, new Rotation2d(0)),
-    // // Pass through these two interior waypoints, making an 's' curve path
-    // List.of(new Translation2d(1 * 30 * .0254, 1 * 30 * .0254), new
-    // Translation2d(2 * 30 * .0254, -1 * 30 * .0254)),
-    // // End 3 meters straight ahead of where we started, facing forward
-    // new Pose2d(3 * 30 * .0254, 0, new Rotation2d(0)), config);
-    String trajectoryJSON = "paths/slalom-path.wpilib.json";
-    Trajectory trajectory = new Trajectory();
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-      System.out.println("Unable to open trajectory: " + trajectoryJSON);
-    }
+		String trajectoryJSON = "paths/slalom-path.wpilib.json";
+		Trajectory trajectory = new Trajectory();
+		try {
+			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+		} catch (IOException ex) {
+			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+			System.out.println("Unable to open trajectory: " + trajectoryJSON);
+		}
 
-    List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 2));
-    // List<Translation2d> listTranslation2d = List.of(new Translation2d(2, 3), new
-    // Translation2d(3, 5),
-    // new Translation2d(3, 4), new Translation2d(3, 3), new Translation2d(5, 1),
-    // new Translation2d(6, 2),
-    // new Translation2d(6, 4), new Translation2d(6, 5), new Translation2d(6, 4),
-    // new Translation2d(6, 2),
-    // new Translation2d(7, 1), new Translation2d(8, 1), new Translation2d(9, 3),
-    // new Translation2d(9, 5),
-    // new Translation2d(9, 3), new Translation2d(11, 3));
+		/**
+		 * For clamped cubic splines, this method accepts two Pose2d objects, one for
+		 * the starting waypoint and one for the ending waypoint. The method takes in a
+		 * vector of Translation2d objects which represent the interior waypoints. The
+		 * headings at these interior waypoints are determined automatically to ensure
+		 * continuous curvature. For quintic splines, the method simply takes in a list
+		 * of Pose2d objects, with each Pose2d representing a point and heading on the
+		 * field.
+		 */
 
-    Rotation2d zero = Rotation2d.fromDegrees(0);
-    List<Pose2d> listPose2d = List.of(new Pose2d(0, 0, zero), new Pose2d(2.2, 1, zero), new Pose2d(3, 1, zero),
-        new Pose2d(4, 3, zero), new Pose2d(8, 3, zero), new Pose2d(9, 2, zero), new Pose2d(10, 1, zero),
-        new Pose2d(11, 2, zero), new Pose2d(10, 3, zero), new Pose2d(9, 2, zero), new Pose2d(8.2, 2, zero),
-        new Pose2d(6, 1, zero), new Pose2d(4, 1, zero), new Pose2d(3, 11, zero), new Pose2d(2, 3, zero));
+		var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
+				AutoConstants.kThetaControllerConstraints);
+		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    List<Pose2d> listPose2dtest = List.of(new Pose2d(0, 0, zero), new Pose2d(2.2, 1, zero), new Pose2d(3, 1, zero),
-        new Pose2d(4, 3, zero), new Pose2d(8, 3, zero), new Pose2d(9, 2, zero), new Pose2d(10, 1, zero),
-        new Pose2d(11, 2, zero), new Pose2d(10, 3, zero), new Pose2d(9, 2, zero), new Pose2d(8.2, 2, zero));
+		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose, // Functional
+																														// interface
+																														// to
+																														// feed
+																														// supplier
+				driveTrain.kinematics,
+				// Position controllers
+				new PIDController(AutoConstants.kPXController, 0, 0),
+				new PIDController(AutoConstants.kPYController, 0, 0), thetaController, driveTrain::setModuleStates,
+				driveTrain);
 
-    Pose2d offset = new Pose2d(.5, 2.5, new Rotation2d(0));
-    // Trajectory exampleTrajectory = DriveTrain.generateTrajectory(config, offset,
-    // listTranslation2d);
-    // Trajectory exampleTrajectory =
-    // TrajectoryGenerator.generateTrajectory(listTranslation2d, config, offset,
-    // listPose2d);
+		// Reset odometry to the starting pose of the trajectory.
+		driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
 
-    /**
-     * For clamped cubic splines, this method accepts two Pose2d objects, one for
-     * the starting waypoint and one for the ending waypoint. The method takes in a
-     * vector of Translation2d objects which represent the interior waypoints. The
-     * headings at these interior waypoints are determined automatically to ensure
-     * continuous curvature. For quintic splines, the method simply takes in a list
-     * of Pose2d objects, with each Pose2d representing a point and heading on the
-     * field.
-     */
+		// Run path following command, then stop at the end.
+		return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
 
-    var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
-        AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory,
-        driveTrain::getPose, // Functional interface to feed supplier
-        driveTrain.kinematics,
-        // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0), new PIDController(AutoConstants.kPYController, 0, 0),
-        thetaController, driveTrain::setModuleStates, driveTrain);
-
-    // Reset odometry to the starting pose of the trajectory.
-    driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
-
-    // https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervecontrollercommand/subsystems/DriveSubsystem.java
-  }
+		// https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervecontrollercommand/subsystems/DriveSubsystem.java
+	}
 }
-
-/**
- * y x 0 0 .5 .5
- * 
- * 
- * 
- */
