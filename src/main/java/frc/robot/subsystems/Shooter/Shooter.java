@@ -24,6 +24,8 @@ public class Shooter extends SubsystemBase {
         shooterMotor = new CANSparkMax(Constants.ShooterConstants.SHOOTER_MOTOR_ID,
                 CANSparkMaxLowLevel.MotorType.kBrushless);
 
+        shooterMotor.setClosedLoopRampRate(10);
+
         /**
          * In order to use PID functionality for a controller, a CANPIDController object
          * is constructed by calling the getPIDController() method on an existing
