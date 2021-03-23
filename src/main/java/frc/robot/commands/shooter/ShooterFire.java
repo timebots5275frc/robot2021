@@ -27,7 +27,8 @@ public class ShooterFire extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.subsystemShooter.setMototrSpeed(Constants.ShooterConstants.SHOOTER_FIRE_RPM);
+    System.out.println("Constants.ShooterConstants.SHOOTER_FIRE_RPM" + Constants.ShooterConstants.SHOOTER_FIRE_RPM);
+    // this.subsystemShooter.setMototrSpeed(Constants.ShooterConstants.SHOOTER_FIRE_RPM);
   }
 
   // Called once the command ends or is interrupted.
