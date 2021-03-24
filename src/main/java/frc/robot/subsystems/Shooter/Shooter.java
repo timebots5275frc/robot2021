@@ -37,7 +37,7 @@ public class Shooter extends SubsystemBase {
         m_encoder = shooterMotor.getEncoder();
 
         // PID coefficients
-        kP = 6e-5;
+        kP = 0.001;
         kI = 0;
         kD = 0;
         kIz = 0;
@@ -65,7 +65,8 @@ public class Shooter extends SubsystemBase {
 
     public void setMototrSpeed(double input) {
         if (input < Constants.ShooterConstants.SHOOTER_MAX_RPM) {
-            m_pidController.setReference(input, ControlType.kVelocity);
+            System.out.println("input" + input);
+            m_pidController.setReference(-input, ControlType.kVelocity);
         } else {
             System.out.println("Shooter Motor Warning - Cannot Set Motor RPM Over Limit Of " + Constants.ShooterConstants.SHOOTER_MAX_RPM);
         }

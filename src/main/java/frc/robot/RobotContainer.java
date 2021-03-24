@@ -21,17 +21,17 @@ import frc.robot.subsystems.shooter.Shooter;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Joystick driveStick;
+  private Joystick driveStick = new Joystick(0);
 
   private Shooter subShooter = new Shooter();
-  private ShooterFire shooterFireCommand = new ShooterFire(subShooter);
+  private ShooterFire shooterFireCommand = new ShooterFire(subShooter, driveStick);
   private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
+    subShooter.setDefaultCommand(shooterDefaultCommand);
   }
 
   /**
