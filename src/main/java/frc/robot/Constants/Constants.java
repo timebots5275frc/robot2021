@@ -5,12 +5,14 @@
 package frc.robot.constants;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean constants. This class should not be used for any other
+ * purpose. All constants should be declared globally (i.e. public static). Do
+ * not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the constants are needed, to reduce verbosity.
  */
 public class Constants {
 
@@ -34,9 +36,11 @@ public class Constants {
         public static final int kRightRearSteerEncoderID = 12;
         public static final int kLeftRearSteerEncoderID = 13;
 
-        // These constants define the location of the wheels from the center of the robot.
+        // These constants define the location of the wheels from the center of the
+        // robot.
         // These coordinates are determined by the right hand rule.
-        // Index finger points in the forward X direction, Thumb points up in the positive Z direction,
+        // Index finger points in the forward X direction, Thumb points up in the
+        // positive Z direction,
         // Middle finger points left in the positive Y direction.
         public static final double kLeftFrontWheel_X = 11.75 * 0.0254; // meters
         public static final double kLeftFrontWheel_Y = 11.75 * 0.0254; // meters
@@ -50,25 +54,34 @@ public class Constants {
         public static final double kWheelRadius = 2.0 * 0.0254; // meters
 
         // Drive motor gear ratio.
-        //              | Driving Gear | Driven Gear |
-        // First Stage  |     14       |     50      |
-        // Second Stage |     28       |     16      |
-        // Third Stage  |     15       |     60      |
+        // | Driving Gear | Driven Gear |
+        // First Stage | 14 | 50 |
+        // Second Stage | 28 | 16 |
+        // Third Stage | 15 | 60 |
         //
-        // Overall Gear Ratio = 0.1225 
-        // One rotation of the motor gives 0.1225 rotations of the wheel. 
+        // Overall Gear Ratio = 0.1225
+        // One rotation of the motor gives 0.1225 rotations of the wheel.
         public static final double kDriveGearRatio = (14.0 / 50.0) * (28.0 / 16.0) * (15.0 / 60.0);
 
     }
-    
+
     public static final class ShooterConstants {
 
         public static final int SHOOTER_MOTOR_ID = 52;
-        
+
         public static final double SHOOTER_FIRE_RPM = 5000;
         public static final double SHOOTER_MAX_RPM = 5700;
-        public static final double SHOOTER_DEFAULT_RPM = 0.0; 
+        public static final double SHOOTER_DEFAULT_RPM = 0.0;
 
+    }
+
+    /**
+     * @Title HopperConstants
+     */
+    public static final class HopperConstants {
+        public static final int HOPPER_MOTOR_ID = -1;
+        public static final double HOPPER_FIRE_SPEED = 0.2;
+        public static final double HOPPER_DEFAULT_SPEED = 0.1;
     }
 
 }
