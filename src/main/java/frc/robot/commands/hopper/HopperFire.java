@@ -28,6 +28,7 @@ public class HopperFire extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Constants.HopperConstants.HOPPER_FIRE_SPEED" + Constants.HopperConstants.HOPPER_FIRE_SPEED);
     this.subsystem.setMototrSpeed(Constants.HopperConstants.HOPPER_FIRE_SPEED);
   }
 
