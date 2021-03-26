@@ -14,7 +14,7 @@ public class HopperDefault extends CommandBase {
   /** Creates a new HopperDefault. */
   public HopperDefault(Hopper subsystem) {
     this.subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem); //here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

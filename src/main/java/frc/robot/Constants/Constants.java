@@ -69,7 +69,7 @@ public class Constants {
 
         public static final int SHOOTER_MOTOR_ID = 52;
 
-        public static final double SHOOTER_FIRE_RPM = 5000;
+        public static final double SHOOTER_FIRE_RPM = 3000;
         public static final double SHOOTER_MAX_RPM = 5700;
         public static final double SHOOTER_DEFAULT_RPM = 0.0;
 
@@ -80,8 +80,8 @@ public class Constants {
      */
     public static final class HopperConstants {
         public static final int HOPPER_MOTOR_ID = -1;
-        public static final double HOPPER_FIRE_SPEED = 0.2;
-        public static final double HOPPER_DEFAULT_SPEED = 0.1;
+        public static final double HOPPER_FIRE_SPEED = 0.1;
+        public static final double HOPPER_DEFAULT_SPEED = 0;
     }
 
 }
