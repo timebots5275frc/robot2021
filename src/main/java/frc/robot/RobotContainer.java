@@ -32,7 +32,6 @@ public class RobotContainer {
 
 
   private Hopper subHopper = new Hopper();
-
   private HopperFire hopperFireCommand = new HopperFire(subHopper);
   private HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
 
