@@ -61,7 +61,7 @@ public class RobotContainer {
 		// Configure the button bindings
 		configureButtonBindings();
 
-		driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, driveStick, auxStick, true));
+		driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, driveStick, auxStick, false));
 		// fieldRelative = false
 
 	}
