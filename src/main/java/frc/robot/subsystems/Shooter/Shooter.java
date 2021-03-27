@@ -13,7 +13,7 @@ import com.revrobotics.*;
  * Description:
  */
 public class Shooter extends SubsystemBase {
-    private CANSparkMax shooterMotor;
+    public CANSparkMax shooterMotor;
     private CANPIDController m_pidController;
     private CANEncoder m_encoder;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
         shooterMotor = new CANSparkMax(Constants.ShooterConstants.SHOOTER_MOTOR_ID,
                 CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        shooterMotor.setClosedLoopRampRate(10);
+        shooterMotor.setClosedLoopRampRate(5);
 
         /**
          * In order to use PID functionality for a controller, a CANPIDController object
@@ -38,7 +38,7 @@ public class Shooter extends SubsystemBase {
 
         // PID coefficients
         kP = 0.001;
-        kI = 0;
+        kI = 0.000001;
         kD = 0;
         kIz = 0;
         kFF = 0.000015;

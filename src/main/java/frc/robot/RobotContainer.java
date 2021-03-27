@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.hopper.HopperBack;
 import frc.robot.commands.hopper.HopperDefault;
 import frc.robot.commands.hopper.HopperFire;
 import frc.robot.commands.shooter.ShooterDefault;
@@ -33,6 +34,7 @@ public class RobotContainer {
 
   private Hopper subHopper = new Hopper();
   private HopperFire hopperFireCommand = new HopperFire(subHopper);
+  private HopperBack hopperBackCommand = new HopperBack(subHopper);
   private HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -51,7 +53,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
-    new JoystickButton(driveStick, 2).whenHeld(hopperFireCommand);
+    new JoystickButton(driveStick, 3).whenHeld(hopperFireCommand);
+    new JoystickButton(driveStick, 4).whenHeld(hopperBackCommand);
 
   }
 

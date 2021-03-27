@@ -5,6 +5,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.shooter.Shooter;
@@ -33,7 +34,12 @@ public class ShooterFire extends CommandBase {
   @Override
   public void execute() {
     // System.out.println("Constants.ShooterConstants.SHOOTER_FIRE_RPM" + Constants.ShooterConstants.SHOOTER_FIRE_RPM);
-    this.subsystemShooter.setMototrSpeed(Constants.ShooterConstants.SHOOTER_FIRE_RPM * joy.getY());
+    // this.subsystemShooter.mo
+
+    
+    SmartDashboard.putNumber("m_encoder", this.subsystemShooter.shooterMotor.getEncoder().getVelocity());
+
+    this.subsystemShooter.setMototrSpeed(Constants.ShooterConstants.SHOOTER_FIRE_RPM);
   }
 
   // Called once the command ends or is interrupted.
