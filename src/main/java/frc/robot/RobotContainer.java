@@ -53,14 +53,16 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
 	public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
+
+	public final DriveTrain driveTrain = new DriveTrain();
+	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, false);
+
 	private Intake intakeSubsystem = new Intake();
 	private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
 	private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
 	private IntakeOn intakeOn = new IntakeOn(intakeSubsystem);
 	private IntakeOff intakeOff = new IntakeOff(intakeSubsystem);
 
-	public final DriveTrain driveTrain = new DriveTrain();
-	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, false);
 	private Pneumatics pneumaticsSubsystem = new Pneumatics();
 
 	private Shooter subShooter = new Shooter();
@@ -78,9 +80,10 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the button bindings
 		configureButtonBindings();
-		subShooter.setDefaultCommand(shooterDefaultCommand);
-		subHopper.setDefaultCommand(hopperDefaultCommand);
-		driveTrain.setDefaultCommand(driveJoyCommand);
+		// subShooter.setDefaultCommand(shooterDefaultCommand);
+		// subHopper.setDefaultCommand(hopperDefaultCommand);
+		// driveTrain.setDefaultCommand(driveJoyCommand);
+		intakeSubsystem.setDefaultCommand(intakeOff);
 	}
 
 	/**
@@ -90,15 +93,23 @@ public class RobotContainer {
 	 * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		new JoystickButton(driveStick, 7).whenPressed(() -> driveJoyCommand.setFieldRelative(false));
-		new JoystickButton(driveStick, 8).whenPressed(() -> driveJoyCommand.setFieldRelative(true));
+		// new JoystickButton(driveStick, 7).whenPressed(() ->
+		// driveJoyCommand.setFieldRelative(false));
+		// new JoystickButton(driveStick, 8).whenPressed(() ->
+		// driveJoyCommand.setFieldRelative(true));
 
-		new JoystickButton(driveStick, 9).whenPressed(() -> driveTrain.resetADIS16470());
-		new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.resetOdometry());
+		// new JoystickButton(driveStick, 9).whenPressed(() ->
+		// driveTrain.resetADIS16470());
+		// new JoystickButton(driveStick, 10).whenPressed(() ->
+		// driveTrain.resetOdometry());
 
-		new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
-		new JoystickButton(driveStick, 3).whenHeld(hopperBackCommand);
-		new JoystickButton(driveStick, 4).whenHeld(hopperFireCommand);
+		// new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
+		// new JoystickButton(driveStick, 3).whenHeld(hopperBackCommand);
+		// new JoystickButton(driveStick, 4).whenHeld(hopperFireCommand);
+
+		new JoystickButton(driveStick, 5).whenHeld(intakeOff);
+		new JoystickButton(driveStick, 6).whenHeld(intakeOn);
+
 	}
 
 	/**

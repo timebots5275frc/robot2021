@@ -12,13 +12,14 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
  * Description:
  */
 public class Intake extends SubsystemBase {
-    // private Solenoid solenoid1 = new Solenoid(1);
-    private DoubleSolenoid doubleSolenoid1 = new DoubleSolenoid(1, 2);
-    private DoubleSolenoid doubleSolenoid2 = new DoubleSolenoid(3, 4);
 
     // exampleDouble.set(kOff);
     // exampleDouble.set(kForward);
     // exampleDouble.set(kReverse);
+    
+    private DoubleSolenoid doubleSolenoid1 = new DoubleSolenoid(1, 2);
+    private DoubleSolenoid doubleSolenoid2 = new DoubleSolenoid(3, 4);
+
 
     // IMPORTANT
     private TalonSRX intakeMotor1 = new TalonSRX(Constants.IntakeConstants.MOTOR_CAN_ID);

@@ -122,10 +122,10 @@ public class Constants {
         public static final double SHOOTER_FIRE_RPM = 5000;
         public static final double SHOOTER_MAX_RPM = 5700;
         public static final double SHOOTER_DEFAULT_RPM = 0.0;
-     * @Title IntakeConstants
-     */
+    }
+
     public static final class IntakeConstants {
-        public static final int MOTOR_CAN_ID = 10;
+        public static final int MOTOR_CAN_ID = 13;
         public static final double MOTOR_SPEED = 0.4;
         public static final int COMPRESSOR_CAN_ID = -1;
     }
