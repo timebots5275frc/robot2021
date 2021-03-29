@@ -4,11 +4,12 @@
 
 package frc.robot;
 
-import frc.robot.constants.Constants;
-import frc.robot.constants.Constants.AutoConstants;
-import frc.robot.subsystems.driveTrain.DriveHome;
 import frc.robot.subsystems.driveTrain.DriveTrain;
-import frc.robot.subsystems.driveTrain.JoystickDrive;
+
+import frc.robot.constants.Constants;
+
+import frc.robot.commands.driveTrain.JoystickDrive;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -36,7 +37,7 @@ import java.nio.file.Path;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public final DriveTrain driveTrain = new DriveTrain();
-	private final DriveHome driveHomeCommand = new DriveHome(driveTrain);
+	// private final DriveHome driveHomeCommand = new DriveHome(driveTrain);
 
 	public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
 	public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
@@ -61,7 +62,7 @@ public class RobotContainer {
 	 * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		new JoystickButton(driveStick, 1).whenHeld(driveHomeCommand);
+		// new JoystickButton(driveStick, 1);
 	}
 
 	/**
@@ -72,8 +73,8 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		System.out.println("getAutonomousCommand");
 		// Create config for trajectory
-		TrajectoryConfig config = new TrajectoryConfig(AutoConstants.MAX_Speed_MetersPerSecond,
-				AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
+		TrajectoryConfig config = new TrajectoryConfig(Constants.AutoConstants.MAX_Speed_MetersPerSecond,
+		Constants.AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
 						// Add kinematics to ensure max speed is actually obeyed
 						.setKinematics(driveTrain.kinematics);
 
@@ -97,8 +98,8 @@ public class RobotContainer {
 		 * field.
 		 */
 
-		var thetaController = new ProfiledPIDController(AutoConstants.kPThetaController, 0, 0,
-				AutoConstants.kThetaControllerConstraints);
+		var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
+		Constants.AutoConstants.kThetaControllerConstraints);
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
 		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose, // Functional
@@ -108,8 +109,8 @@ public class RobotContainer {
 																														// supplier
 				driveTrain.kinematics,
 				// Position controllers
-				new PIDController(AutoConstants.kPXController, 0, 0),
-				new PIDController(AutoConstants.kPYController, 0, 0), thetaController, driveTrain::setModuleStates,
+				new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+				new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController, driveTrain::setModuleStates,
 				driveTrain);
 
 		// Reset odometry to the starting pose of the trajectory.

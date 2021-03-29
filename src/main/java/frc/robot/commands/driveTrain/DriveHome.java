@@ -5,16 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.driveTrain;
+package frc.robot.commands.driveTrain;
+import frc.robot.subsystems.driveTrain.DriveTrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class AutoNav extends CommandBase {
+public class DriveHome extends CommandBase {
+  private DriveTrain driveTrain;
+
   /**
-   * Creates a new AutoNav.
+   * Creates a new DriveHome.
    */
-  public AutoNav() {
+  public DriveHome(DriveTrain subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    driveTrain = subsystem;
+    addRequirements(driveTrain);
+
   }
 
   // Called when the command is initially scheduled.
@@ -25,6 +31,7 @@ public class AutoNav extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("DriveHome Running (:");
   }
 
   // Called once the command ends or is interrupted.
