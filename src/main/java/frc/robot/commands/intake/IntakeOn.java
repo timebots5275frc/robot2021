@@ -14,6 +14,8 @@ public class IntakeOn extends CommandBase {
 
   public IntakeOn(Intake subsystem) {
     this.subsystem = subsystem;
+    addRequirements(subsystem);
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

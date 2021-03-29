@@ -12,6 +12,8 @@ public class IntakeOff extends CommandBase {
 
   public IntakeOff(Intake subsystem) {
     this.subsystem = subsystem;
+    addRequirements(subsystem);
+
   }
 
   // Called when the command is initially scheduled.
