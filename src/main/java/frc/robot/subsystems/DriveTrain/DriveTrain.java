@@ -17,11 +17,9 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator.ControlVectorList;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +54,6 @@ public class DriveTrain extends SubsystemBase {
 			rightRearWheelLoc, leftRearWheelLoc);
 
 	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kinematics, this.getHeading());
-	private Pose2d m_pose;
 
 	public DriveTrain() {
 		System.out.println("DriveTrain (:");

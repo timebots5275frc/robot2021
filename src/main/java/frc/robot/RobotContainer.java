@@ -36,12 +36,11 @@ import java.nio.file.Path;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	public final DriveTrain driveTrain = new DriveTrain();
-	// private final DriveHome driveHomeCommand = new DriveHome(driveTrain);
-
 	public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
 	public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
-	Trajectory exampleTrajectory = new Trajectory();
+
+	public final DriveTrain driveTrain = new DriveTrain();
+	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, false);
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -50,9 +49,7 @@ public class RobotContainer {
 		// Configure the button bindings
 		configureButtonBindings();
 
-		driveTrain.setDefaultCommand(new JoystickDrive(driveTrain, driveStick, auxStick, false));
-		// fieldRelative = false
-
+		driveTrain.setDefaultCommand(driveJoyCommand);
 	}
 
 	/**
@@ -62,7 +59,11 @@ public class RobotContainer {
 	 * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		// new JoystickButton(driveStick, 1);
+		new JoystickButton(driveStick, 7).whenPressed(() -> driveJoyCommand.setFieldRelative(false) );
+		new JoystickButton(driveStick, 8).whenPressed(() -> driveJoyCommand.setFieldRelative(true) );
+		
+		new JoystickButton(driveStick, 9).whenPressed(() -> driveTrain.resetADIS16470() );
+		new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.resetOdometry());
 	}
 
 	/**

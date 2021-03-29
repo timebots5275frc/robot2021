@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands.driveTrain;
+
 import frc.robot.subsystems.driveTrain.DriveTrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -120,5 +121,9 @@ public class JoystickDrive extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public void setFieldRelative(boolean bool) {
+    this.fieldRelative = bool;
   }
 }
