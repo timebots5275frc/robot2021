@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.driveTrain.DriveTrain;
+// import frc.robot.subsystems.driveTrain.DriveTrain;
 
 import frc.robot.constants.Constants;
 
@@ -29,6 +29,7 @@ import frc.robot.commands.hopper.HopperDefault;
 import frc.robot.commands.hopper.HopperFire;
 import frc.robot.commands.shooter.ShooterDefault;
 import frc.robot.commands.shooter.ShooterFire;
+import frc.robot.subsystems.driveTrain.DriveTrain;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.shooter.Shooter;
 
@@ -49,25 +50,26 @@ public class RobotContainer {
 
 	public final DriveTrain driveTrain = new DriveTrain();
 	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, false);
-  private Shooter subShooter = new Shooter();
-  private ShooterFire shooterFireCommand = new ShooterFire(subShooter, driveStick);
-  private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
 
+	private Shooter subShooter = new Shooter();
+	private ShooterFire shooterFireCommand = new ShooterFire(subShooter, driveStick);
+	private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
 
-  private Hopper subHopper = new Hopper();
-  private HopperFire hopperFireCommand = new HopperFire(subHopper);
-  private HopperBack hopperBackCommand = new HopperBack(subHopper);
-  private HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
+	private Hopper subHopper = new Hopper();
+	private HopperFire hopperFireCommand = new HopperFire(subHopper);
+	private HopperBack hopperBackCommand = new HopperBack(subHopper);
+	private HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-    subShooter.setDefaultCommand(shooterDefaultCommand);
-    subHopper.setDefaultCommand(hopperDefaultCommand);
-  }
-
+	/**
+	 * The container for the robot. Contains subsystems, OI devices, and commands.
+	 */
+	public RobotContainer() {
+		// Configure the button bindings
+		configureButtonBindings();
+		subShooter.setDefaultCommand(shooterDefaultCommand);
+		subHopper.setDefaultCommand(hopperDefaultCommand);
 		driveTrain.setDefaultCommand(driveJoyCommand);
+	}
 
 	/**
 	 * Use this method to define your button->command mappings. Buttons can be
@@ -76,11 +78,15 @@ public class RobotContainer {
 	 * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		new JoystickButton(driveStick, 7).whenPressed(() -> driveJoyCommand.setFieldRelative(false) );
-		new JoystickButton(driveStick, 8).whenPressed(() -> driveJoyCommand.setFieldRelative(true) );
-		
-		new JoystickButton(driveStick, 9).whenPressed(() -> driveTrain.resetADIS16470() );
+		new JoystickButton(driveStick, 7).whenPressed(() -> driveJoyCommand.setFieldRelative(false));
+		new JoystickButton(driveStick, 8).whenPressed(() -> driveJoyCommand.setFieldRelative(true));
+
+		new JoystickButton(driveStick, 9).whenPressed(() -> driveTrain.resetADIS16470());
 		new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.resetOdometry());
+
+		new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
+		new JoystickButton(driveStick, 3).whenHeld(hopperBackCommand);
+		new JoystickButton(driveStick, 4).whenHeld(hopperFireCommand);
 	}
 
 	/**
@@ -92,7 +98,7 @@ public class RobotContainer {
 		System.out.println("getAutonomousCommand");
 		// Create config for trajectory
 		TrajectoryConfig config = new TrajectoryConfig(Constants.AutoConstants.MAX_Speed_MetersPerSecond,
-		Constants.AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
+				Constants.AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
 						// Add kinematics to ensure max speed is actually obeyed
 						.setKinematics(driveTrain.kinematics);
 
@@ -117,7 +123,7 @@ public class RobotContainer {
 		 */
 
 		var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
-		Constants.AutoConstants.kThetaControllerConstraints);
+				Constants.AutoConstants.kThetaControllerConstraints);
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
 		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose, // Functional
@@ -128,8 +134,8 @@ public class RobotContainer {
 				driveTrain.kinematics,
 				// Position controllers
 				new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-				new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController, driveTrain::setModuleStates,
-				driveTrain);
+				new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
+				driveTrain::setModuleStates, driveTrain);
 
 		// Reset odometry to the starting pose of the trajectory.
 		driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());

@@ -106,21 +106,23 @@ public class Constants {
         public static final double MAX_Acceleration_MetersPerSecondSquared = 0.4;
         public static final double MAX_AngularSpeed_RadiansPerSecond = Math.PI;
         public static final double Max_AngularSpeed_RadiansPerSecondSquared = Math.PI;
-    public static final class ShooterConstants {
 
         public static final double kPXController = 1;
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
-        public static final int SHOOTER_MOTOR_ID = 52;
 
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                 MAX_AngularSpeed_RadiansPerSecond, Max_AngularSpeed_RadiansPerSecondSquared);
     }
+
+    public static final class ShooterConstants {
+        public static final int SHOOTER_MOTOR_ID = 52;
+
         public static final double SHOOTER_FIRE_RPM = 5000;
         public static final double SHOOTER_MAX_RPM = 5700;
         public static final double SHOOTER_DEFAULT_RPM = 0.0;
-
+    }
 
     /**
      * @Title HopperConstants
