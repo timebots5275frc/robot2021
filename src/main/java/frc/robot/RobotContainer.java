@@ -23,6 +23,14 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.hopper.HopperBack;
+import frc.robot.commands.hopper.HopperDefault;
+import frc.robot.commands.hopper.HopperFire;
+import frc.robot.commands.shooter.ShooterDefault;
+import frc.robot.commands.shooter.ShooterFire;
+import frc.robot.subsystems.hopper.Hopper;
+import frc.robot.subsystems.shooter.Shooter;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -41,16 +49,25 @@ public class RobotContainer {
 
 	public final DriveTrain driveTrain = new DriveTrain();
 	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, false);
+  private Shooter subShooter = new Shooter();
+  private ShooterFire shooterFireCommand = new ShooterFire(subShooter, driveStick);
+  private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
 
-	/**
-	 * The container for the robot. Contains subsystems, OI devices, and commands.
-	 */
-	public RobotContainer() {
-		// Configure the button bindings
-		configureButtonBindings();
+
+  private Hopper subHopper = new Hopper();
+  private HopperFire hopperFireCommand = new HopperFire(subHopper);
+  private HopperBack hopperBackCommand = new HopperBack(subHopper);
+  private HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  public RobotContainer() {
+    // Configure the button bindings
+    configureButtonBindings();
+    subShooter.setDefaultCommand(shooterDefaultCommand);
+    subHopper.setDefaultCommand(hopperDefaultCommand);
+  }
 
 		driveTrain.setDefaultCommand(driveJoyCommand);
-	}
 
 	/**
 	 * Use this method to define your button->command mappings. Buttons can be
