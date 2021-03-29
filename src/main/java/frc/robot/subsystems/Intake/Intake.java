@@ -13,8 +13,8 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
  */
 public class Intake extends SubsystemBase {
     // private Solenoid solenoid1 = new Solenoid(1);
-    private DoubleSolenoid doubleSolenoid1 = new DoubleSolenoid(1, 2);
-    private DoubleSolenoid doubleSolenoid2 = new DoubleSolenoid(3, 4);
+    // private DoubleSolenoid doubleSolenoid1 = new DoubleSolenoid(1, 2);
+    // private DoubleSolenoid doubleSolenoid2 = new DoubleSolenoid(3, 4);
 
     // exampleDouble.set(kOff);
     // exampleDouble.set(kForward);
@@ -32,20 +32,20 @@ public class Intake extends SubsystemBase {
         intakeMotor1.set(ControlMode.PercentOutput, input);
     }
 
-    public void setSolenoidExtend() {
-        doubleSolenoid1.set(kForward);
-        doubleSolenoid2.set(kForward);
-    }
+    // public void setSolenoidExtend() {
+    //     doubleSolenoid1.set(kForward);
+    //     doubleSolenoid2.set(kForward);
+    // }
 
-    public void setSolenoidRetract() {
-        doubleSolenoid1.set(kForward);
-        doubleSolenoid2.set(kReverse);
-    }
+    // public void setSolenoidRetract() {
+    //     doubleSolenoid1.set(kForward);
+    //     doubleSolenoid2.set(kReverse);
+    // }
 
-    public void setSolenoidNoAirPressure() {
-        doubleSolenoid1.set(kReverse); // NoAirPressure
-        doubleSolenoid2.set(kOff); // NoAirPressure
-    }
+    // public void setSolenoidNoAirPressure() {
+    //     doubleSolenoid1.set(kReverse); // NoAirPressure
+    //     doubleSolenoid2.set(kOff); // NoAirPressure
+    // }
 
     
 }

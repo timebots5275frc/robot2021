@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.intake.IntakeExtend;
 import frc.robot.commands.intake.IntakeOff;
 import frc.robot.commands.intake.IntakeOn;
@@ -22,13 +24,15 @@ import frc.robot.subsystems.pneumatics.Pneumatics;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+	private Joystick joy = new Joystick(0);
+
 	private Intake intakeSubsystem = new Intake();
-	private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
-	private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
+	// private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
+	// private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
 	private IntakeOn intakeOn = new IntakeOn(intakeSubsystem);
 	private IntakeOff intakeOff = new IntakeOff(intakeSubsystem);
 
-	private Pneumatics pneumaticsSubsystem = new Pneumatics();
+	// private Pneumatics pneumaticsSubsystem = new Pneumatics();
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -36,6 +40,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the button bindings
 		configureButtonBindings();
+		intakeSubsystem.setDefaultCommand(intakeOff);
 	}
 
 	/**
@@ -45,7 +50,7 @@ public class RobotContainer {
 	 * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		
+		new JoystickButton(joy, 6).whenHeld(intakeOn);
 	}
 
 }

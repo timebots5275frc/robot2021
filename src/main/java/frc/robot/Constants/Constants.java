@@ -19,8 +19,8 @@ public class Constants {
      * @Title IntakeConstants
      */
     public static final class IntakeConstants {
-        public static final int MOTOR_CAN_ID = 10;
-        public static final double MOTOR_SPEED = 0.4;
+        public static final int MOTOR_CAN_ID = 11;
+        public static final double MOTOR_SPEED = 0.5;
         public static final int COMPRESSOR_CAN_ID = -1;
     }
 
