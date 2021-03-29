@@ -32,6 +32,12 @@ import frc.robot.commands.shooter.ShooterFire;
 import frc.robot.subsystems.driveTrain.DriveTrain;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.commands.intake.IntakeExtend;
+import frc.robot.commands.intake.IntakeOff;
+import frc.robot.commands.intake.IntakeOn;
+import frc.robot.commands.intake.IntakeRetract;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.pneumatics.Pneumatics;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -47,9 +53,15 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
 	public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
+	private Intake intakeSubsystem = new Intake();
+	private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
+	private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
+	private IntakeOn intakeOn = new IntakeOn(intakeSubsystem);
+	private IntakeOff intakeOff = new IntakeOff(intakeSubsystem);
 
 	public final DriveTrain driveTrain = new DriveTrain();
 	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, false);
+	private Pneumatics pneumaticsSubsystem = new Pneumatics();
 
 	private Shooter subShooter = new Shooter();
 	private ShooterFire shooterFireCommand = new ShooterFire(subShooter, driveStick);
