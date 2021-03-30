@@ -17,8 +17,8 @@ public class Intake extends SubsystemBase {
     // exampleDouble.set(kForward);
     // exampleDouble.set(kReverse);
     
-    private DoubleSolenoid doubleSolenoid1 = new DoubleSolenoid(1, 2);
-    private DoubleSolenoid doubleSolenoid2 = new DoubleSolenoid(3, 4);
+    // private DoubleSolenoid doubleSolenoid1 = new DoubleSolenoid(1, 2);
+    // private DoubleSolenoid doubleSolenoid2 = new DoubleSolenoid(3, 4);
 
 
     // IMPORTANT
@@ -33,20 +33,20 @@ public class Intake extends SubsystemBase {
         intakeMotor1.set(ControlMode.PercentOutput, input);
     }
 
-    public void setSolenoidExtend() {
-        doubleSolenoid1.set(kForward);
-        doubleSolenoid2.set(kForward);
-    }
+    // public void setSolenoidExtend() {
+    //     doubleSolenoid1.set(kForward);
+    //     doubleSolenoid2.set(kForward);
+    // }
 
-    public void setSolenoidRetract() {
-        doubleSolenoid1.set(kForward);
-        doubleSolenoid2.set(kReverse);
-    }
+    // public void setSolenoidRetract() {
+    //     doubleSolenoid1.set(kForward);
+    //     doubleSolenoid2.set(kReverse);
+    // }
 
-    public void setSolenoidNoAirPressure() {
-        doubleSolenoid1.set(kReverse); // NoAirPressure
-        doubleSolenoid2.set(kOff); // NoAirPressure
-    }
+    // public void setSolenoidNoAirPressure() {
+    //     doubleSolenoid1.set(kReverse); // NoAirPressure
+    //     doubleSolenoid2.set(kOff); // NoAirPressure
+    // }
 
     
 }

@@ -22,7 +22,7 @@ public class IntakeRetract extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.subsystem.setSolenoidRetract();
+    // this.subsystem.setSolenoidRetract();
   }
 
   // Called once the command ends or is interrupted.

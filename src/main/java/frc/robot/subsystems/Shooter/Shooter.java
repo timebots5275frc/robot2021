@@ -37,8 +37,8 @@ public class Shooter extends SubsystemBase {
         m_encoder = shooterMotor.getEncoder();
 
         // PID coefficients
-        kP = 0.001;
-        kI = 0.000001;
+        kP = 0.0001;
+        kI = 0;
         kD = 0;
         kIz = 0;
         kFF = 0.000015;

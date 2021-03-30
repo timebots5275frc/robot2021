@@ -58,8 +58,8 @@ public class RobotContainer {
 	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, false);
 
 	private Intake intakeSubsystem = new Intake();
-	private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
-	private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
+	// private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
+	// private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
 	private IntakeOn intakeOn = new IntakeOn(intakeSubsystem);
 	private IntakeOff intakeOff = new IntakeOff(intakeSubsystem);
 
@@ -80,9 +80,9 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the button bindings
 		configureButtonBindings();
-		// subShooter.setDefaultCommand(shooterDefaultCommand);
-		// subHopper.setDefaultCommand(hopperDefaultCommand);
-		// driveTrain.setDefaultCommand(driveJoyCommand);
+		subShooter.setDefaultCommand(shooterDefaultCommand);
+		subHopper.setDefaultCommand(hopperDefaultCommand);
+		driveTrain.setDefaultCommand(driveJoyCommand);
 		intakeSubsystem.setDefaultCommand(intakeOff);
 	}
 
@@ -93,19 +93,19 @@ public class RobotContainer {
 	 * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		// new JoystickButton(driveStick, 7).whenPressed(() ->
-		// driveJoyCommand.setFieldRelative(false));
-		// new JoystickButton(driveStick, 8).whenPressed(() ->
-		// driveJoyCommand.setFieldRelative(true));
+		new JoystickButton(driveStick, 7).whenPressed(() ->
+		driveJoyCommand.setFieldRelative(false));
+		new JoystickButton(driveStick, 8).whenPressed(() ->
+		driveJoyCommand.setFieldRelative(true));
 
-		// new JoystickButton(driveStick, 9).whenPressed(() ->
-		// driveTrain.resetADIS16470());
-		// new JoystickButton(driveStick, 10).whenPressed(() ->
-		// driveTrain.resetOdometry());
+		new JoystickButton(driveStick, 9).whenPressed(() ->
+		driveTrain.resetADIS16470());
+		new JoystickButton(driveStick, 10).whenPressed(() ->
+		driveTrain.resetOdometry());
 
-		// new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
-		// new JoystickButton(driveStick, 3).whenHeld(hopperBackCommand);
-		// new JoystickButton(driveStick, 4).whenHeld(hopperFireCommand);
+		new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
+		new JoystickButton(driveStick, 3).whenHeld(hopperBackCommand);
+		new JoystickButton(driveStick, 4).whenHeld(hopperFireCommand);
 
 		new JoystickButton(driveStick, 5).whenHeld(intakeOff);
 		new JoystickButton(driveStick, 6).whenHeld(intakeOn);
@@ -125,7 +125,7 @@ public class RobotContainer {
 						// Add kinematics to ensure max speed is actually obeyed
 						.setKinematics(driveTrain.kinematics);
 
-		String trajectoryJSON = "paths/slalom-path.wpilib.json";
+		String trajectoryJSON = "paths/.....wpilib.json";
 		Trajectory trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
