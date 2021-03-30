@@ -106,7 +106,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("odometry getX", loc.getX());
     SmartDashboard.putNumber("odometry getY", loc.getY());
     SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
-    SmartDashboard.putNumber(" getRotation", m_robotContainer.driveTrain.getHeading().getDegrees());
+    SmartDashboard.putNumber("getRotation", m_robotContainer.driveTrain.getHeading().getDegrees());
+
+    SmartDashboard.putNumber("m_encoder", m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
+    SmartDashboard.putNumber("OutputCurrent", m_robotContainer.subShooter.shooterMotor.getOutputCurrent() );
+
+    
   }
 
   @Override

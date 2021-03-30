@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
         shooterMotor = new CANSparkMax(Constants.ShooterConstants.SHOOTER_MOTOR_ID,
                 CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        shooterMotor.setClosedLoopRampRate(5);
+        shooterMotor.setClosedLoopRampRate(1);
 
         /**
          * In order to use PID functionality for a controller, a CANPIDController object
@@ -37,11 +37,11 @@ public class Shooter extends SubsystemBase {
         m_encoder = shooterMotor.getEncoder();
 
         // PID coefficients
-        kP = 0.0001;
+        kP = 0.0004;
         kI = 0;
         kD = 0;
         kIz = 0;
-        kFF = 0.000015;
+        kFF = 0.00017; // .000015
         kMaxOutput = 1;
         kMinOutput = -1;
 
@@ -54,13 +54,13 @@ public class Shooter extends SubsystemBase {
         m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
         // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("P Gain", kP);
-        SmartDashboard.putNumber("I Gain", kI);
-        SmartDashboard.putNumber("D Gain", kD);
-        SmartDashboard.putNumber("I Zone", kIz);
-        SmartDashboard.putNumber("Feed Forward", kFF);
-        SmartDashboard.putNumber("Max Output", kMaxOutput);
-        SmartDashboard.putNumber("Min Output", kMinOutput);
+        // SmartDashboard.putNumber("P Gain", kP);
+        // SmartDashboard.putNumber("I Gain", kI);
+        // SmartDashboard.putNumber("D Gain", kD);
+        // SmartDashboard.putNumber("I Zone", kIz);
+        // SmartDashboard.putNumber("Feed Forward", kFF);
+        // SmartDashboard.putNumber("Max Output", kMaxOutput);
+        // SmartDashboard.putNumber("Min Output", kMinOutput);
     }
 
     public void setMototrSpeed(double input) {

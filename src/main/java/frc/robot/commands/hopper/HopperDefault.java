@@ -4,12 +4,15 @@
 
 package frc.robot.commands.hopper;
 
+import java.sql.Time;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.hopper.Hopper;
 
 public class HopperDefault extends CommandBase {
   private Hopper subsystem;
+  private double clock;
 
   /** Creates a new HopperDefault. */
   public HopperDefault(Hopper subsystem) {
@@ -26,12 +29,20 @@ public class HopperDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.subsystem.setMototrSpeed(Constants.HopperConstants.HOPPER_DEFAULT_SPEED);
+    clock = (clock + 1) % 30;
+
+    if (clock <= 15) {
+      this.subsystem.setMototrSpeed(Constants.HopperConstants.HOPPER_DEFAULT_SPEED);
+    } else if (clock > 15) {
+      this.subsystem.setMototrSpeed(-Constants.HopperConstants.HOPPER_DEFAULT_SPEED);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    this.subsystem.setMototrSpeed(0);
   }
 
   // Returns true when the command should end.

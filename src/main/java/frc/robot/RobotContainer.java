@@ -36,6 +36,7 @@ import frc.robot.commands.intake.IntakeExtend;
 import frc.robot.commands.intake.IntakeOff;
 import frc.robot.commands.intake.IntakeOn;
 import frc.robot.commands.intake.IntakeRetract;
+import frc.robot.commands.intake.IntakeToggle;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.pneumatics.Pneumatics;
 
@@ -55,17 +56,18 @@ public class RobotContainer {
 	public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
 
 	public final DriveTrain driveTrain = new DriveTrain();
-	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, false);
+	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, true);
 
 	private Intake intakeSubsystem = new Intake();
-	// private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
-	// private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
+	private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
+	private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
 	private IntakeOn intakeOn = new IntakeOn(intakeSubsystem);
 	private IntakeOff intakeOff = new IntakeOff(intakeSubsystem);
+	private IntakeToggle intakeToggle = new IntakeToggle(intakeSubsystem);
 
-	private Pneumatics pneumaticsSubsystem = new Pneumatics();
+	// private Pneumatics pneumaticsSubsystem = new Pneumatics();
 
-	private Shooter subShooter = new Shooter();
+	public Shooter subShooter = new Shooter();
 	private ShooterFire shooterFireCommand = new ShooterFire(subShooter, driveStick);
 	private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
 
@@ -81,9 +83,9 @@ public class RobotContainer {
 		// Configure the button bindings
 		configureButtonBindings();
 		subShooter.setDefaultCommand(shooterDefaultCommand);
-		subHopper.setDefaultCommand(hopperDefaultCommand);
+		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		driveTrain.setDefaultCommand(driveJoyCommand);
-		intakeSubsystem.setDefaultCommand(intakeOff);
+		// intakeSubsystem.setDefaultCommand(intakeOff);
 	}
 
 	/**
@@ -93,10 +95,10 @@ public class RobotContainer {
 	 * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
-		new JoystickButton(driveStick, 7).whenPressed(() ->
-		driveJoyCommand.setFieldRelative(false));
-		new JoystickButton(driveStick, 8).whenPressed(() ->
-		driveJoyCommand.setFieldRelative(true));
+		// new JoystickButton(driveStick, 7).whenPressed(() ->
+		// driveJoyCommand.setFieldRelative(false));
+		// new JoystickButton(driveStick, 8).whenPressed(() ->
+		// driveJoyCommand.setFieldRelative(true));
 
 		new JoystickButton(driveStick, 9).whenPressed(() ->
 		driveTrain.resetADIS16470());
@@ -109,7 +111,11 @@ public class RobotContainer {
 
 		new JoystickButton(driveStick, 5).whenHeld(intakeOff);
 		new JoystickButton(driveStick, 6).whenHeld(intakeOn);
+		new JoystickButton(driveStick, 6).whenHeld(hopperDefaultCommand);
 
+		new JoystickButton(driveStick, 2).whenPressed(intakeToggle);
+		new JoystickButton(driveStick, 11).whenPressed(intakeRetract);
+		new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
 	}
 
 	/**

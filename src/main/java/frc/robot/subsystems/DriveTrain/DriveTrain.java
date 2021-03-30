@@ -89,7 +89,7 @@ public class DriveTrain extends SubsystemBase {
 		// SmartDashboard.putNumber("LeftFrontSpeedNorm",
 		// swerveModuleStates[0].speedMetersPerSecond );
 
-		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], true);
+		leftFrontSwerveModule.setDesiredState(swerveModuleStates[0], false);
 		rightFrontSwerveModule.setDesiredState(swerveModuleStates[1], false);
 		rightRearSwerveModule.setDesiredState(swerveModuleStates[2], false);
 		leftRearSwerveModule.setDesiredState(swerveModuleStates[3], false);
@@ -157,7 +157,7 @@ public class DriveTrain extends SubsystemBase {
 	 * @return the robot's heading in degrees, from -180 to 180
 	 */
 	public Rotation2d getHeading() {
-		return imuADIS16470.getRotation2d().times(-1);
+		return imuADIS16470.getRotation2d(); // .times(-1);
 	}
 
 	/**
