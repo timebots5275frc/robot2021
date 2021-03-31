@@ -60,8 +60,8 @@ public class RobotContainer {
 	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, true);
 
 	private Intake intakeSubsystem = new Intake();
-	private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
-	private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
+	// private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
+	// private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
 	private IntakeOn intakeOn = new IntakeOn(intakeSubsystem);
 	private IntakeOff intakeOff = new IntakeOff(intakeSubsystem);
 	private IntakeToggle intakeToggle = new IntakeToggle(intakeSubsystem);
