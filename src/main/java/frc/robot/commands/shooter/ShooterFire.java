@@ -4,21 +4,19 @@
 
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.shooter.Shooter;
 
 public class ShooterFire extends CommandBase {
   private Shooter subsystemShooter;
-  private Joystick joy;
+  // private Joystick joy;
   
   /** Creates a new ShooterFire. */
 
-  public ShooterFire(Shooter subsystem, Joystick joy) {
+  public ShooterFire(Shooter subsystem) {
     this.subsystemShooter = subsystem;
-    this.joy = joy;
+    // this.joy = joy;
     addRequirements(subsystem);
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,13 +31,7 @@ public class ShooterFire extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // System.out.println("Constants.ShooterConstants.SHOOTER_FIRE_RPM" + Constants.ShooterConstants.SHOOTER_FIRE_RPM);
-    // this.subsystemShooter.mo
-
-    
-    // SmartDashboard.putNumber("m_encoder", this.subsystemShooter.shooterMotor.getEncoder().getVelocity());
-
-    this.subsystemShooter.setMototrSpeed(Constants.ShooterConstants.SHOOTER_FIRE_RPM);
+    this.subsystemShooter.setShooterMotorSpeed(Constants.ShooterConstants.SHOOTER_FIRE_RPM);
   }
 
   // Called once the command ends or is interrupted.

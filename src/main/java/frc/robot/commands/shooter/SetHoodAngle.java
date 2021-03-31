@@ -5,16 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.driveTrain;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.shooter.Shooter;
 
-public class AutoNav extends CommandBase {
+public class SetHoodAngle extends CommandBase {
+  private Shooter subsystemShooter;
+
   /**
-   * Creates a new AutoNav.
+   * Creates a new SetHoodAngle.
    */
-  public AutoNav() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public SetHoodAngle(Shooter subsystem) {
+    this.subsystemShooter = subsystem;
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -25,6 +29,7 @@ public class AutoNav extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // subsystemShooter.setHoodMotorAngle(10);
   }
 
   // Called once the command ends or is interrupted.

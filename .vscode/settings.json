@@ -14,5 +14,11 @@
         "**/.settings": true,
         "**/.factorypath": true,
         "**/*~": true
-    }
+    },
+    "cSpell.words": [
+        "CANPID",
+        "auxstick",
+        "xspeed",
+        "yspeed"
+    ]
 }

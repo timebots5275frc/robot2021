@@ -4,8 +4,6 @@
 
 package frc.robot.commands.hopper;
 
-import java.sql.Time;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.hopper.Hopper;
@@ -17,7 +15,7 @@ public class HopperDefault extends CommandBase {
   /** Creates a new HopperDefault. */
   public HopperDefault(Hopper subsystem) {
     this.subsystem = subsystem;
-    addRequirements(subsystem); //here to declare subsystem dependencies.
+    addRequirements(subsystem); // here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

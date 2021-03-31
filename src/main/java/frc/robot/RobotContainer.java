@@ -69,7 +69,7 @@ public class RobotContainer {
 	// private Pneumatics pneumaticsSubsystem = new Pneumatics();
 
 	public Shooter subShooter = new Shooter();
-	private ShooterFire shooterFireCommand = new ShooterFire(subShooter, driveStick);
+	private ShooterFire shooterFireCommand = new ShooterFire(subShooter);
 	private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
 
 	private Hopper subHopper = new Hopper();
@@ -79,16 +79,15 @@ public class RobotContainer {
 
 	private Photonvision subPhotonvision = new Photonvision();
 
-
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
 		// Configure the button bindings
 		configureButtonBindings();
+		driveTrain.setDefaultCommand(driveJoyCommand);
 		subShooter.setDefaultCommand(shooterDefaultCommand);
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
-		driveTrain.setDefaultCommand(driveJoyCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 	}
 
@@ -104,9 +103,9 @@ public class RobotContainer {
 		// new JoystickButton(driveStick, 8).whenPressed(() ->
 		// driveJoyCommand.setFieldRelative(true));
 
-		new JoystickButton(driveStick, 9).whenPressed(() ->
+		new JoystickButton(driveStick, 7).whenPressed(() ->
 		driveTrain.resetADIS16470());
-		new JoystickButton(driveStick, 10).whenPressed(() ->
+		new JoystickButton(driveStick, 8).whenPressed(() ->
 		driveTrain.resetOdometry());
 
 		new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
@@ -120,6 +119,14 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 2).whenPressed(intakeToggle);
 		new JoystickButton(driveStick, 11).whenPressed(intakeRetract);
 		new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
+
+		// new JoystickButton(driveStick, 11).whenPressed(() -> {
+		// 	subPhotonvision.toggleLightIntake();
+		// });
+		// new JoystickButton(driveStick, 12).whenPressed(() -> {
+		// 	subPhotonvision.toggleLightShooter();
+		// });
+
 	}
 
 	/**
@@ -135,7 +142,7 @@ public class RobotContainer {
 						// Add kinematics to ensure max speed is actually obeyed
 						.setKinematics(driveTrain.kinematics);
 
-		String trajectoryJSON = "paths/.....wpilib.json";
+		String trajectoryJSON = "paths/barrel.wpilib.json";
 		Trajectory trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);

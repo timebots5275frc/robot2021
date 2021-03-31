@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.Constants;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SlewRateLimiter;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JoystickDrive extends CommandBase {

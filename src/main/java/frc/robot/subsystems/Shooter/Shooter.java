@@ -1,12 +1,17 @@
 package frc.robot.subsystems.shooter;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.*;
 
 /**
@@ -18,8 +23,21 @@ public class Shooter extends SubsystemBase {
     private CANEncoder m_encoder;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
-    public Shooter() {
+    private TalonSRX hoodMotor;
+    // private ProfiledPIDController hoodMotorPID;
+    private CANCoder hoodCanCoder;
 
+
+    public Shooter() {
+        // hoodMotor = new TalonSRX(Constants.ShooterConstants.SHOOTER_MOTOR_HOOD_ID);
+
+        // hoodMotorPID = new ProfiledPIDController(kD, kD, kD, null, kD);
+        
+        // hoodCanCoder = new CANCoder(Constants.ShooterConstants.SHOOTER_HOOD_CODER_ID);
+        // hoodMotor.configSelectedFeedbackSensor(hoodCanCoder);
+        // hoodMotor.configSelectedFeedbackSensor(feedbackDevice)
+        
+         
         // initialize motor
         shooterMotor = new CANSparkMax(Constants.ShooterConstants.SHOOTER_MOTOR_ID,
                 CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -63,12 +81,23 @@ public class Shooter extends SubsystemBase {
         // SmartDashboard.putNumber("Min Output", kMinOutput);
     }
 
-    public void setMototrSpeed(double input) {
+    public void setShooterMotorSpeed(double input) {
         if (input < Constants.ShooterConstants.SHOOTER_MAX_RPM) {
-            System.out.println("input" + input);
             m_pidController.setReference(-input, ControlType.kVelocity);
         } else {
-            System.out.println("Shooter Motor Warning - Cannot Set Motor RPM Over Limit Of " + Constants.ShooterConstants.SHOOTER_MAX_RPM);
+            System.out.println("Shooter Motor Warning - Cannot Set Motor RPM Over Limit Of "
+                    + Constants.ShooterConstants.SHOOTER_MAX_RPM);
         }
     }
+
+    // private void setHoodMotorSpeed(double input) {
+    //     hoodMotor.set(ControlMode.PercentOutput, input);
+    // }
+
+    // public void setHoodMotorAngle(double angle) {
+    //     double speed = hoodMotorPID.calculate(hoodCanCoder.getAbsolutePosition(), angle);
+    //     this.setHoodMotorSpeed(speed);
+    // }
+
+
 }

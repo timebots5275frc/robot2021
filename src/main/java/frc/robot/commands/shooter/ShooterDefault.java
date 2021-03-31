@@ -27,7 +27,7 @@ public class ShooterDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.subsystemShooter.setMototrSpeed(Constants.ShooterConstants.SHOOTER_DEFAULT_RPM);
+    this.subsystemShooter.setShooterMotorSpeed(Constants.ShooterConstants.SHOOTER_DEFAULT_RPM);
   }
 
   // Called once the command ends or is interrupted.
