@@ -7,18 +7,19 @@
 
 package frc.robot.subsystems.photonvision;
 
+
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class photonvision extends SubsystemBase {
+public class Photonvision extends SubsystemBase {
   PhotonCamera cameraShooter = new PhotonCamera("MyCamera");
   PhotonCamera cameraIntake = new PhotonCamera("MyCamera");
 
   /**
    * Creates a new photonvision.
    */
-  public photonvision() {
+  public Photonvision() {
   }
 
   public void getLatestResult() {

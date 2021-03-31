@@ -29,6 +29,7 @@ import frc.robot.commands.hopper.HopperDefault;
 import frc.robot.commands.hopper.HopperFire;
 import frc.robot.commands.shooter.ShooterDefault;
 import frc.robot.commands.shooter.ShooterFire;
+import frc.robot.subsystems.photonvision.Photonvision;
 import frc.robot.subsystems.driveTrain.DriveTrain;
 import frc.robot.subsystems.hopper.Hopper;
 import frc.robot.subsystems.shooter.Shooter;
@@ -75,6 +76,9 @@ public class RobotContainer {
 	private HopperFire hopperFireCommand = new HopperFire(subHopper);
 	private HopperBack hopperBackCommand = new HopperBack(subHopper);
 	private HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
+
+	private Photonvision subPhotonvision = new Photonvision();
+
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
