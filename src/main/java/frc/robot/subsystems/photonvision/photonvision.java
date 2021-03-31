@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems.photonvision;
 
-
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
