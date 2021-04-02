@@ -66,7 +66,7 @@ public class Constants {
         public static final double LEFT_REAR_WHEEL_X = -11.75 * 0.0254; // meters
         public static final double LEFT_REAR_WHEEL_Y = 11.75 * 0.0254; // meters
 
-        public static final double WHEEL_RADIUS = 2.0 * 0.0254; // meters
+        public static final double WHEEL_RADIUS = 2.0 * 0.0254 * 0.98; // meters
         public static final double WHEEL_CIRCUMFERENCE = 2.0 * Math.PI * WHEEL_RADIUS; // meters/revolution
 
         public static final double MAX_DRIVE_SPEED = 3.5; // meters/second

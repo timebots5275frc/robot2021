@@ -47,7 +47,7 @@ public class DriveTrain extends SubsystemBase {
 
 	// private final AnalogGyro m_gyro = new AnalogGyro(0);
 
-	private final ADIS16470_IMU imuADIS16470 = new ADIS16470_IMU();
+	public final ADIS16470_IMU imuADIS16470 = new ADIS16470_IMU();
 
 	public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(leftFrontWheelLoc, rightFrontWheelLoc,
 			rightRearWheelLoc, leftRearWheelLoc);
@@ -143,12 +143,17 @@ public class DriveTrain extends SubsystemBase {
 	 * @param pose The pose to which to set the odometry.
 	 */
 	public void resetOdometryWithPose2d(Pose2d pose) {
-		m_odometry.resetPosition(pose, imuADIS16470.getRotation2d());
+		m_odometry.resetPosition(pose, pose.getRotation() ); //imuADIS16470.getRotation2d()
 	}
 
 	/** Zeroes the heading of the robot. */
 	public void resetADIS16470() {
 		imuADIS16470.reset();
+	}
+
+	/** calibrate the heading of the robot. */
+	public void calibrateADIS16470() {
+		imuADIS16470.calibrate();
 	}
 
 	/**
@@ -157,7 +162,7 @@ public class DriveTrain extends SubsystemBase {
 	 * @return the robot's heading in degrees, from -180 to 180
 	 */
 	public Rotation2d getHeading() {
-		return imuADIS16470.getRotation2d(); // .times(-1);
+		return imuADIS16470.getRotation2d().minus(new Rotation2d(0.08)); // .times(-1);
 	}
 
 	/**

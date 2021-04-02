@@ -116,14 +116,30 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
     SmartDashboard.putNumber("getRotation", m_robotContainer.driveTrain.getHeading().getDegrees());
 
-    SmartDashboard.putNumber("Shooter m_encoder", m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
-    SmartDashboard.putNumber("Shooter OutputCurrent", m_robotContainer.subShooter.shooterMotor.getOutputCurrent());
-    SmartDashboard.putNumber("hoodCanCoder", m_robotContainer.subShooter.hoodCanCoder.getAbsolutePosition());
-    SmartDashboard.putNumber("Hood getSupplyCurrent", m_robotContainer.subShooter.hoodMotor.getSupplyCurrent());
-    SmartDashboard.putNumber("Hood getClosedLoopError", m_robotContainer.subShooter.hoodMotor.getClosedLoopError());
+    // SmartDashboard.putNumber("Shooter m_encoder",
+    // m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
+    // SmartDashboard.putNumber("Shooter OutputCurrent",
+    // m_robotContainer.subShooter.shooterMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("hoodCanCoder",
+    // m_robotContainer.subShooter.hoodCanCoder.getAbsolutePosition());
+    // SmartDashboard.putNumber("Hood getSupplyCurrent",
+    // m_robotContainer.subShooter.hoodMotor.getSupplyCurrent());
+    // SmartDashboard.putNumber("Hood getClosedLoopError",
+    // m_robotContainer.subShooter.hoodMotor.getClosedLoopError());
 
     SmartDashboard.putNumber("Drive 1 Current",
         m_robotContainer.driveTrain.leftFrontSwerveModule.driveMotor.getOutputCurrent());
+
+    // SmartDashboard.putNumber("Drive X Error",
+    // m_robotContainer.xController.getPositionError());
+    SmartDashboard.putNumber("Drive Y Error", m_robotContainer.yController.getPositionError());
+    SmartDashboard.putNumber("Drive getSetpoint", m_robotContainer.yController.getSetpoint());
+
+    SmartDashboard.putNumber("getAccelInstantX", m_robotContainer.driveTrain.imuADIS16470.getAccelInstantX());
+    SmartDashboard.putNumber("getAccelInstantY", m_robotContainer.driveTrain.imuADIS16470.getAccelInstantY());
+    SmartDashboard.putNumber("getAccelInstantZ", m_robotContainer.driveTrain.imuADIS16470.getAccelInstantZ());
+
+    SmartDashboard.putNumber("getRate", m_robotContainer.driveTrain.imuADIS16470.getRate());
 
   }
 

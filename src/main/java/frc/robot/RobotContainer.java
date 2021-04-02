@@ -93,7 +93,7 @@ public class RobotContainer {
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
-		String trajectoryJSON = "paths/bounce-path.wpilib.json";
+		String trajectoryJSON = "paths/bounce-path2.wpilib.json";
 		trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -116,10 +116,9 @@ public class RobotContainer {
 		// new JoystickButton(driveStick, 8).whenPressed(() ->
 		// driveJoyCommand.setFieldRelative(true));
 
-		new JoystickButton(driveStick, 7).whenPressed(() ->
-		driveTrain.resetADIS16470());
-		new JoystickButton(driveStick, 8).whenPressed(() ->
-		driveTrain.resetOdometry());
+		new JoystickButton(driveStick, 7).whenPressed(() -> driveTrain.resetADIS16470());
+		new JoystickButton(driveStick, 8).whenPressed(() -> driveTrain.resetOdometry());
+		new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.calibrateADIS16470());
 
 		new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
 		new JoystickButton(driveStick, 3).whenHeld(hopperBackCommand);
@@ -146,6 +145,11 @@ public class RobotContainer {
 
 	}
 
+	
+	public PIDController xController = new PIDController(Constants.AutoConstants.kPXController, 0, 0);
+	public PIDController yController = new PIDController(Constants.AutoConstants.kPYController, 0, 0);
+
+
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
 	 *
@@ -153,8 +157,6 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		System.out.println("getAutonomousCommand");
-
-		
 
 		/**
 		 * For clamped cubic splines, this method accepts two Pose2d objects, one for
@@ -170,16 +172,13 @@ public class RobotContainer {
 				Constants.AutoConstants.kThetaControllerConstraints);
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose, // Functional
-																														// interface
-																														// to
-																														// feed
-																														// supplier
+		// PIDController xController = new PIDController(Constants.AutoConstants.kPXController, 0, 0);
+		// PIDController yController = new PIDController(Constants.AutoConstants.kPYController, 0, 0);
+
+		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose,
 				driveTrain.kinematics,
 				// Position controllers
-				new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-				new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
-				driveTrain::setModuleStates, driveTrain);
+				xController, yController, thetaController, driveTrain::setModuleStates, driveTrain);
 
 		// Reset odometry to the starting pose of the trajectory.
 		// driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
