@@ -80,6 +80,7 @@ public class RobotContainer {
 	private HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
 
 	private Photonvision subPhotonvision = new Photonvision();
+	public Trajectory trajectory;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -91,6 +92,16 @@ public class RobotContainer {
 		subShooter.setDefaultCommand(shooterDefaultCommand);
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
+
+		String trajectoryJSON = "paths/bounce-path.wpilib.json";
+		trajectory = new Trajectory();
+		try {
+			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+		} catch (IOException ex) {
+			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+			// System.out.println("Unable to open trajectory: " + trajectoryJSON);
+		}
 	}
 
 	/**
@@ -142,21 +153,8 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		System.out.println("getAutonomousCommand");
-		// Create config for trajectory
-		TrajectoryConfig config = new TrajectoryConfig(Constants.AutoConstants.MAX_Speed_MetersPerSecond,
-				Constants.AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
-						// Add kinematics to ensure max speed is actually obeyed
-						.setKinematics(driveTrain.kinematics);
 
-		String trajectoryJSON = "paths/bounce-path.wpilib.json";
-		Trajectory trajectory = new Trajectory();
-		try {
-			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-		} catch (IOException ex) {
-			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-			// System.out.println("Unable to open trajectory: " + trajectoryJSON);
-		}
+		
 
 		/**
 		 * For clamped cubic splines, this method accepts two Pose2d objects, one for
@@ -184,7 +182,7 @@ public class RobotContainer {
 				driveTrain::setModuleStates, driveTrain);
 
 		// Reset odometry to the starting pose of the trajectory.
-		driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
+		// driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
 
 		// Run path following command, then stop at the end.
 		return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));

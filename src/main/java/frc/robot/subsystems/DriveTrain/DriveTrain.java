@@ -174,6 +174,16 @@ public class DriveTrain extends SubsystemBase {
 		leftRearSwerveModule.setDesiredState(desiredStates[3], false);
 	}
 
+
+	public void alignWheels() {
+		SwerveModuleState desiredStates = new SwerveModuleState(0, new Rotation2d(0));
+
+		leftFrontSwerveModule.setDesiredState(desiredStates, false);
+		rightFrontSwerveModule.setDesiredState(desiredStates, false);
+		rightRearSwerveModule.setDesiredState(desiredStates, false);
+		leftRearSwerveModule.setDesiredState(desiredStates, false);
+	}
+
 	public static Trajectory generateTrajectory(TrajectoryConfig config, Pose2d startingPose2d,
 			List<Translation2d> list) {
 		// Pose2d offset = new Pose2d(startingPose2d.getX(), startingPose2d.getY(),
@@ -215,4 +225,7 @@ public class DriveTrain extends SubsystemBase {
 
 		// return exampleTrajeactory;
 	}
+
+
+
 }

@@ -8,12 +8,18 @@
 package frc.robot.commands.driveTrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.driveTrain.DriveTrain;
 
 public class AutoNav extends CommandBase {
+  DriveTrain drivetrain;
+  double time = 0;
+
   /**
    * Creates a new AutoNav.
    */
-  public AutoNav() {
+  public AutoNav(DriveTrain subsystem) {
+    this.drivetrain = subsystem;
+    addRequirements(this.drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -25,6 +31,8 @@ public class AutoNav extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    this.drivetrain.alignWheels();
+    time++;
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +43,10 @@ public class AutoNav extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (time > 100) {
+      return true;
+    }
     return false;
+
   }
 }
