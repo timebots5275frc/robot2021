@@ -12,12 +12,14 @@ import frc.robot.subsystems.shooter.Shooter;
 
 public class SetHoodAngle extends CommandBase {
   private Shooter subsystemShooter;
+  private double position;
 
   /**
    * Creates a new SetHoodAngle.
    */
-  public SetHoodAngle(Shooter subsystem) {
+  public SetHoodAngle(Shooter subsystem, double _position) {
     this.subsystemShooter = subsystem;
+    this.position = _position;
     addRequirements(subsystem);
   }
 
@@ -29,12 +31,14 @@ public class SetHoodAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // subsystemShooter.setHoodMotorAngle(10);
+    subsystemShooter.setHoodMotorPosition(position);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // subsystemShooter.setHoodMotorPosition(0);
+    
   }
 
   // Returns true when the command should end.

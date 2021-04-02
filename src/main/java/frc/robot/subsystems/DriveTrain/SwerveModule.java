@@ -16,7 +16,7 @@ import frc.robot.constants.Constants.DriveConstants;
 
 public class SwerveModule {
 
-    private CANSparkMax driveMotor;
+    public CANSparkMax driveMotor;
     private CANSparkMax steerMotor;
     private CANEncoder driveMotorEncoder;
 
@@ -90,7 +90,11 @@ public class SwerveModule {
         double steerMotorRpm = steerAnglePID.calculate(steerAngleEncoder.getAbsolutePosition(),
                 state.angle.getDegrees());
 
+
         if (logit) {
+            SmartDashboard.putNumber("Drive OutputCurrent", driveMotor.getOutputCurrent());
+            // SmartDashboard.putNumber("Drive OutputCurrent", driveMotor.current());
+
             SmartDashboard.putNumber("steerAngleEncoder.getAbsolutePosition()",
                     steerAngleEncoder.getAbsolutePosition());
             SmartDashboard.putNumber("SteerMotorRpmCommand", steerMotorRpm);
@@ -119,7 +123,7 @@ public class SwerveModule {
      */
     public double driveRpmFromSpeed(double speedMetersPerSecond) {
         var rpm = speedMetersPerSecond * 60.0 / DriveConstants.WHEEL_CIRCUMFERENCE / DriveConstants.DRIVE_GEAR_RATIO;
-        return -1 * rpm; // Rotation reversed due to gears. 
+        return -1 * rpm; // Rotation reversed due to gears.
     }
 
     /**
@@ -130,7 +134,7 @@ public class SwerveModule {
      */
     public double speedFromDriveRpm(double rpm) {
         var speedMetersPerSecond = rpm * DriveConstants.DRIVE_GEAR_RATIO * DriveConstants.WHEEL_CIRCUMFERENCE / 60.0;
-        return -1 * speedMetersPerSecond; // Rotation reversed due to gears. 
+        return -1 * speedMetersPerSecond; // Rotation reversed due to gears.
     }
 
 }

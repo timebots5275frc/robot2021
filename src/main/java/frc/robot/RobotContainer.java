@@ -23,10 +23,10 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.hopper.HopperBack;
 import frc.robot.commands.hopper.HopperDefault;
 import frc.robot.commands.hopper.HopperFire;
+import frc.robot.commands.shooter.SetHoodAngle;
 import frc.robot.commands.shooter.ShooterDefault;
 import frc.robot.commands.shooter.ShooterFire;
 import frc.robot.subsystems.photonvision.Photonvision;
@@ -39,7 +39,6 @@ import frc.robot.commands.intake.IntakeOn;
 import frc.robot.commands.intake.IntakeRetract;
 import frc.robot.commands.intake.IntakeToggle;
 import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.pneumatics.Pneumatics;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -71,6 +70,9 @@ public class RobotContainer {
 	public Shooter subShooter = new Shooter();
 	private ShooterFire shooterFireCommand = new ShooterFire(subShooter);
 	private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
+	private SetHoodAngle forward = new SetHoodAngle(subShooter, 30);
+	private SetHoodAngle reverse = new SetHoodAngle(subShooter, -30);
+	private SetHoodAngle zero = new SetHoodAngle(subShooter, 0);
 
 	private Hopper subHopper = new Hopper();
 	private HopperFire hopperFireCommand = new HopperFire(subHopper);
@@ -121,11 +123,15 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
 
 		// new JoystickButton(driveStick, 11).whenPressed(() -> {
-		// 	subPhotonvision.toggleLightIntake();
+		// subPhotonvision.toggleLightIntake();
 		// });
 		// new JoystickButton(driveStick, 12).whenPressed(() -> {
-		// 	subPhotonvision.toggleLightShooter();
+		// subPhotonvision.toggleLightShooter();
 		// });
+
+		// new JoystickButton(driveStick, 3).whenHeld(forward);
+		// new JoystickButton(driveStick, 4).whenHeld(reverse);
+		// new JoystickButton(driveStick, 6).whenHeld(zero);
 
 	}
 
@@ -142,7 +148,7 @@ public class RobotContainer {
 						// Add kinematics to ensure max speed is actually obeyed
 						.setKinematics(driveTrain.kinematics);
 
-		String trajectoryJSON = "paths/barrel.wpilib.json";
+		String trajectoryJSON = "paths/bounce-path.wpilib.json";
 		Trajectory trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);

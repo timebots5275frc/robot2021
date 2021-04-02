@@ -36,7 +36,7 @@ public class DriveTrain extends SubsystemBase {
 	private final Translation2d leftRearWheelLoc = new Translation2d(DriveConstants.LEFT_REAR_WHEEL_X,
 			DriveConstants.LEFT_REAR_WHEEL_Y);
 
-	private final SwerveModule leftFrontSwerveModule = new SwerveModule(DriveConstants.LEFT_FRONT_DRIVE_MOTOR_ID,
+	public final SwerveModule leftFrontSwerveModule = new SwerveModule(DriveConstants.LEFT_FRONT_DRIVE_MOTOR_ID,
 			DriveConstants.LEFT_FRONT_STEER_MOTOR_ID, DriveConstants.LEFT_FRONT_STEER_ENCODER_ID);
 	private final SwerveModule rightFrontSwerveModule = new SwerveModule(DriveConstants.RIGHT_FRONT_DRIVE_MOTOR_ID,
 			DriveConstants.RIGHT_FRONT_STEER_MOTOR_ID, DriveConstants.RIGHT_FRONT_STEER_ENCODER_ID);
@@ -169,7 +169,7 @@ public class DriveTrain extends SubsystemBase {
 		SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.MAX_DRIVE_SPEED);
 
 		leftFrontSwerveModule.setDesiredState(desiredStates[0], false);
-		rightFrontSwerveModule.setDesiredState(desiredStates[1], false);
+		rightFrontSwerveModule.setDesiredState(desiredStates[1], true);
 		rightRearSwerveModule.setDesiredState(desiredStates[2], false);
 		leftRearSwerveModule.setDesiredState(desiredStates[3], false);
 	}

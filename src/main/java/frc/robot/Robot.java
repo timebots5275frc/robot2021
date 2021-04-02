@@ -108,10 +108,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
     SmartDashboard.putNumber("getRotation", m_robotContainer.driveTrain.getHeading().getDegrees());
 
-    SmartDashboard.putNumber("m_encoder", m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
-    SmartDashboard.putNumber("OutputCurrent", m_robotContainer.subShooter.shooterMotor.getOutputCurrent() );
+    SmartDashboard.putNumber("Shooter m_encoder", m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Shooter OutputCurrent", m_robotContainer.subShooter.shooterMotor.getOutputCurrent() );
+    SmartDashboard.putNumber("hoodCanCoder", m_robotContainer.subShooter.hoodCanCoder.getAbsolutePosition() );
+    SmartDashboard.putNumber("Hood getSupplyCurrent", m_robotContainer.subShooter.hoodMotor.getSupplyCurrent() );
+    SmartDashboard.putNumber("Hood getClosedLoopError", m_robotContainer.subShooter.hoodMotor.getClosedLoopError() );
 
-    
+    SmartDashboard.putNumber("Drive 1 Current", m_robotContainer.driveTrain.leftFrontSwerveModule.driveMotor.getOutputCurrent() );
+
   }
 
   @Override

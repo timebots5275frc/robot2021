@@ -2,14 +2,11 @@ package frc.robot.subsystems.shooter;
 
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.*;
@@ -23,21 +20,32 @@ public class Shooter extends SubsystemBase {
     private CANEncoder m_encoder;
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
-    private TalonSRX hoodMotor;
+    public TalonSRX hoodMotor;
     // private ProfiledPIDController hoodMotorPID;
-    private CANCoder hoodCanCoder;
-
+    public CANCoder hoodCanCoder;
 
     public Shooter() {
-        // hoodMotor = new TalonSRX(Constants.ShooterConstants.SHOOTER_MOTOR_HOOD_ID);
+        hoodMotor = new TalonSRX(Constants.ShooterConstants.SHOOTER_MOTOR_HOOD_ID);
 
         // hoodMotorPID = new ProfiledPIDController(kD, kD, kD, null, kD);
-        
-        // hoodCanCoder = new CANCoder(Constants.ShooterConstants.SHOOTER_HOOD_CODER_ID);
+
+        hoodCanCoder = new CANCoder(Constants.ShooterConstants.SHOOTER_HOOD_CODER_ID);
+        hoodMotor.configRemoteFeedbackFilter(hoodCanCoder, 0, 10);
+        hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
+        hoodMotor.configForwardSoftLimitEnable(false);
+        hoodMotor.configReverseSoftLimitEnable(false);
+        // double forwardSensorLimit = 170;
+        // double reverseSensorLimit = -150;
+        double forwardSensorLimit = 100;
+        double reverseSensorLimit = -100;
+        // hoodMotor.configForwardSoftLimitThreshold(forwardSensorLimit, 10);
+        // hoodMotor.configReverseSoftLimitThreshold(reverseSensorLimit, 10);
+        hoodMotor.config_kP(0, 0.0001);
+        hoodMotor.config_kI(0, 0);
+        hoodMotor.config_kD(0, 0);
         // hoodMotor.configSelectedFeedbackSensor(hoodCanCoder);
         // hoodMotor.configSelectedFeedbackSensor(feedbackDevice)
-        
-         
+
         // initialize motor
         shooterMotor = new CANSparkMax(Constants.ShooterConstants.SHOOTER_MOTOR_ID,
                 CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -90,14 +98,15 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    // private void setHoodMotorSpeed(double input) {
-    //     hoodMotor.set(ControlMode.PercentOutput, input);
-    // }
+    public void setHoodMotorPosition(double input) {
+        System.out.println("setHoodMotorPosition input =" + input);
+        hoodMotor.set(ControlMode.Position, input * 4096 / 360);
+    }
 
     // public void setHoodMotorAngle(double angle) {
-    //     double speed = hoodMotorPID.calculate(hoodCanCoder.getAbsolutePosition(), angle);
-    //     this.setHoodMotorSpeed(speed);
+    // double speed = hoodMotorPID.calculate(hoodCanCoder.getAbsolutePosition(),
+    // angle);
+    // this.setHoodMotorSpeed(speed);
     // }
-
 
 }
