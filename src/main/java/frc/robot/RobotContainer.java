@@ -93,7 +93,7 @@ public class RobotContainer {
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
-		String trajectoryJSON = "paths/slalom-path.wpilib.json";
+		String trajectoryJSON = "paths/slalom.wpilib.json";
 		trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -129,15 +129,15 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 6).whenHeld(hopperDefaultCommand);
 
 		new JoystickButton(driveStick, 2).whenPressed(intakeToggle);
-		new JoystickButton(driveStick, 11).whenPressed(intakeRetract);
-		new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
+		// new JoystickButton(driveStick, 11).whenPressed(intakeRetract);
+		// new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
 
-		// new JoystickButton(driveStick, 11).whenPressed(() -> {
-		// subPhotonvision.toggleLightIntake();
-		// });
-		// new JoystickButton(driveStick, 12).whenPressed(() -> {
-		// subPhotonvision.toggleLightShooter();
-		// });
+		new JoystickButton(driveStick, 11).whenPressed(() -> {
+		subPhotonvision.toggleLightIntake();
+		});
+		new JoystickButton(driveStick, 12).whenPressed(() -> {
+		subPhotonvision.toggleLightShooter();
+		});
 
 		// new JoystickButton(driveStick, 3).whenHeld(forward);
 		// new JoystickButton(driveStick, 4).whenHeld(reverse);

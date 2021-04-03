@@ -76,6 +76,7 @@ public class JoystickDrive extends CommandBase {
     xSpeed *= throttle;
     ySpeed *= throttle;
     rotRate *= throttle;
+    // rotRate *= 0;
 
     SmartDashboard.putNumber("throttle", throttle);
 

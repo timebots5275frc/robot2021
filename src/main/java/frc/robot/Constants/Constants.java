@@ -24,7 +24,7 @@ public class Constants {
         public static final int DRIVER_STICK_CHANNEL = 0;
         public static final int AUX_STICK_CHANNEL = 1;
         public static final double DEADZONE_DRIVE = 0.1;
-        public static final double DEADZONE_STEER = 0.2;
+        public static final double DEADZONE_STEER = 0.3;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Constants {
         // Middle finger points left in the positive Y direction.
 
         public static final double LEFT_FRONT_WHEEL_X = 11.75 * 0.0254; // meters
-        public static final double LEFT_FRONT_WHEEL_Y = 11.75 * 0.0254; // meters
+        public static final double LEFT_FRONT_WHEEL_Y = 11.75 * 0.0254; // meters .5969
         public static final double RIGHT_FRONT_WHEEL_X = 11.75 * 0.0254; // meters
         public static final double RIGHT_FRONT_WHEEL_Y = -11.75 * 0.0254; // meters
         public static final double RIGHT_REAR_WHEEL_X = -11.75 * 0.0254; // meters
@@ -71,7 +71,7 @@ public class Constants {
 
         public static final double MAX_DRIVE_SPEED = 3.5; // meters/second
         public static final double MAX_STEER_RATE = 0.5; // rotations/second of a wheel for steer.
-        public static final double MAX_TWIST_RATE = 0.5 * 2.0 * Math.PI; // radians/second of the robot rotation.
+        public static final double MAX_TWIST_RATE = .25 * 2.0 * Math.PI; // radians/second of the robot rotation.
 
         // Drive motor gear ratio.
         // | Driving Gear | Driven Gear |
