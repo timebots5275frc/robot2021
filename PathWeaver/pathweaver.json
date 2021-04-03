@@ -1,8 +1,9 @@
 {
   "lengthUnit": "Meter",
   "exportUnit": "Always Meters",
-  "maxVelocity": 3.0,
-  "maxAcceleration": 2.6,
+  "maxVelocity": 0.4,
+  "maxAcceleration": 0.2,
   "wheelBase": 0.5969,
-  "gameName": "barrel racing"
+  "gameName": "slalom path",
+  "outputDir": "../../../../Downloads/paths"
 }
