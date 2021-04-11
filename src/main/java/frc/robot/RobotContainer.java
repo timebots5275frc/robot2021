@@ -38,6 +38,7 @@ import frc.robot.commands.intake.IntakeOff;
 import frc.robot.commands.intake.IntakeOn;
 import frc.robot.commands.intake.IntakeRetract;
 import frc.robot.commands.intake.IntakeToggle;
+import frc.robot.commands.intake.PhotonvisionIntakeAuto;
 import frc.robot.subsystems.intake.Intake;
 
 import java.io.IOException;
@@ -59,27 +60,31 @@ public class RobotContainer {
 	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, true);
 
 	private Intake intakeSubsystem = new Intake();
-	private IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
-	private IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
-	private IntakeOn intakeOn = new IntakeOn(intakeSubsystem);
+	public IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
+	public IntakeRetract intakeRetract = new IntakeRetract(intakeSubsystem);
+	public IntakeOn intakeOn = new IntakeOn(intakeSubsystem);
 	private IntakeOff intakeOff = new IntakeOff(intakeSubsystem);
 	private IntakeToggle intakeToggle = new IntakeToggle(intakeSubsystem);
 
 	// private Pneumatics pneumaticsSubsystem = new Pneumatics();
 
 	public Shooter subShooter = new Shooter();
-	private ShooterFire shooterFireCommand = new ShooterFire(subShooter);
+	private ShooterFire shooterFireCommand = new ShooterFire(subShooter, Constants.ShooterConstants.SHOOTER_FIRE_RPM);
+	private ShooterFire shooterSlowFireCommand = new ShooterFire(subShooter, 1200);
 	private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
-	private SetHoodAngle forward = new SetHoodAngle(subShooter, 30);
-	private SetHoodAngle reverse = new SetHoodAngle(subShooter, -30);
-	private SetHoodAngle zero = new SetHoodAngle(subShooter, 0);
+	private SetHoodAngle hoodForward = new SetHoodAngle(subShooter, 30);
+	private SetHoodAngle hoodReverse = new SetHoodAngle(subShooter, -30);
+	private SetHoodAngle hoodZero = new SetHoodAngle(subShooter, 0);
 
 	private Hopper subHopper = new Hopper();
 	private HopperFire hopperFireCommand = new HopperFire(subHopper);
 	private HopperBack hopperBackCommand = new HopperBack(subHopper);
-	private HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
+	public HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
 
 	private Photonvision subPhotonvision = new Photonvision();
+	private PhotonvisionIntakeAuto intakeAuto = new PhotonvisionIntakeAuto(intakeSubsystem, driveTrain,
+			subPhotonvision);
+
 	public Trajectory trajectory;
 
 	/**
@@ -93,7 +98,7 @@ public class RobotContainer {
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
-		String trajectoryJSON = "paths/slalom.wpilib.json";
+		String trajectoryJSON = "paths/pickupPath.wpilib.json";
 		trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -121,6 +126,7 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.calibrateADIS16470());
 
 		new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
+		new JoystickButton(driveStick, 2).whenHeld(shooterSlowFireCommand );
 		new JoystickButton(driveStick, 3).whenHeld(hopperBackCommand);
 		new JoystickButton(driveStick, 4).whenHeld(hopperFireCommand);
 
@@ -128,16 +134,18 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 6).whenHeld(intakeOn);
 		new JoystickButton(driveStick, 6).whenHeld(hopperDefaultCommand);
 
-		new JoystickButton(driveStick, 2).whenPressed(intakeToggle);
-		// new JoystickButton(driveStick, 11).whenPressed(intakeRetract);
-		// new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
+		// new JoystickButton(driveStick, 2).whenPressed(intakeToggle);
+		new JoystickButton(driveStick, 11).whenPressed(intakeRetract);
+		new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
+		// new JoystickButton(driveStick, 5).whenPressed(intakeOff);
 
-		new JoystickButton(driveStick, 11).whenPressed(() -> {
-		subPhotonvision.toggleLightIntake();
-		});
-		new JoystickButton(driveStick, 12).whenPressed(() -> {
-		subPhotonvision.toggleLightShooter();
-		});
+		// new JoystickButton(driveStick, 11).whenPressed(() -> {
+		// subPhotonvision.toggleLightIntake();
+		// });
+		// new JoystickButton(driveStick, 11).toggleWhenPressed(intakeAuto);
+		// new JoystickButton(driveStick, 12).whenPressed(() -> {
+		// 	subPhotonvision.toggleLightShooter();
+		// });
 
 		// new JoystickButton(driveStick, 3).whenHeld(forward);
 		// new JoystickButton(driveStick, 4).whenHeld(reverse);
@@ -145,10 +153,8 @@ public class RobotContainer {
 
 	}
 
-	
 	public PIDController xController = new PIDController(Constants.AutoConstants.kPXController, 0, 0);
 	public PIDController yController = new PIDController(Constants.AutoConstants.kPYController, 0, 0);
-
 
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -172,8 +178,10 @@ public class RobotContainer {
 				Constants.AutoConstants.kThetaControllerConstraints);
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-		// PIDController xController = new PIDController(Constants.AutoConstants.kPXController, 0, 0);
-		// PIDController yController = new PIDController(Constants.AutoConstants.kPYController, 0, 0);
+		// PIDController xController = new
+		// PIDController(Constants.AutoConstants.kPXController, 0, 0);
+		// PIDController yController = new
+		// PIDController(Constants.AutoConstants.kPYController, 0, 0);
 
 		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose,
 				driveTrain.kinematics,

@@ -10,12 +10,14 @@ import frc.robot.subsystems.shooter.Shooter;
 
 public class ShooterFire extends CommandBase {
   private Shooter subsystemShooter;
+  private double speeeeeed;
   // private Joystick joy;
   
   /** Creates a new ShooterFire. */
 
-  public ShooterFire(Shooter subsystem) {
+  public ShooterFire(Shooter subsystem, double speed) {
     this.subsystemShooter = subsystem;
+    this.speeeeeed = speed;
     // this.joy = joy;
     addRequirements(subsystem);
 
@@ -31,7 +33,9 @@ public class ShooterFire extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.subsystemShooter.setShooterMotorSpeed(Constants.ShooterConstants.SHOOTER_FIRE_RPM);
+    // this.subsystemShooter.setShooterMotorSpeed(Constants.ShooterConstants.SHOOTER_FIRE_RPM);
+    this.subsystemShooter.setShooterMotorSpeed(speeeeeed);
+    System.out.println("speeeeeed = " + speeeeeed);
   }
 
   // Called once the command ends or is interrupted.

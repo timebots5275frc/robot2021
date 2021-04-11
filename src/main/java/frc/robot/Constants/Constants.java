@@ -70,8 +70,8 @@ public class Constants {
         public static final double WHEEL_CIRCUMFERENCE = 2.0 * Math.PI * WHEEL_RADIUS; // meters/revolution
 
         public static final double MAX_DRIVE_SPEED = 3.5; // meters/second
-        public static final double MAX_STEER_RATE = 0.5; // rotations/second of a wheel for steer.
-        public static final double MAX_TWIST_RATE = .25 * 2.0 * Math.PI; // radians/second of the robot rotation.
+        public static final double MAX_STEER_RATE = .5; // rotations/second of a wheel for steer.
+        public static final double MAX_TWIST_RATE = .5 * 2.0 * Math.PI; // radians/second of the robot rotation.
 
         // Drive motor gear ratio.
         // | Driving Gear | Driven Gear |

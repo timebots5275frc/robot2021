@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
         double reverseSensorLimit = -100;
         // hoodMotor.configForwardSoftLimitThreshold(forwardSensorLimit, 10);
         // hoodMotor.configReverseSoftLimitThreshold(reverseSensorLimit, 10);
-        hoodMotor.config_kP(0, 0.0001);
+        hoodMotor.config_kP(0, 0.1);
         hoodMotor.config_kI(0, 0);
         hoodMotor.config_kD(0, 0);
         // hoodMotor.configSelectedFeedbackSensor(hoodCanCoder);

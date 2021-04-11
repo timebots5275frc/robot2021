@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
     // exampleDouble.set(kForward);
     // exampleDouble.set(kReverse);
     
-    private DoubleSolenoid doubleSolenoid1 = new DoubleSolenoid(0, 1);
+    public DoubleSolenoid doubleSolenoid1 = new DoubleSolenoid(0, 1);
     // private DoubleSolenoid doubleSolenoid2 = new DoubleSolenoid(3, 4);
 
 
@@ -50,7 +50,6 @@ public class Intake extends SubsystemBase {
 
     public void setSolenoidRetract() {
         System.out.println("setSolenoidRetract");
-
         doubleSolenoid1.set(kReverse);
         // doubleSolenoid2.set(kReverse);
     }

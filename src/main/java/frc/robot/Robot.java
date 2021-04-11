@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.driveTrain.AutoNav;
 
@@ -75,13 +77,22 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.driveTrain.resetOdometryWithPose2d(m_robotContainer.trajectory.getInitialPose());
 
-    // SequentialCommandGroup autoCommandGroup = new SequentialCommandGroup(new AutoNav(m_robotContainer.driveTrain),
-    //     m_autonomousCommand);
+    // SequentialCommandGroup autoCommandGroup = new SequentialCommandGroup(new
+    // AutoNav(m_robotContainer.driveTrain),
+    // m_autonomousCommand);
+
+    ParallelCommandGroup autoParallelCommandGroup = new ParallelCommandGroup(m_autonomousCommand,
+        m_robotContainer.intakeOn, m_robotContainer.hopperDefaultCommand);
+
+    SequentialCommandGroup autoCommandGroup = new SequentialCommandGroup(m_robotContainer.intakeExtend, m_robotContainer.intakeRetract,
+    autoParallelCommandGroup);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       // m_autonomousCommand.schedule();
-      m_autonomousCommand.schedule();
+      // m_robotContainer.intakeExtend.schedule();
+      // m_robotContainer.intakeRetract.schedule();
+      autoCommandGroup.schedule();
     }
   }
 
@@ -116,16 +127,17 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("odometry getRotation", loc.getRotation().toString());
     SmartDashboard.putNumber("getRotation", m_robotContainer.driveTrain.getHeading().getDegrees());
 
-    // SmartDashboard.putNumber("Shooter m_encoder",
-    // m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
-    // SmartDashboard.putNumber("Shooter OutputCurrent",
-    // m_robotContainer.subShooter.shooterMotor.getOutputCurrent());
-    // SmartDashboard.putNumber("hoodCanCoder",
-    // m_robotContainer.subShooter.hoodCanCoder.getAbsolutePosition());
-    // SmartDashboard.putNumber("Hood getSupplyCurrent",
-    // m_robotContainer.subShooter.hoodMotor.getSupplyCurrent());
-    // SmartDashboard.putNumber("Hood getClosedLoopError",
-    // m_robotContainer.subShooter.hoodMotor.getClosedLoopError());
+    SmartDashboard.putNumber("Shooter m_encoder",
+    m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Shooter OutputCurrent",
+    m_robotContainer.subShooter.shooterMotor.getOutputCurrent());
+    SmartDashboard.putNumber("hoodCanCoder",
+    m_robotContainer.subShooter.hoodCanCoder.getAbsolutePosition());
+    SmartDashboard.putNumber("Hood getSupplyCurrent",
+    m_robotContainer.subShooter.hoodMotor.getSupplyCurrent());
+    SmartDashboard.putNumber("Hood getClosedLoopError",
+        m_robotContainer.subShooter.hoodMotor.getClosedLoopError());
+    
 
     SmartDashboard.putNumber("Drive 1 Current",
         m_robotContainer.driveTrain.leftFrontSwerveModule.driveMotor.getOutputCurrent());

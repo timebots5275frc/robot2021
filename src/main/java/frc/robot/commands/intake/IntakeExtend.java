@@ -10,6 +10,8 @@ import frc.robot.subsystems.intake.Intake;
 public class IntakeExtend extends CommandBase {
   private Intake subsystem;
 
+  private double time;
+
   public IntakeExtend(Intake subsystem) {
     this.subsystem = subsystem;
     addRequirements(subsystem);
@@ -17,12 +19,13 @@ public class IntakeExtend extends CommandBase {
 
   @Override
   public void initialize() {
+    this.subsystem.setSolenoidExtend();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.subsystem.setSolenoidExtend();
+    time++;
   }
 
   // Called once the command ends or is interrupted.
@@ -33,6 +36,10 @@ public class IntakeExtend extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (this.time > 50 * 1.5) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
