@@ -55,6 +55,7 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
 	public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
+	public XboxController xboxController = new XboxController(Constants.ControllerConstants.XBOXCONTROLLER_CHANNEL);
 
 	public final DriveTrain driveTrain = new DriveTrain();
 	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, true);
