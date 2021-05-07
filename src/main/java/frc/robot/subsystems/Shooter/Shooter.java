@@ -24,25 +24,28 @@ public class Shooter extends SubsystemBase {
     // private ProfiledPIDController hoodMotorPID;
     public CANCoder hoodCanCoder;
 
+    public double hoodForwardSensorLimit = 100;
+    public double hoodReverseSensorLimit = -100;
+
     public Shooter() {
         hoodMotor = new TalonSRX(Constants.ShooterConstants.SHOOTER_MOTOR_HOOD_ID);
 
         // hoodMotorPID = new ProfiledPIDController(kD, kD, kD, null, kD);
 
         hoodCanCoder = new CANCoder(Constants.ShooterConstants.SHOOTER_HOOD_CODER_ID);
-        hoodMotor.configRemoteFeedbackFilter(hoodCanCoder, 0, 10);
-        hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
-        hoodMotor.configForwardSoftLimitEnable(false);
-        hoodMotor.configReverseSoftLimitEnable(false);
+        // hoodMotor.configRemoteFeedbackFilter(hoodCanCoder, 0, 10);
+        // hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
+        // hoodMotor.configForwardSoftLimitEnable(false);
+        // hoodMotor.configReverseSoftLimitEnable(false);
         // double forwardSensorLimit = 170;
         // double reverseSensorLimit = -150;
         double forwardSensorLimit = 100;
         double reverseSensorLimit = -100;
         // hoodMotor.configForwardSoftLimitThreshold(forwardSensorLimit, 10);
         // hoodMotor.configReverseSoftLimitThreshold(reverseSensorLimit, 10);
-        hoodMotor.config_kP(0, 0.1);
-        hoodMotor.config_kI(0, 0);
-        hoodMotor.config_kD(0, 0);
+        // hoodMotor.config_kP(0, 0.1);
+        // hoodMotor.config_kI(0, 0);
+        // hoodMotor.config_kD(0, 0);
         // hoodMotor.configSelectedFeedbackSensor(hoodCanCoder);
         // hoodMotor.configSelectedFeedbackSensor(feedbackDevice)
 
@@ -100,7 +103,17 @@ public class Shooter extends SubsystemBase {
 
     public void setHoodMotorPosition(double input) {
         System.out.println("setHoodMotorPosition input =" + input);
-        hoodMotor.set(ControlMode.Position, input * 4096 / 360);
+        // hoodMotor.set(ControlMode.Position, input * 4096 / 360);
+        double deg = hoodCanCoder.getAbsolutePosition(); // [-180,+180) deg
+        if (deg > input && deg < hoodForwardSensorLimit ) {
+            hoodMotor.set(ControlMode.PercentOutput, 0.2);
+        } else if (deg < input && deg > hoodReverseSensorLimit) {
+            hoodMotor.set(ControlMode.PercentOutput, -0.2);
+        }
+    }
+
+    public void setHoodMotorSpeed(double speed) {
+        hoodMotor.set(ControlMode.PercentOutput, speed);
     }
 
     // public void setHoodMotorAngle(double angle) {

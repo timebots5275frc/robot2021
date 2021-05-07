@@ -120,7 +120,7 @@ public class Constants {
 
     public static final class ShooterConstants {
         public static final int SHOOTER_MOTOR_ID = 52;
-        public static final int SHOOTER_MOTOR_HOOD_ID = 12;
+        public static final int SHOOTER_MOTOR_HOOD_ID = 11;
         public static final int SHOOTER_HOOD_CODER_ID = 14;
 
         public static final double SHOOTER_FIRE_RPM = 5500;

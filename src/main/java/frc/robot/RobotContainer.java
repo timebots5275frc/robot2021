@@ -71,10 +71,10 @@ public class RobotContainer {
 
 	public Shooter subShooter = new Shooter();
 	private ShooterFire shooterFireCommand = new ShooterFire(subShooter, Constants.ShooterConstants.SHOOTER_FIRE_RPM);
-	private ShooterFire shooterSlowFireCommand = new ShooterFire(subShooter, 1200);
+	private ShooterFire shooterSlowFireCommand = new ShooterFire(subShooter, 4000);
 	private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
-	private SetHoodAngle hoodForward = new SetHoodAngle(subShooter, 30);
-	private SetHoodAngle hoodReverse = new SetHoodAngle(subShooter, -30);
+	private SetHoodAngle hoodForward = new SetHoodAngle(subShooter, 120);
+	private SetHoodAngle hoodReverse = new SetHoodAngle(subShooter, -120);
 	private SetHoodAngle hoodZero = new SetHoodAngle(subShooter, 0);
 
 	private Hopper subHopper = new Hopper();
@@ -99,7 +99,7 @@ public class RobotContainer {
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
-		String trajectoryJSON = "paths/pickupPath.wpilib.json";
+		String trajectoryJSON = "paths/barrelOneTest.wpilib.json";
 		trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -151,6 +151,10 @@ public class RobotContainer {
 		// new JoystickButton(driveStick, 3).whenHeld(forward);
 		// new JoystickButton(driveStick, 4).whenHeld(reverse);
 		// new JoystickButton(driveStick, 6).whenHeld(zero);
+
+		new JoystickButton(auxStick, 7).whenHeld(hoodReverse);
+		new JoystickButton(auxStick, 9).whenHeld(hoodZero);
+		new JoystickButton(auxStick, 11).whenHeld(hoodForward);
 
 	}
 
