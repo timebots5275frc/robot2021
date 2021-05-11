@@ -99,7 +99,7 @@ public class RobotContainer {
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
-		String trajectoryJSON = "paths/barrelOneTest.wpilib.json";
+		String trajectoryJSON = "paths/output/turnTest.wpilib.json";
 		trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
