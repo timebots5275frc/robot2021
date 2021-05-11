@@ -160,6 +160,8 @@ public class RobotContainer {
 
 	public PIDController xController = new PIDController(Constants.AutoConstants.kPXController, 0, 0);
 	public PIDController yController = new PIDController(Constants.AutoConstants.kPYController, 0, 0);
+	public ProfiledPIDController thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
+	Constants.AutoConstants.kThetaControllerConstraints);
 
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -179,9 +181,9 @@ public class RobotContainer {
 		 * field.
 		 */
 
-		var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
-				Constants.AutoConstants.kThetaControllerConstraints);
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+		thetaController.getSetpoint();
 
 		// PIDController xController = new
 		// PIDController(Constants.AutoConstants.kPXController, 0, 0);
