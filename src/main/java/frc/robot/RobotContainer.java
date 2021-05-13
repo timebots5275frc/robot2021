@@ -171,24 +171,8 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		System.out.println("getAutonomousCommand");
 
-		/**
-		 * For clamped cubic splines, this method accepts two Pose2d objects, one for
-		 * the starting waypoint and one for the ending waypoint. The method takes in a
-		 * vector of Translation2d objects which represent the interior waypoints. The
-		 * headings at these interior waypoints are determined automatically to ensure
-		 * continuous curvature. For quintic splines, the method simply takes in a list
-		 * of Pose2d objects, with each Pose2d representing a point and heading on the
-		 * field.
-		 */
-
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-		thetaController.getSetpoint();
-
-		// PIDController xController = new
-		// PIDController(Constants.AutoConstants.kPXController, 0, 0);
-		// PIDController yController = new
-		// PIDController(Constants.AutoConstants.kPYController, 0, 0);
 
 		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose,
 				driveTrain.kinematics,

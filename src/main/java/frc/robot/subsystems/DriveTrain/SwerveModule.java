@@ -109,7 +109,6 @@ public class SwerveModule {
             SmartDashboard.putNumber("DriveSpeedMetersPerSecond", state.speedMetersPerSecond);
             SmartDashboard.putNumber("DriveMotorRpmCommand", driveMotorRpm);
             SmartDashboard.putNumber("DriveMotorSpeed", driveSpeed);
-
         }
 
         driveMotorVelocityPID.setReference(driveMotorRpm, ControlType.kVelocity);
