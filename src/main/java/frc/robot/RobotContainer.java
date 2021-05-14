@@ -7,7 +7,7 @@ package frc.robot;
 // import frc.robot.subsystems.driveTrain.DriveTrain;
 
 import frc.robot.constants.Constants;
-
+import frc.robot.commands.driveTrain.AutoTurnMinnesotaChallenge;
 import frc.robot.commands.driveTrain.JoystickDrive;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -54,11 +54,25 @@ import java.nio.file.Path;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public Joystick driveStick = new Joystick(Constants.ControllerConstants.DRIVER_STICK_CHANNEL);
-	public Joystick auxStick = new Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
+	// public Joystick auxStick = new
+	// Joystick(Constants.ControllerConstants.AUX_STICK_CHANNEL);
 	public XboxController xboxController = new XboxController(Constants.ControllerConstants.XBOXCONTROLLER_CHANNEL);
 
 	public final DriveTrain driveTrain = new DriveTrain();
-	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, auxStick, true);
+	private final JoystickDrive driveJoyCommand = new JoystickDrive(driveTrain, driveStick, driveStick, true); // the
+																												// driveStick,
+																												// driveStick
+																												// is
+																												// there
+																												// because
+																												// we
+																												// dont
+																												// have
+																												// an
+																												// auxStick
+
+	// Auto
+	public AutoTurnMinnesotaChallenge autoTurnMinnesotaChallenge = new AutoTurnMinnesotaChallenge(driveTrain);
 
 	private Intake intakeSubsystem = new Intake();
 	public IntakeExtend intakeExtend = new IntakeExtend(intakeSubsystem);
@@ -99,7 +113,7 @@ public class RobotContainer {
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
-		String trajectoryJSON = "paths/output/turnTest.wpilib.json";
+		String trajectoryJSON = "paths/output/AutoMinnesotaChallenge.wpilib.json";
 		trajectory = new Trajectory();
 		try {
 			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -127,7 +141,7 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.calibrateADIS16470());
 
 		new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
-		new JoystickButton(driveStick, 2).whenHeld(shooterSlowFireCommand );
+		new JoystickButton(driveStick, 2).whenHeld(shooterSlowFireCommand);
 		new JoystickButton(driveStick, 3).whenHeld(hopperBackCommand);
 		new JoystickButton(driveStick, 4).whenHeld(hopperFireCommand);
 
@@ -145,23 +159,23 @@ public class RobotContainer {
 		// });
 		// new JoystickButton(driveStick, 11).toggleWhenPressed(intakeAuto);
 		// new JoystickButton(driveStick, 12).whenPressed(() -> {
-		// 	subPhotonvision.toggleLightShooter();
+		// subPhotonvision.toggleLightShooter();
 		// });
 
 		// new JoystickButton(driveStick, 3).whenHeld(forward);
 		// new JoystickButton(driveStick, 4).whenHeld(reverse);
 		// new JoystickButton(driveStick, 6).whenHeld(zero);
 
-		new JoystickButton(auxStick, 7).whenHeld(hoodReverse);
-		new JoystickButton(auxStick, 9).whenHeld(hoodZero);
-		new JoystickButton(auxStick, 11).whenHeld(hoodForward);
+		// new JoystickButton(auxStick, 7).whenHeld(hoodReverse);
+		// new JoystickButton(auxStick, 9).whenHeld(hoodZero);
+		// new JoystickButton(auxStick, 11).whenHeld(hoodForward);
 
 	}
 
 	public PIDController xController = new PIDController(Constants.AutoConstants.kPXController, 0, 0);
 	public PIDController yController = new PIDController(Constants.AutoConstants.kPYController, 0, 0);
-	public ProfiledPIDController thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
-	Constants.AutoConstants.kThetaControllerConstraints);
+	public ProfiledPIDController thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
+			0, 0, Constants.AutoConstants.kThetaControllerConstraints);
 
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -172,7 +186,6 @@ public class RobotContainer {
 		System.out.println("getAutonomousCommand");
 
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
 
 		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose,
 				driveTrain.kinematics,

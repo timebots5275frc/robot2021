@@ -6,17 +6,18 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands.driveTrain;
-import frc.robot.subsystems.driveTrain.DriveTrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.driveTrain.DriveTrain;
 
-public class DriveHome extends CommandBase {
+public class AutoTurnMinnesotaChallenge extends CommandBase {
+  private long startTimeMillis;
   private DriveTrain driveTrain;
 
   /**
-   * Creates a new DriveHome.
+   * Creates a new AutoTurnMinnesotaChallenge.
    */
-  public DriveHome(DriveTrain subsystem) {
+  public AutoTurnMinnesotaChallenge(DriveTrain subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     driveTrain = subsystem;
     addRequirements(driveTrain);
@@ -25,12 +26,23 @@ public class DriveHome extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    this.startTimeMillis = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("DriveHome Running (: ");
+    long timeElapsed = System.currentTimeMillis() - this.startTimeMillis;
+    System.out.println("timeElapsed = " + timeElapsed);
+
+    if (timeElapsed > 9000) { // seconds
+      driveTrain.setAutoTurnOffsetRadians(-Math.PI / 2);
+    } else if (timeElapsed > 6000) { // seconds
+      driveTrain.setAutoTurnOffsetRadians(0);
+    } else if (timeElapsed > 3000) { // seconds
+      driveTrain.setAutoTurnOffsetRadians(Math.PI / 2);
+    }
+
   }
 
   // Called once the command ends or is interrupted.

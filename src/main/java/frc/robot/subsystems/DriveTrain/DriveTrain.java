@@ -54,6 +54,8 @@ public class DriveTrain extends SubsystemBase {
 
 	private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(kinematics, this.getHeading());
 
+	private double autoTurnOffsetRadians = 0;
+
 	public DriveTrain() {
 		System.out.println("DriveTrain (:");
 	}
@@ -143,18 +145,22 @@ public class DriveTrain extends SubsystemBase {
 	 * @param pose The pose to which to set the odometry.
 	 */
 	public void resetOdometryWithPose2d(Pose2d pose) {
+		System.out.println("resetOdometryWithPose2d");
 		m_odometry.resetPosition(pose, pose.getRotation() ); //imuADIS16470.getRotation2d()
 	}
 
 	/** Zeroes the heading of the robot. */
 	public void resetADIS16470() {
+		System.out.println("resetADIS16470");
 		imuADIS16470.reset();
 	}
 
 	/** calibrate the heading of the robot. */
 	public void calibrateADIS16470() {
+		System.out.println("calibrateADIS16470");
 		imuADIS16470.calibrate();
 	}
+
 
 	/**
 	 * Returns the heading of the robot.
@@ -162,7 +168,12 @@ public class DriveTrain extends SubsystemBase {
 	 * @return the robot's heading in degrees, from -180 to 180
 	 */
 	public Rotation2d getHeading() {
-		return imuADIS16470.getRotation2d(); //.minus(new Rotation2d(0.08)); // .times(-1);
+		return imuADIS16470.getRotation2d().minus(new Rotation2d(this.autoTurnOffsetRadians)); // radians
+	}
+
+	public void setAutoTurnOffsetRadians(double angleInRadians) {
+		System.out.println("angleInRadians = " + angleInRadians);
+		this.autoTurnOffsetRadians = angleInRadians;
 	}
 
 	/**

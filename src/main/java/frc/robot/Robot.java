@@ -77,14 +77,20 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.driveTrain.resetOdometryWithPose2d(m_robotContainer.trajectory.getInitialPose());
 
+    ParallelCommandGroup autoParallelCommandGroup = new ParallelCommandGroup(m_autonomousCommand,
+        m_robotContainer.autoTurnMinnesotaChallenge); //, m_robotContainer.intakeOn, m_robotContainer.hopperDefaultCommand);
+
     // SequentialCommandGroup autoCommandGroup = new SequentialCommandGroup(new
     // AutoNav(m_robotContainer.driveTrain),
     // m_autonomousCommand);
 
-    // ParallelCommandGroup autoParallelCommandGroup = new ParallelCommandGroup(m_autonomousCommand,
-    //     m_robotContainer.intakeOn, m_robotContainer.hopperDefaultCommand);
+    // ParallelCommandGroup autoParallelCommandGroup = new
+    // ParallelCommandGroup(m_autonomousCommand,
+    // m_robotContainer.intakeOn, m_robotContainer.hopperDefaultCommand);
 
-    // SequentialCommandGroup autoCommandGroup = new SequentialCommandGroup(m_robotContainer.intakeExtend, m_robotContainer.intakeRetract,
+    // SequentialCommandGroup autoCommandGroup = new
+    // SequentialCommandGroup(m_robotContainer.intakeExtend,
+    // m_robotContainer.intakeRetract,
     // autoParallelCommandGroup);
 
     // schedule the autonomous command (example)
@@ -92,7 +98,9 @@ public class Robot extends TimedRobot {
       // m_autonomousCommand.schedule();
       // m_robotContainer.intakeExtend.schedule();
       // m_robotContainer.intakeRetract.schedule();
-      m_autonomousCommand.schedule();
+
+      autoParallelCommandGroup.schedule();
+
     }
   }
 
@@ -128,8 +136,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("getRotation", m_robotContainer.driveTrain.getHeading().getDegrees());
     SmartDashboard.putNumber("thetaController point", m_robotContainer.thetaController.getSetpoint().position);
 
-    SmartDashboard.putNumber("Shooter m_encoder",
-    m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Shooter m_encoder", m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
     // SmartDashboard.putNumber("Shooter OutputCurrent",
     // m_robotContainer.subShooter.shooterMotor.getOutputCurrent());
     // SmartDashboard.putNumber("hoodCanCoder",
@@ -137,22 +144,27 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Hood getSupplyCurrent",
     // m_robotContainer.subShooter.hoodMotor.getSupplyCurrent());
     // SmartDashboard.putNumber("Hood getClosedLoopError",
-    //     m_robotContainer.subShooter.hoodMotor.getClosedLoopError());
-    
+    // m_robotContainer.subShooter.hoodMotor.getClosedLoopError());
 
     // SmartDashboard.putNumber("Drive 1 Current",
-    //     m_robotContainer.driveTrain.leftFrontSwerveModule.driveMotor.getOutputCurrent());
+    // m_robotContainer.driveTrain.leftFrontSwerveModule.driveMotor.getOutputCurrent());
 
     // SmartDashboard.putNumber("Drive X Error",
     // m_robotContainer.xController.getPositionError());
-    // SmartDashboard.putNumber("Drive Y Error", m_robotContainer.yController.getPositionError());
-    // SmartDashboard.putNumber("Drive getSetpoint", m_robotContainer.yController.getSetpoint());
+    // SmartDashboard.putNumber("Drive Y Error",
+    // m_robotContainer.yController.getPositionError());
+    // SmartDashboard.putNumber("Drive getSetpoint",
+    // m_robotContainer.yController.getSetpoint());
 
-    // SmartDashboard.putNumber("getAccelInstantX", m_robotContainer.driveTrain.imuADIS16470.getAccelInstantX());
-    // SmartDashboard.putNumber("getAccelInstantY", m_robotContainer.driveTrain.imuADIS16470.getAccelInstantY());
-    // SmartDashboard.putNumber("getAccelInstantZ", m_robotContainer.driveTrain.imuADIS16470.getAccelInstantZ());
+    // SmartDashboard.putNumber("getAccelInstantX",
+    // m_robotContainer.driveTrain.imuADIS16470.getAccelInstantX());
+    // SmartDashboard.putNumber("getAccelInstantY",
+    // m_robotContainer.driveTrain.imuADIS16470.getAccelInstantY());
+    // SmartDashboard.putNumber("getAccelInstantZ",
+    // m_robotContainer.driveTrain.imuADIS16470.getAccelInstantZ());
 
-    // SmartDashboard.putNumber("getRate", m_robotContainer.driveTrain.imuADIS16470.getRate());
+    // SmartDashboard.putNumber("getRate",
+    // m_robotContainer.driveTrain.imuADIS16470.getRate());
 
   }
 
