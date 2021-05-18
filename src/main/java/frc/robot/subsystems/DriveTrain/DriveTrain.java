@@ -122,6 +122,7 @@ public class DriveTrain extends SubsystemBase {
 	 * Resets the odometry Position and Angle to 0.
 	 */
 	public void resetOdometry() {
+		System.out.println("resetOdometry");
 		m_odometry.resetPosition(new Pose2d(), new Rotation2d(0));
 	}
 

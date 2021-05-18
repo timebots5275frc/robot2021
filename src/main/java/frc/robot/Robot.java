@@ -77,8 +77,8 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.driveTrain.resetOdometryWithPose2d(m_robotContainer.trajectory.getInitialPose());
 
-    ParallelCommandGroup autoParallelCommandGroup = new ParallelCommandGroup(m_autonomousCommand,
-        m_robotContainer.autoTurnMinnesotaChallenge); //, m_robotContainer.intakeOn, m_robotContainer.hopperDefaultCommand);
+    // ParallelCommandGroup autoParallelCommandGroup = new ParallelCommandGroup(m_autonomousCommand,
+    //     m_robotContainer.autoTurnMinnesotaChallenge); //, m_robotContainer.intakeOn, m_robotContainer.hopperDefaultCommand);
 
     // SequentialCommandGroup autoCommandGroup = new SequentialCommandGroup(new
     // AutoNav(m_robotContainer.driveTrain),
@@ -98,8 +98,9 @@ public class Robot extends TimedRobot {
       // m_autonomousCommand.schedule();
       // m_robotContainer.intakeExtend.schedule();
       // m_robotContainer.intakeRetract.schedule();
-
-      autoParallelCommandGroup.schedule();
+      m_autonomousCommand.schedule();
+      // m_robotContainer.autoTurnMinnesotaChallenge.schedule();
+      // autoParallelCommandGroup.schedule();
 
     }
   }

@@ -42,7 +42,9 @@ import frc.robot.commands.intake.PhotonvisionIntakeAuto;
 import frc.robot.subsystems.intake.Intake;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -97,10 +99,14 @@ public class RobotContainer {
 	public HopperDefault hopperDefaultCommand = new HopperDefault(subHopper);
 
 	private Photonvision subPhotonvision = new Photonvision();
+
 	private PhotonvisionIntakeAuto intakeAuto = new PhotonvisionIntakeAuto(intakeSubsystem, driveTrain,
 			subPhotonvision);
 
 	public Trajectory trajectory;
+
+	public ArrayList<Trajectory> trajectoryArray = new ArrayList<Trajectory>(3);
+	public ArrayList<SwerveControllerCommand> swerveControllerCommandArray = new ArrayList<SwerveControllerCommand>(3);
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -113,15 +119,19 @@ public class RobotContainer {
 		// subHopper.setDefaultCommand(hopperDefaultCommand);
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
-		String trajectoryJSON = "paths/output/AutoMinnesotaChallenge.wpilib.json";
-		trajectory = new Trajectory();
-		try {
-			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-		} catch (IOException ex) {
-			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-			// System.out.println("Unable to open trajectory: " + trajectoryJSON);
-		}
+		// String trajectoryJSON0 = "paths/output/part0.wpilib.json";
+		// for (int i = 0; i < 3; i++) {
+		// 	trajectory = new Trajectory();
+		// 	String trajectoryJSON = "paths/output/part" + i + ".wpilib.json";
+		// 	try {
+		// 		Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+		// 		trajectoryArray.set(i, TrajectoryUtil.fromPathweaverJson(trajectoryPath) );
+		// 	} catch (IOException ex) {
+		// 		DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+		// 		// System.out.println("Unable to open trajectory: " + trajectoryJSON);
+		// 	}
+		// }
+
 	}
 
 	/**
@@ -179,24 +189,29 @@ public class RobotContainer {
 
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
-	 *
+	 * 
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
 		System.out.println("getAutonomousCommand");
 
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
+		for (int i = 0; i < swerveControllerCommandArray.size(); i++) {
+			swerveControllerCommandArray.set(i,new SwerveControllerCommand(trajectory, driveTrain::getPose,
+					driveTrain.kinematics, xController, yController, thetaController, driveTrain::setModuleStates,
+					driveTrain));
+		}
 
-		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose,
-				driveTrain.kinematics,
-				// Position controllers
-				xController, yController, thetaController, driveTrain::setModuleStates, driveTrain);
+		// SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose,
+		// 		driveTrain.kinematics,
+		// 		// Position controllers
+		// 		xController, yController, thetaController, driveTrain::setModuleStates, driveTrain);
 
 		// Reset odometry to the starting pose of the trajectory.
 		// driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
 
 		// Run path following command, then stop at the end.
-		return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
+		return swerveControllerCommandArray.get(0).andThen(swerveControllerCommandArray.get(1)).andThen(swerveControllerCommandArray.get(2)).andThen(() -> driveTrain.drive(0, 0, 0, false));
 
 		// https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervecontrollercommand/subsystems/DriveSubsystem.java
 	}
