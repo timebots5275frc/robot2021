@@ -140,8 +140,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Shooter m_encoder", m_robotContainer.subShooter.shooterMotor.getEncoder().getVelocity());
     // SmartDashboard.putNumber("Shooter OutputCurrent",
     // m_robotContainer.subShooter.shooterMotor.getOutputCurrent());
-    // SmartDashboard.putNumber("hoodCanCoder",
-    // m_robotContainer.subShooter.hoodCanCoder.getAbsolutePosition());
+    SmartDashboard.putNumber("hoodCanCoder",
+    m_robotContainer.subShooter.hoodCanCoder.getAbsolutePosition());
     // SmartDashboard.putNumber("Hood getSupplyCurrent",
     // m_robotContainer.subShooter.hoodMotor.getSupplyCurrent());
     // SmartDashboard.putNumber("Hood getClosedLoopError",

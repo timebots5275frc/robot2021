@@ -68,12 +68,12 @@ public class Constants {
         public static final double LEFT_REAR_WHEEL_X = -11.75 * 0.0254; // meters
         public static final double LEFT_REAR_WHEEL_Y = 11.75 * 0.0254; // meters
 
-        public static final double WHEEL_RADIUS = 2.0 * 0.0254 * 0.98; // meters
+        public static final double WHEEL_RADIUS = 2.0 * 0.0254; // meters * 0.98
         public static final double WHEEL_CIRCUMFERENCE = 2.0 * Math.PI * WHEEL_RADIUS; // meters/revolution
 
         public static final double MAX_DRIVE_SPEED = 3.5; // meters/second
         public static final double MAX_STEER_RATE = .5; // rotations/second of a wheel for steer.
-        public static final double MAX_TWIST_RATE = .5 * 2.0 * Math.PI; // radians/second of the robot rotation.
+        public static final double MAX_TWIST_RATE =  .6 * 2.0 * Math.PI; // radians/second of the robot rotation.
 
         // Drive motor gear ratio.
         // | Driving Gear | Driven Gear |
@@ -130,7 +130,7 @@ public class Constants {
 
     public static final class IntakeConstants {
         public static final int MOTOR_CAN_ID = 10;
-        public static final double MOTOR_SPEED = 0.6;
+        public static final double MOTOR_SPEED = 0.8;
         public static final int COMPRESSOR_CAN_ID = -1;
     }
 

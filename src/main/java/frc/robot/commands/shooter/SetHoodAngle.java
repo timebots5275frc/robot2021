@@ -31,7 +31,9 @@ public class SetHoodAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystemShooter.setHoodMotorPosition(position);
+    // subsystemShooter.setHoodMotorPosition(position);
+    subsystemShooter.setHoodMotorSpeed(this.position);
+    
   }
 
   // Called once the command ends or is interrupted.

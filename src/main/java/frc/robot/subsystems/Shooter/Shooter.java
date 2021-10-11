@@ -24,12 +24,12 @@ public class Shooter extends SubsystemBase {
     // private ProfiledPIDController hoodMotorPID;
     public CANCoder hoodCanCoder;
 
-    public double hoodForwardSensorLimit = 100;
-    public double hoodReverseSensorLimit = -100;
+    public double hoodForwardSensorLimit = 50;
+    public double hoodReverseSensorLimit = -50;
 
     public Shooter() {
         hoodMotor = new TalonSRX(Constants.ShooterConstants.SHOOTER_MOTOR_HOOD_ID);
-
+        
         // hoodMotorPID = new ProfiledPIDController(kD, kD, kD, null, kD);
 
         hoodCanCoder = new CANCoder(Constants.ShooterConstants.SHOOTER_HOOD_CODER_ID);
@@ -39,8 +39,8 @@ public class Shooter extends SubsystemBase {
         // hoodMotor.configReverseSoftLimitEnable(false);
         // double forwardSensorLimit = 170;
         // double reverseSensorLimit = -150;
-        double forwardSensorLimit = 100;
-        double reverseSensorLimit = -100;
+        // double forwardSensorLimit = 50;
+        // double reverseSensorLimit = -50;
         // hoodMotor.configForwardSoftLimitThreshold(forwardSensorLimit, 10);
         // hoodMotor.configReverseSoftLimitThreshold(reverseSensorLimit, 10);
         // hoodMotor.config_kP(0, 0.1);
@@ -105,7 +105,7 @@ public class Shooter extends SubsystemBase {
         System.out.println("setHoodMotorPosition input =" + input);
         // hoodMotor.set(ControlMode.Position, input * 4096 / 360);
         double deg = hoodCanCoder.getAbsolutePosition(); // [-180,+180) deg
-        if (deg > input && deg < hoodForwardSensorLimit ) {
+        if (deg > input && deg < hoodForwardSensorLimit) {
             hoodMotor.set(ControlMode.PercentOutput, 0.2);
         } else if (deg < input && deg > hoodReverseSensorLimit) {
             hoodMotor.set(ControlMode.PercentOutput, -0.2);
@@ -113,7 +113,18 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setHoodMotorSpeed(double speed) {
-        hoodMotor.set(ControlMode.PercentOutput, speed);
+        double deg = hoodCanCoder.getAbsolutePosition(); // [-180,+180) deg
+        
+        // Forward
+        if (speed > 0 && deg <= hoodForwardSensorLimit) {
+            hoodMotor.set(ControlMode.PercentOutput, -1*speed); // You can run the Motor forward.
+        } else if (speed < 0 && deg >= hoodReverseSensorLimit) {        // Reverse
+            hoodMotor.set(ControlMode.PercentOutput, -1*speed); // You can run the Motor forward.
+        } else {
+            hoodMotor.set(ControlMode.PercentOutput, 0); // You can run the Motor forward.
+        }
+
+
     }
 
     // public void setHoodMotorAngle(double angle) {

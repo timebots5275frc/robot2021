@@ -28,6 +28,7 @@ public class ShooterDefault extends CommandBase {
   @Override
   public void execute() {
     this.subsystemShooter.setShooterMotorSpeed(Constants.ShooterConstants.SHOOTER_DEFAULT_RPM);
+
   }
 
   // Called once the command ends or is interrupted.
