@@ -89,8 +89,8 @@ public class RobotContainer {
 	private ShooterFire shooterFireCommand = new ShooterFire(subShooter, Constants.ShooterConstants.SHOOTER_FIRE_RPM);
 	private ShooterFire shooterSlowFireCommand = new ShooterFire(subShooter, 4000);
 	private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
-	private SetHoodAngle hoodForward = new SetHoodAngle(subShooter, 0.2);
-	private SetHoodAngle hoodReverse = new SetHoodAngle(subShooter, -0.2);
+	private SetHoodAngle hoodForward = new SetHoodAngle(subShooter, 0.5);
+	private SetHoodAngle hoodReverse = new SetHoodAngle(subShooter, -0.5);
 	private SetHoodAngle hoodZero = new SetHoodAngle(subShooter, 0);
 
 	private Hopper subHopper = new Hopper();
@@ -159,13 +159,15 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 6).whenHeld(intakeOn);
 		new JoystickButton(driveStick, 6).whenHeld(hopperDefaultCommand);
 
+		
+		new JoystickButton(driveStick, 12).whenHeld(hoodForward);
+		new JoystickButton(driveStick, 11).whenHeld(hoodReverse);
+
 		// new JoystickButton(driveStick, 2).whenPressed(intakeToggle);
 		// new JoystickButton(driveStick, 11).whenPressed(intakeRetract);
 		// new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
 		// new JoystickButton(driveStick, 5).whenPressed(intakeOff);
 
-		new JoystickButton(driveStick, 12).whenHeld(hoodForward);
-		new JoystickButton(driveStick, 11).whenHeld(hoodReverse);
 
 
 		// new JoystickButton(driveStick, 11).whenPressed(() -> {

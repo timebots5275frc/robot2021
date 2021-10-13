@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
     // private ProfiledPIDController hoodMotorPID;
     public CANCoder hoodCanCoder;
 
-    public double hoodForwardSensorLimit = 50;
+    public double hoodForwardSensorLimit = 110;
     public double hoodReverseSensorLimit = -50;
 
     public Shooter() {
