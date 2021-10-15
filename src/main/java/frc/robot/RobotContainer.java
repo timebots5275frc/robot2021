@@ -7,6 +7,7 @@ package frc.robot;
 // import frc.robot.subsystems.driveTrain.DriveTrain;
 
 import frc.robot.constants.Constants;
+import frc.robot.constants.Constants.AutoConstants;
 import frc.robot.commands.driveTrain.AutoTurnMinnesotaChallenge;
 import frc.robot.commands.driveTrain.JoystickDrive;
 
@@ -105,8 +106,9 @@ public class RobotContainer {
 
 	public Trajectory trajectory;
 
-	public ArrayList<Trajectory> trajectoryArray = new ArrayList<Trajectory>(3);
-	public ArrayList<SwerveControllerCommand> swerveControllerCommandArray = new ArrayList<SwerveControllerCommand>(3);
+	//public ArrayList<Trajectory> trajectoryArray = new ArrayList<Trajectory>(3);
+	//public ArrayList<SwerveControllerCommand> swerveControllerCommandArray = new ArrayList<SwerveControllerCommand>(3);
+	
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -120,17 +122,16 @@ public class RobotContainer {
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
 		// String trajectoryJSON0 = "paths/output/part0.wpilib.json";
-		// for (int i = 0; i < 3; i++) {
-		// 	trajectory = new Trajectory();
-		// 	String trajectoryJSON = "paths/output/part" + i + ".wpilib.json";
-		// 	try {
-		// 		Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-		// 		trajectoryArray.set(i, TrajectoryUtil.fromPathweaverJson(trajectoryPath) );
-		// 	} catch (IOException ex) {
-		// 		DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-		// 		// System.out.println("Unable to open trajectory: " + trajectoryJSON);
-		// 	}
-		// }
+		String trajectoryJSON = "paths/output/part0.wpilib.json";
+        trajectory = new Trajectory();
+        try {
+            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+        } catch (IOException ex) {
+            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+            // System.out.println("Unable to open trajectory: " + trajectoryJSON);
+        }
+
 
 	}
 
@@ -201,23 +202,22 @@ public class RobotContainer {
 		System.out.println("getAutonomousCommand");
 
 		thetaController.enableContinuousInput(-Math.PI, Math.PI);
-		for (int i = 0; i < swerveControllerCommandArray.size(); i++) {
-			swerveControllerCommandArray.set(i,new SwerveControllerCommand(trajectory, driveTrain::getPose,
-					driveTrain.kinematics, xController, yController, thetaController, driveTrain::setModuleStates,
-					driveTrain));
-		}
-
-		// SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose,
-		// 		driveTrain.kinematics,
-		// 		// Position controllers
-		// 		xController, yController, thetaController, driveTrain::setModuleStates, driveTrain);
+		TrajectoryConfig config = new TrajectoryConfig(AutoConstants.MAX_Speed_MetersPerSecond,
+                AutoConstants.MAX_Acceleration_MetersPerSecondSquared)
+                        // Add kinematics to ensure max speed is actually obeyed
+                        .setKinematics(driveTrain.kinematics);
+		
+		SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(trajectory, driveTrain::getPose,
+				driveTrain.kinematics,
+				// Position controllers
+				xController, yController, thetaController, driveTrain::setModuleStates, driveTrain);
 
 		// Reset odometry to the starting pose of the trajectory.
-		// driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
+		driveTrain.resetOdometryWithPose2d(trajectory.getInitialPose());
 
 		// Run path following command, then stop at the end.
-		return swerveControllerCommandArray.get(0).andThen(swerveControllerCommandArray.get(1)).andThen(swerveControllerCommandArray.get(2)).andThen(() -> driveTrain.drive(0, 0, 0, false));
-
+		return swerveControllerCommand.andThen(() -> driveTrain.drive(0, 0, 0, false));
+		
 		// https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervecontrollercommand/subsystems/DriveSubsystem.java
 	}
 }
