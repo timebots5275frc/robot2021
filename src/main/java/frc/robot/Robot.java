@@ -88,17 +88,17 @@ public class Robot extends TimedRobot {
     // ParallelCommandGroup(m_autonomousCommand,
     // m_robotContainer.intakeOn, m_robotContainer.hopperDefaultCommand);
 
-    // SequentialCommandGroup autoCommandGroup = new
-    // SequentialCommandGroup(m_robotContainer.intakeExtend,
-    // m_robotContainer.intakeRetract,
-    // autoParallelCommandGroup);
+    SequentialCommandGroup autoCommandGroup = new
+    SequentialCommandGroup(m_robotContainer.intakeExtend,
+    m_robotContainer.intakeRetract,
+    m_autonomousCommand);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       // m_autonomousCommand.schedule();
       // m_robotContainer.intakeExtend.schedule();
       // m_robotContainer.intakeRetract.schedule();
-      m_autonomousCommand.schedule();
+      autoCommandGroup.schedule();
       // m_robotContainer.autoTurnMinnesotaChallenge.schedule();
       // autoParallelCommandGroup.schedule();
 
