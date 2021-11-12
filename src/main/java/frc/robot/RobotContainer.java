@@ -88,7 +88,7 @@ public class RobotContainer {
 
 	public Shooter subShooter = new Shooter();
 	private ShooterFire shooterFireCommand = new ShooterFire(subShooter, Constants.ShooterConstants.SHOOTER_FIRE_RPM);
-	private ShooterFire shooterSlowFireCommand = new ShooterFire(subShooter, 4000);
+	private ShooterFire shooterSlowFireCommand = new ShooterFire(subShooter,-1000 );
 	private ShooterDefault shooterDefaultCommand = new ShooterDefault(subShooter);
 	private SetHoodAngle hoodForward = new SetHoodAngle(subShooter, 0.5);
 	private SetHoodAngle hoodReverse = new SetHoodAngle(subShooter, -0.5);
@@ -122,7 +122,7 @@ public class RobotContainer {
 		// intakeSubsystem.setDefaultCommand(intakeOff);
 
 		// String trajectoryJSON0 = "paths/output/part0.wpilib.json";
-		String trajectoryJSON = "paths/output/part0.wpilib.json";
+		String trajectoryJSON = "paths/output/forward.wpilib.json";
         trajectory = new Trajectory();
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -149,7 +149,7 @@ public class RobotContainer {
 
 		new JoystickButton(driveStick, 7).whenPressed(() -> driveTrain.resetADIS16470());
 		new JoystickButton(driveStick, 8).whenPressed(() -> driveTrain.resetOdometry());
-		new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.calibrateADIS16470());
+		//new JoystickButton(driveStick, 10).whenPressed(() -> driveTrain.calibrateADIS16470());
 
 		new JoystickButton(driveStick, 1).whenHeld(shooterFireCommand);
 		new JoystickButton(driveStick, 2).whenHeld(shooterSlowFireCommand);
@@ -165,8 +165,8 @@ public class RobotContainer {
 		new JoystickButton(driveStick, 11).whenHeld(hoodReverse);
 
 		// new JoystickButton(driveStick, 2).whenPressed(intakeToggle);
-		// new JoystickButton(driveStick, 11).whenPressed(intakeRetract);
-		// new JoystickButton(driveStick, 12).whenPressed(intakeExtend);
+		 new JoystickButton(driveStick, 9).whenPressed(intakeRetract);
+		 new JoystickButton(driveStick, 10).whenPressed(intakeExtend);
 		// new JoystickButton(driveStick, 5).whenPressed(intakeOff);
 
 
