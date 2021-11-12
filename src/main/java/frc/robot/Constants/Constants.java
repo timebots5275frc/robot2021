@@ -122,7 +122,7 @@ public class Constants {
         public static final int SHOOTER_MOTOR_ID = 52;
         public static final int SHOOTER_MOTOR_HOOD_ID = 11;
         public static final int SHOOTER_HOOD_CODER_ID = 14;
-
+`
         public static final double SHOOTER_FIRE_RPM = 5500;
         public static final double SHOOTER_MAX_RPM = 5700; // 5700
         public static final double SHOOTER_DEFAULT_RPM = 0.0;
@@ -130,7 +130,7 @@ public class Constants {
 
     public static final class IntakeConstants {
         public static final int MOTOR_CAN_ID = 10;
-        public static final double MOTOR_SPEED = 0.8;
+        public static final double MOTOR_SPEED = 0.7;
         public static final int COMPRESSOR_CAN_ID = -1;
     }
 

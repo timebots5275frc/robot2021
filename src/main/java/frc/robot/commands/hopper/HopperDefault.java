@@ -27,11 +27,11 @@ public class HopperDefault extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    clock = (clock + 1) % 30;
+    clock = (clock + 1) % 40;
 
-    if (clock <= 15) {
+    if (clock <= 30) {
       this.subsystem.setMototrSpeed(Constants.HopperConstants.HOPPER_DEFAULT_SPEED);
-    } else if (clock > 15) {
+    } else if (clock > 10) {
       this.subsystem.setMototrSpeed(-Constants.HopperConstants.HOPPER_DEFAULT_SPEED);
     }
 
